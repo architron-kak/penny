@@ -1,0 +1,2297 @@
+{
+  "persona": {
+    "id": "freelancer",
+    "name": "Freelancer",
+    "firstName": "Sam",
+    "initials": "SA",
+    "description": "Independent work, a little more freedom",
+    "monthlyBudget": 2400,
+    "budgets": {
+      "groceries": 300,
+      "food & coffee": 200,
+      "transport": 450,
+      "subscriptions": 160,
+      "shopping": 400,
+      "utilities": 250,
+      "other": 640
+    }
+  },
+  "transactions": [
+    {
+      "id": "freelancer-tx-185",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 35.83,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-192",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 26.6,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-195",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 46.28,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-196",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 15.77,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-197",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 18.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-199",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 17.45,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-200",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 22.03,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-201",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 77.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-202",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 31.35,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-203",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 57.28,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-204",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 247.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-217",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Design Studio",
+      "description": "Monthly subscription renewal",
+      "amount": 54.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-218",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Code Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-219",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Task Space",
+      "description": "Monthly subscription renewal",
+      "amount": 12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-220",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Stock Library",
+      "description": "Monthly subscription renewal",
+      "amount": 29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-221",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Client Project",
+      "description": "Freelance project income",
+      "amount": -2266.91,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-222",
+      "userId": "freelancer",
+      "date": "2026-11-03",
+      "merchant": "Client Retainer",
+      "description": "Freelance retainer income",
+      "amount": -1026.21,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-187",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 114.39,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-188",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 15.49,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-189",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 87.56,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-190",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 127.98,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-191",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 15.27,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-194",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 25.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-198",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 9.11,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-205",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 220.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-206",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 79.13,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-208",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 50.19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-209",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 34.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-214",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 42.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-216",
+      "userId": "freelancer",
+      "date": "2026-11-02",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 163.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-186",
+      "userId": "freelancer",
+      "date": "2026-11-01",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 26.42,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-193",
+      "userId": "freelancer",
+      "date": "2026-11-01",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 6.05,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-207",
+      "userId": "freelancer",
+      "date": "2026-11-01",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 204.79,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-210",
+      "userId": "freelancer",
+      "date": "2026-11-01",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 133.32,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-211",
+      "userId": "freelancer",
+      "date": "2026-11-01",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 9.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-212",
+      "userId": "freelancer",
+      "date": "2026-11-01",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 27.54,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-213",
+      "userId": "freelancer",
+      "date": "2026-11-01",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 25.29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-215",
+      "userId": "freelancer",
+      "date": "2026-11-01",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 16.96,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-163",
+      "userId": "freelancer",
+      "date": "2026-10-28",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 77.39,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-148",
+      "userId": "freelancer",
+      "date": "2026-10-27",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 69.93,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-169",
+      "userId": "freelancer",
+      "date": "2026-10-27",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 62.34,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-171",
+      "userId": "freelancer",
+      "date": "2026-10-27",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 83.23,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-152",
+      "userId": "freelancer",
+      "date": "2026-10-26",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 55.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-164",
+      "userId": "freelancer",
+      "date": "2026-10-26",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 50,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-165",
+      "userId": "freelancer",
+      "date": "2026-10-26",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 27.25,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-155",
+      "userId": "freelancer",
+      "date": "2026-10-25",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 177.38,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-156",
+      "userId": "freelancer",
+      "date": "2026-10-25",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 26.36,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-172",
+      "userId": "freelancer",
+      "date": "2026-10-24",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 263.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-161",
+      "userId": "freelancer",
+      "date": "2026-10-23",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 18.8,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-178",
+      "userId": "freelancer",
+      "date": "2026-10-22",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 30.02,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-158",
+      "userId": "freelancer",
+      "date": "2026-10-21",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 104.81,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-184",
+      "userId": "freelancer",
+      "date": "2026-10-21",
+      "merchant": "Client Retainer",
+      "description": "Freelance retainer income",
+      "amount": -1131.83,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-177",
+      "userId": "freelancer",
+      "date": "2026-10-19",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 36.92,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-170",
+      "userId": "freelancer",
+      "date": "2026-10-18",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 54.21,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-151",
+      "userId": "freelancer",
+      "date": "2026-10-15",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 15.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-149",
+      "userId": "freelancer",
+      "date": "2026-10-14",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 35.71,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-168",
+      "userId": "freelancer",
+      "date": "2026-10-14",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 20.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-167",
+      "userId": "freelancer",
+      "date": "2026-10-13",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 71.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-175",
+      "userId": "freelancer",
+      "date": "2026-10-13",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 20.39,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-176",
+      "userId": "freelancer",
+      "date": "2026-10-12",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 29.82,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-166",
+      "userId": "freelancer",
+      "date": "2026-10-11",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 124.78,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-150",
+      "userId": "freelancer",
+      "date": "2026-10-10",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 58.57,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-159",
+      "userId": "freelancer",
+      "date": "2026-10-10",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 49.29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-173",
+      "userId": "freelancer",
+      "date": "2026-10-08",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 23.54,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-183",
+      "userId": "freelancer",
+      "date": "2026-10-08",
+      "merchant": "Client Project",
+      "description": "Freelance project income",
+      "amount": -2133.69,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-157",
+      "userId": "freelancer",
+      "date": "2026-10-07",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 16.51,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-160",
+      "userId": "freelancer",
+      "date": "2026-10-06",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 10.45,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-179",
+      "userId": "freelancer",
+      "date": "2026-10-05",
+      "merchant": "Design Studio",
+      "description": "Monthly subscription renewal",
+      "amount": 54.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-180",
+      "userId": "freelancer",
+      "date": "2026-10-05",
+      "merchant": "Code Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-181",
+      "userId": "freelancer",
+      "date": "2026-10-05",
+      "merchant": "Task Space",
+      "description": "Monthly subscription renewal",
+      "amount": 12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-182",
+      "userId": "freelancer",
+      "date": "2026-10-05",
+      "merchant": "Stock Library",
+      "description": "Monthly subscription renewal",
+      "amount": 29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-174",
+      "userId": "freelancer",
+      "date": "2026-10-03",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 74.88,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-154",
+      "userId": "freelancer",
+      "date": "2026-10-02",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 23.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-153",
+      "userId": "freelancer",
+      "date": "2026-10-01",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 81.11,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-162",
+      "userId": "freelancer",
+      "date": "2026-10-01",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 154.13,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-114",
+      "userId": "freelancer",
+      "date": "2026-09-30",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 23.91,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-111",
+      "userId": "freelancer",
+      "date": "2026-09-29",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 16.32,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-137",
+      "userId": "freelancer",
+      "date": "2026-09-29",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 67.21,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-121",
+      "userId": "freelancer",
+      "date": "2026-09-28",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 75.27,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-112",
+      "userId": "freelancer",
+      "date": "2026-09-26",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 93.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-136",
+      "userId": "freelancer",
+      "date": "2026-09-26",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 16.81,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-113",
+      "userId": "freelancer",
+      "date": "2026-09-25",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 7.41,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-117",
+      "userId": "freelancer",
+      "date": "2026-09-24",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 38.29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-125",
+      "userId": "freelancer",
+      "date": "2026-09-24",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 15.43,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-128",
+      "userId": "freelancer",
+      "date": "2026-09-22",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 20.03,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-147",
+      "userId": "freelancer",
+      "date": "2026-09-21",
+      "merchant": "Client Retainer",
+      "description": "Freelance retainer income",
+      "amount": -705.19,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-119",
+      "userId": "freelancer",
+      "date": "2026-09-19",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 136.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-123",
+      "userId": "freelancer",
+      "date": "2026-09-17",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 39.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-134",
+      "userId": "freelancer",
+      "date": "2026-09-12",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 43.75,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-126",
+      "userId": "freelancer",
+      "date": "2026-09-11",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 44.79,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-131",
+      "userId": "freelancer",
+      "date": "2026-09-11",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 78.18,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-133",
+      "userId": "freelancer",
+      "date": "2026-09-11",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 11.9,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-129",
+      "userId": "freelancer",
+      "date": "2026-09-10",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 22.11,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-135",
+      "userId": "freelancer",
+      "date": "2026-09-10",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 79.5,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-139",
+      "userId": "freelancer",
+      "date": "2026-09-10",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 17.53,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-116",
+      "userId": "freelancer",
+      "date": "2026-09-08",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 21.07,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-130",
+      "userId": "freelancer",
+      "date": "2026-09-08",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 33.76,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-146",
+      "userId": "freelancer",
+      "date": "2026-09-08",
+      "merchant": "Client Project",
+      "description": "Freelance project income",
+      "amount": -1969.85,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-118",
+      "userId": "freelancer",
+      "date": "2026-09-07",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 159.7,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-132",
+      "userId": "freelancer",
+      "date": "2026-09-07",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 94.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-141",
+      "userId": "freelancer",
+      "date": "2026-09-07",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 74.3,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-140",
+      "userId": "freelancer",
+      "date": "2026-09-06",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 65.49,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-122",
+      "userId": "freelancer",
+      "date": "2026-09-05",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 43.08,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-127",
+      "userId": "freelancer",
+      "date": "2026-09-05",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 10.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-142",
+      "userId": "freelancer",
+      "date": "2026-09-05",
+      "merchant": "Design Studio",
+      "description": "Monthly subscription renewal",
+      "amount": 54.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-143",
+      "userId": "freelancer",
+      "date": "2026-09-05",
+      "merchant": "Code Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-144",
+      "userId": "freelancer",
+      "date": "2026-09-05",
+      "merchant": "Task Space",
+      "description": "Monthly subscription renewal",
+      "amount": 12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-145",
+      "userId": "freelancer",
+      "date": "2026-09-05",
+      "merchant": "Stock Library",
+      "description": "Monthly subscription renewal",
+      "amount": 29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-115",
+      "userId": "freelancer",
+      "date": "2026-09-04",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 7.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-120",
+      "userId": "freelancer",
+      "date": "2026-09-04",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 269.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-138",
+      "userId": "freelancer",
+      "date": "2026-09-04",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 75.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-110",
+      "userId": "freelancer",
+      "date": "2026-09-01",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 16.34,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-124",
+      "userId": "freelancer",
+      "date": "2026-09-01",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 100.47,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-100",
+      "userId": "freelancer",
+      "date": "2026-08-30",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 31.02,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-98",
+      "userId": "freelancer",
+      "date": "2026-08-30",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 14.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-81",
+      "userId": "freelancer",
+      "date": "2026-08-29",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 23.18,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-76",
+      "userId": "freelancer",
+      "date": "2026-08-28",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 87.61,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-96",
+      "userId": "freelancer",
+      "date": "2026-08-23",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 73.84,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-97",
+      "userId": "freelancer",
+      "date": "2026-08-23",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 66.84,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-109",
+      "userId": "freelancer",
+      "date": "2026-08-21",
+      "merchant": "Client Retainer",
+      "description": "Freelance retainer income",
+      "amount": -1362.12,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-92",
+      "userId": "freelancer",
+      "date": "2026-08-21",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 34.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-73",
+      "userId": "freelancer",
+      "date": "2026-08-19",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 210.87,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-102",
+      "userId": "freelancer",
+      "date": "2026-08-18",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 16.18,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-79",
+      "userId": "freelancer",
+      "date": "2026-08-18",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 275.45,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-91",
+      "userId": "freelancer",
+      "date": "2026-08-18",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 17.08,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-82",
+      "userId": "freelancer",
+      "date": "2026-08-17",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 242.77,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-72",
+      "userId": "freelancer",
+      "date": "2026-08-15",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 15.08,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-103",
+      "userId": "freelancer",
+      "date": "2026-08-13",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 245.78,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-74",
+      "userId": "freelancer",
+      "date": "2026-08-12",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 47.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-77",
+      "userId": "freelancer",
+      "date": "2026-08-12",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 143.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-93",
+      "userId": "freelancer",
+      "date": "2026-08-12",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 283.66,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-86",
+      "userId": "freelancer",
+      "date": "2026-08-11",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 55.49,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-87",
+      "userId": "freelancer",
+      "date": "2026-08-10",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 81.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-101",
+      "userId": "freelancer",
+      "date": "2026-08-09",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 36.41,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-88",
+      "userId": "freelancer",
+      "date": "2026-08-09",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 14.45,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-108",
+      "userId": "freelancer",
+      "date": "2026-08-08",
+      "merchant": "Client Project",
+      "description": "Freelance project income",
+      "amount": -2252.04,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-83",
+      "userId": "freelancer",
+      "date": "2026-08-08",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 61.07,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-84",
+      "userId": "freelancer",
+      "date": "2026-08-06",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 38.01,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-104",
+      "userId": "freelancer",
+      "date": "2026-08-05",
+      "merchant": "Design Studio",
+      "description": "Monthly subscription renewal",
+      "amount": 54.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-105",
+      "userId": "freelancer",
+      "date": "2026-08-05",
+      "merchant": "Code Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-106",
+      "userId": "freelancer",
+      "date": "2026-08-05",
+      "merchant": "Task Space",
+      "description": "Monthly subscription renewal",
+      "amount": 12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-107",
+      "userId": "freelancer",
+      "date": "2026-08-05",
+      "merchant": "Stock Library",
+      "description": "Monthly subscription renewal",
+      "amount": 29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-85",
+      "userId": "freelancer",
+      "date": "2026-08-05",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 18.18,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-89",
+      "userId": "freelancer",
+      "date": "2026-08-05",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 32.51,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-94",
+      "userId": "freelancer",
+      "date": "2026-08-04",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 9.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-78",
+      "userId": "freelancer",
+      "date": "2026-08-03",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 77.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-80",
+      "userId": "freelancer",
+      "date": "2026-08-03",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 10.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-95",
+      "userId": "freelancer",
+      "date": "2026-08-03",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 13.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-90",
+      "userId": "freelancer",
+      "date": "2026-08-02",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 228.6,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-75",
+      "userId": "freelancer",
+      "date": "2026-08-01",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 145.71,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-99",
+      "userId": "freelancer",
+      "date": "2026-08-01",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 30.87,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-35",
+      "userId": "freelancer",
+      "date": "2026-07-31",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 53.91,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-50",
+      "userId": "freelancer",
+      "date": "2026-07-29",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 89.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-55",
+      "userId": "freelancer",
+      "date": "2026-07-28",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 8.6,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-36",
+      "userId": "freelancer",
+      "date": "2026-07-27",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 89.05,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-44",
+      "userId": "freelancer",
+      "date": "2026-07-27",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 38.15,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-64",
+      "userId": "freelancer",
+      "date": "2026-07-27",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 205.27,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-61",
+      "userId": "freelancer",
+      "date": "2026-07-24",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 16.66,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-62",
+      "userId": "freelancer",
+      "date": "2026-07-24",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 43.16,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-43",
+      "userId": "freelancer",
+      "date": "2026-07-21",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 164.3,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-57",
+      "userId": "freelancer",
+      "date": "2026-07-21",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 16.84,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-71",
+      "userId": "freelancer",
+      "date": "2026-07-21",
+      "merchant": "Client Retainer",
+      "description": "Freelance retainer income",
+      "amount": -1043.7,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-54",
+      "userId": "freelancer",
+      "date": "2026-07-20",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 89.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-63",
+      "userId": "freelancer",
+      "date": "2026-07-20",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 74.6,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-49",
+      "userId": "freelancer",
+      "date": "2026-07-19",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 75.66,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-42",
+      "userId": "freelancer",
+      "date": "2026-07-18",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 8.88,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-45",
+      "userId": "freelancer",
+      "date": "2026-07-16",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 47.83,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-39",
+      "userId": "freelancer",
+      "date": "2026-07-15",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 17.04,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-48",
+      "userId": "freelancer",
+      "date": "2026-07-15",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 87.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-53",
+      "userId": "freelancer",
+      "date": "2026-07-14",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 7.65,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-56",
+      "userId": "freelancer",
+      "date": "2026-07-13",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 30.55,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-58",
+      "userId": "freelancer",
+      "date": "2026-07-11",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 95.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-51",
+      "userId": "freelancer",
+      "date": "2026-07-08",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 25.52,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-70",
+      "userId": "freelancer",
+      "date": "2026-07-08",
+      "merchant": "Client Project",
+      "description": "Freelance project income",
+      "amount": -2484.39,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-59",
+      "userId": "freelancer",
+      "date": "2026-07-06",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 42.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-60",
+      "userId": "freelancer",
+      "date": "2026-07-06",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 113.46,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-46",
+      "userId": "freelancer",
+      "date": "2026-07-05",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 16.91,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-47",
+      "userId": "freelancer",
+      "date": "2026-07-05",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 31.64,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-65",
+      "userId": "freelancer",
+      "date": "2026-07-05",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 186.87,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-66",
+      "userId": "freelancer",
+      "date": "2026-07-05",
+      "merchant": "Design Studio",
+      "description": "Monthly subscription renewal",
+      "amount": 54.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-67",
+      "userId": "freelancer",
+      "date": "2026-07-05",
+      "merchant": "Code Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-68",
+      "userId": "freelancer",
+      "date": "2026-07-05",
+      "merchant": "Task Space",
+      "description": "Monthly subscription renewal",
+      "amount": 12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-69",
+      "userId": "freelancer",
+      "date": "2026-07-05",
+      "merchant": "Stock Library",
+      "description": "Monthly subscription renewal",
+      "amount": 29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-40",
+      "userId": "freelancer",
+      "date": "2026-07-04",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 11.86,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-41",
+      "userId": "freelancer",
+      "date": "2026-07-04",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 16.18,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-52",
+      "userId": "freelancer",
+      "date": "2026-07-04",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 18.72,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-37",
+      "userId": "freelancer",
+      "date": "2026-07-03",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 86.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-38",
+      "userId": "freelancer",
+      "date": "2026-07-02",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 66.26,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-14",
+      "userId": "freelancer",
+      "date": "2026-06-28",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 74.76,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-2",
+      "userId": "freelancer",
+      "date": "2026-06-28",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 23.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-9",
+      "userId": "freelancer",
+      "date": "2026-06-28",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 52.2,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-3",
+      "userId": "freelancer",
+      "date": "2026-06-26",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 22.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-12",
+      "userId": "freelancer",
+      "date": "2026-06-25",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 88.17,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-27",
+      "userId": "freelancer",
+      "date": "2026-06-25",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 81.53,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-28",
+      "userId": "freelancer",
+      "date": "2026-06-24",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 263.6,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-19",
+      "userId": "freelancer",
+      "date": "2026-06-23",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 71.75,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-25",
+      "userId": "freelancer",
+      "date": "2026-06-23",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 7.76,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-11",
+      "userId": "freelancer",
+      "date": "2026-06-22",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 204.91,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-22",
+      "userId": "freelancer",
+      "date": "2026-06-22",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 10.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-5",
+      "userId": "freelancer",
+      "date": "2026-06-22",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 228.36,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-34",
+      "userId": "freelancer",
+      "date": "2026-06-21",
+      "merchant": "Client Retainer",
+      "description": "Freelance retainer income",
+      "amount": -954.5,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-4",
+      "userId": "freelancer",
+      "date": "2026-06-19",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 40.26,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-17",
+      "userId": "freelancer",
+      "date": "2026-06-16",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 17.16,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-6",
+      "userId": "freelancer",
+      "date": "2026-06-15",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 31.98,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-8",
+      "userId": "freelancer",
+      "date": "2026-06-15",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and client lunch",
+      "amount": 13.91,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-0",
+      "userId": "freelancer",
+      "date": "2026-06-14",
+      "merchant": "Studio Supply",
+      "description": "Shopping for office equipment",
+      "amount": 67.23,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-10",
+      "userId": "freelancer",
+      "date": "2026-06-12",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 56.83,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-18",
+      "userId": "freelancer",
+      "date": "2026-06-12",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 18.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-20",
+      "userId": "freelancer",
+      "date": "2026-06-11",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 27.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-23",
+      "userId": "freelancer",
+      "date": "2026-06-11",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 258.35,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-16",
+      "userId": "freelancer",
+      "date": "2026-06-09",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 70.08,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-33",
+      "userId": "freelancer",
+      "date": "2026-06-08",
+      "merchant": "Client Project",
+      "description": "Freelance project income",
+      "amount": -2406.11,
+      "currency": "USD",
+      "source": "synthetic",
+      "category": "other"
+    },
+    {
+      "id": "freelancer-tx-21",
+      "userId": "freelancer",
+      "date": "2026-06-07",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 15.96,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-26",
+      "userId": "freelancer",
+      "date": "2026-06-07",
+      "merchant": "City Cab",
+      "description": "Transport taxi",
+      "amount": 32.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-1",
+      "userId": "freelancer",
+      "date": "2026-06-05",
+      "merchant": "Fiber Internet",
+      "description": "Utilities internet",
+      "amount": 89.52,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-13",
+      "userId": "freelancer",
+      "date": "2026-06-05",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 38.76,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-29",
+      "userId": "freelancer",
+      "date": "2026-06-05",
+      "merchant": "Design Studio",
+      "description": "Monthly subscription renewal",
+      "amount": 54.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-30",
+      "userId": "freelancer",
+      "date": "2026-06-05",
+      "merchant": "Code Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-31",
+      "userId": "freelancer",
+      "date": "2026-06-05",
+      "merchant": "Task Space",
+      "description": "Monthly subscription renewal",
+      "amount": 12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-32",
+      "userId": "freelancer",
+      "date": "2026-06-05",
+      "merchant": "Stock Library",
+      "description": "Monthly subscription renewal",
+      "amount": 29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-15",
+      "userId": "freelancer",
+      "date": "2026-06-04",
+      "merchant": "Fresh Market",
+      "description": "Groceries",
+      "amount": 25.98,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-7",
+      "userId": "freelancer",
+      "date": "2026-06-04",
+      "merchant": "Runway Air",
+      "description": "Travel transport flight",
+      "amount": 283.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "freelancer-tx-24",
+      "userId": "freelancer",
+      "date": "2026-06-01",
+      "merchant": "Desk Coffee",
+      "description": "Coffee and workspace snack",
+      "amount": 13.38,
+      "currency": "USD",
+      "source": "synthetic"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "freelancer-sub-0",
+      "userId": "freelancer",
+      "merchant": "Design Studio",
+      "monthlyPrice": 54.99,
+      "lastUsedDate": "2026-11-02",
+      "status": "active"
+    },
+    {
+      "id": "freelancer-sub-1",
+      "userId": "freelancer",
+      "merchant": "Code Cloud",
+      "monthlyPrice": 19,
+      "lastUsedDate": "2026-11-01",
+      "status": "active"
+    },
+    {
+      "id": "freelancer-sub-2",
+      "userId": "freelancer",
+      "merchant": "Task Space",
+      "monthlyPrice": 12,
+      "lastUsedDate": "2026-09-03",
+      "status": "active"
+    },
+    {
+      "id": "freelancer-sub-3",
+      "userId": "freelancer",
+      "merchant": "Stock Library",
+      "monthlyPrice": 29,
+      "lastUsedDate": "2026-08-21",
+      "status": "active"
+    }
+  ]
+}

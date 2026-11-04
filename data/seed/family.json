@@ -1,0 +1,1979 @@
+{
+  "persona": {
+    "id": "family",
+    "name": "Family",
+    "firstName": "Jordan",
+    "initials": "JO",
+    "description": "A busy household, thoughtfully managed",
+    "monthlyBudget": 3200,
+    "budgets": {
+      "groceries": 650,
+      "food & coffee": 250,
+      "transport": 300,
+      "subscriptions": 60,
+      "shopping": 400,
+      "utilities": 650,
+      "other": 890
+    }
+  },
+  "transactions": [
+    {
+      "id": "family-tx-163",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 132.25,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-165",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 30.21,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-166",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 46.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-167",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 45.39,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-169",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 61.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-173",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 51.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-174",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 116.57,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-175",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 168.52,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-177",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 71.02,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-182",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 46.13,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-184",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 98.35,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-191",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 37.93,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-192",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 18.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-193",
+      "userId": "family",
+      "date": "2026-11-03",
+      "merchant": "Family Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 12.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-170",
+      "userId": "family",
+      "date": "2026-11-02",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 66.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-176",
+      "userId": "family",
+      "date": "2026-11-02",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 47.85,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-179",
+      "userId": "family",
+      "date": "2026-11-02",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 72.7,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-185",
+      "userId": "family",
+      "date": "2026-11-02",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 161.6,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-187",
+      "userId": "family",
+      "date": "2026-11-02",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 163.77,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-189",
+      "userId": "family",
+      "date": "2026-11-02",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 192.64,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-161",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 45.48,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-162",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 98.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-164",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 122.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-168",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 152.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-171",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 120.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-172",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 205.81,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-178",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 177.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-180",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 47.35,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-181",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 154.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-183",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 187.51,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-186",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 46.93,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-188",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 178.48,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-190",
+      "userId": "family",
+      "date": "2026-11-01",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 70.85,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-155",
+      "userId": "family",
+      "date": "2026-10-31",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 69.65,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-150",
+      "userId": "family",
+      "date": "2026-10-29",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 173.17,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-137",
+      "userId": "family",
+      "date": "2026-10-25",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 78.25,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-135",
+      "userId": "family",
+      "date": "2026-10-24",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 78.3,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-145",
+      "userId": "family",
+      "date": "2026-10-24",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 55.38,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-133",
+      "userId": "family",
+      "date": "2026-10-23",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 55.39,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-149",
+      "userId": "family",
+      "date": "2026-10-23",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 49.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-157",
+      "userId": "family",
+      "date": "2026-10-23",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 135.01,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-134",
+      "userId": "family",
+      "date": "2026-10-22",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 133.23,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-142",
+      "userId": "family",
+      "date": "2026-10-22",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 144.49,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-146",
+      "userId": "family",
+      "date": "2026-10-22",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 75.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-139",
+      "userId": "family",
+      "date": "2026-10-21",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 51.92,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-143",
+      "userId": "family",
+      "date": "2026-10-21",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 50.77,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-148",
+      "userId": "family",
+      "date": "2026-10-20",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 114.78,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-153",
+      "userId": "family",
+      "date": "2026-10-19",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 52.86,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-132",
+      "userId": "family",
+      "date": "2026-10-17",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 108.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-131",
+      "userId": "family",
+      "date": "2026-10-15",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 31.59,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-144",
+      "userId": "family",
+      "date": "2026-10-15",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 45.36,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-147",
+      "userId": "family",
+      "date": "2026-10-15",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 187.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-136",
+      "userId": "family",
+      "date": "2026-10-14",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 185.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-158",
+      "userId": "family",
+      "date": "2026-10-14",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 54.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-138",
+      "userId": "family",
+      "date": "2026-10-13",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 106.23,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-140",
+      "userId": "family",
+      "date": "2026-10-10",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 48.29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-151",
+      "userId": "family",
+      "date": "2026-10-10",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 35.4,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-156",
+      "userId": "family",
+      "date": "2026-10-09",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 35.72,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-141",
+      "userId": "family",
+      "date": "2026-10-07",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 66.38,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-159",
+      "userId": "family",
+      "date": "2026-10-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 18.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-160",
+      "userId": "family",
+      "date": "2026-10-05",
+      "merchant": "Family Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 12.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-152",
+      "userId": "family",
+      "date": "2026-10-02",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 185.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-154",
+      "userId": "family",
+      "date": "2026-10-01",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 122.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-100",
+      "userId": "family",
+      "date": "2026-09-30",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 58.15,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-120",
+      "userId": "family",
+      "date": "2026-09-30",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 107.12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-103",
+      "userId": "family",
+      "date": "2026-09-29",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 58.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-118",
+      "userId": "family",
+      "date": "2026-09-28",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 97.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-97",
+      "userId": "family",
+      "date": "2026-09-25",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 140.38,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-127",
+      "userId": "family",
+      "date": "2026-09-24",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 80.04,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-125",
+      "userId": "family",
+      "date": "2026-09-23",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 62.38,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-128",
+      "userId": "family",
+      "date": "2026-09-22",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 89.78,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-126",
+      "userId": "family",
+      "date": "2026-09-20",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 78.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-122",
+      "userId": "family",
+      "date": "2026-09-17",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 40.54,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-102",
+      "userId": "family",
+      "date": "2026-09-16",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 131.7,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-104",
+      "userId": "family",
+      "date": "2026-09-15",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 158.02,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-108",
+      "userId": "family",
+      "date": "2026-09-15",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 102.64,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-116",
+      "userId": "family",
+      "date": "2026-09-14",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 36.63,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-106",
+      "userId": "family",
+      "date": "2026-09-13",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 35.63,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-123",
+      "userId": "family",
+      "date": "2026-09-13",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 82.69,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-112",
+      "userId": "family",
+      "date": "2026-09-12",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 173.84,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-117",
+      "userId": "family",
+      "date": "2026-09-12",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 130.29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-124",
+      "userId": "family",
+      "date": "2026-09-12",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 153.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-114",
+      "userId": "family",
+      "date": "2026-09-11",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 72.02,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-105",
+      "userId": "family",
+      "date": "2026-09-09",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 49.4,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-101",
+      "userId": "family",
+      "date": "2026-09-08",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 185.72,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-107",
+      "userId": "family",
+      "date": "2026-09-08",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 63.04,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-111",
+      "userId": "family",
+      "date": "2026-09-07",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 159.4,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-99",
+      "userId": "family",
+      "date": "2026-09-07",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 175.47,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-113",
+      "userId": "family",
+      "date": "2026-09-06",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 32.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-129",
+      "userId": "family",
+      "date": "2026-09-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 18.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-130",
+      "userId": "family",
+      "date": "2026-09-05",
+      "merchant": "Family Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 12.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-109",
+      "userId": "family",
+      "date": "2026-09-04",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 48.66,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-110",
+      "userId": "family",
+      "date": "2026-09-04",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 57.92,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-115",
+      "userId": "family",
+      "date": "2026-09-04",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 169.04,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-121",
+      "userId": "family",
+      "date": "2026-09-03",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 55.82,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-98",
+      "userId": "family",
+      "date": "2026-09-03",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 33.57,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-119",
+      "userId": "family",
+      "date": "2026-09-02",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 49.35,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-68",
+      "userId": "family",
+      "date": "2026-08-31",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 53.72,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-85",
+      "userId": "family",
+      "date": "2026-08-31",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 109.28,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-84",
+      "userId": "family",
+      "date": "2026-08-28",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 144.12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-75",
+      "userId": "family",
+      "date": "2026-08-27",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 128.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-77",
+      "userId": "family",
+      "date": "2026-08-27",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 112.13,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-89",
+      "userId": "family",
+      "date": "2026-08-27",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 144.12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-87",
+      "userId": "family",
+      "date": "2026-08-26",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 138.25,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-79",
+      "userId": "family",
+      "date": "2026-08-25",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 154.25,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-81",
+      "userId": "family",
+      "date": "2026-08-24",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 174.38,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-73",
+      "userId": "family",
+      "date": "2026-08-22",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 20.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-92",
+      "userId": "family",
+      "date": "2026-08-22",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 67.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-86",
+      "userId": "family",
+      "date": "2026-08-21",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 54.33,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-72",
+      "userId": "family",
+      "date": "2026-08-20",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 35.18,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-93",
+      "userId": "family",
+      "date": "2026-08-20",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 39.83,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-69",
+      "userId": "family",
+      "date": "2026-08-19",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 72.15,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-80",
+      "userId": "family",
+      "date": "2026-08-17",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 59.53,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-78",
+      "userId": "family",
+      "date": "2026-08-16",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 68.6,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-82",
+      "userId": "family",
+      "date": "2026-08-14",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 135.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-76",
+      "userId": "family",
+      "date": "2026-08-12",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 37.84,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-88",
+      "userId": "family",
+      "date": "2026-08-09",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 110.42,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-94",
+      "userId": "family",
+      "date": "2026-08-08",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 55.24,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-70",
+      "userId": "family",
+      "date": "2026-08-07",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 51.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-71",
+      "userId": "family",
+      "date": "2026-08-06",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 39.22,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-74",
+      "userId": "family",
+      "date": "2026-08-06",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 36.19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-83",
+      "userId": "family",
+      "date": "2026-08-06",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 91.63,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-91",
+      "userId": "family",
+      "date": "2026-08-06",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 129.39,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-95",
+      "userId": "family",
+      "date": "2026-08-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 18.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-96",
+      "userId": "family",
+      "date": "2026-08-05",
+      "merchant": "Family Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 12.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-90",
+      "userId": "family",
+      "date": "2026-08-02",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 40.52,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-67",
+      "userId": "family",
+      "date": "2026-08-01",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 52.08,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-46",
+      "userId": "family",
+      "date": "2026-07-31",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 59.62,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-39",
+      "userId": "family",
+      "date": "2026-07-29",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 141.62,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-44",
+      "userId": "family",
+      "date": "2026-07-28",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 55.49,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-38",
+      "userId": "family",
+      "date": "2026-07-27",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 124.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-41",
+      "userId": "family",
+      "date": "2026-07-26",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 111.05,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-47",
+      "userId": "family",
+      "date": "2026-07-26",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 31.21,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-48",
+      "userId": "family",
+      "date": "2026-07-25",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 50.58,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-55",
+      "userId": "family",
+      "date": "2026-07-25",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 137.35,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-58",
+      "userId": "family",
+      "date": "2026-07-25",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 35.53,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-60",
+      "userId": "family",
+      "date": "2026-07-23",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 69.19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-35",
+      "userId": "family",
+      "date": "2026-07-19",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 55.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-42",
+      "userId": "family",
+      "date": "2026-07-19",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 98.11,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-43",
+      "userId": "family",
+      "date": "2026-07-19",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 144.26,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-53",
+      "userId": "family",
+      "date": "2026-07-19",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 52.81,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-62",
+      "userId": "family",
+      "date": "2026-07-18",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 99.94,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-37",
+      "userId": "family",
+      "date": "2026-07-17",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 50.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-61",
+      "userId": "family",
+      "date": "2026-07-17",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 57.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-63",
+      "userId": "family",
+      "date": "2026-07-17",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 50.94,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-45",
+      "userId": "family",
+      "date": "2026-07-15",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 52.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-51",
+      "userId": "family",
+      "date": "2026-07-15",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 60.22,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-36",
+      "userId": "family",
+      "date": "2026-07-14",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 75.94,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-40",
+      "userId": "family",
+      "date": "2026-07-14",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 70.59,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-59",
+      "userId": "family",
+      "date": "2026-07-12",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 189.59,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-57",
+      "userId": "family",
+      "date": "2026-07-11",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 44.55,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-56",
+      "userId": "family",
+      "date": "2026-07-10",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 97.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-49",
+      "userId": "family",
+      "date": "2026-07-09",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 131.4,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-52",
+      "userId": "family",
+      "date": "2026-07-06",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 155.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-64",
+      "userId": "family",
+      "date": "2026-07-06",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 79.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-34",
+      "userId": "family",
+      "date": "2026-07-05",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 140.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-65",
+      "userId": "family",
+      "date": "2026-07-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 18.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-66",
+      "userId": "family",
+      "date": "2026-07-05",
+      "merchant": "Family Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 12.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-50",
+      "userId": "family",
+      "date": "2026-07-03",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 125.42,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-54",
+      "userId": "family",
+      "date": "2026-07-01",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 37.32,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-26",
+      "userId": "family",
+      "date": "2026-06-30",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 47.08,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-28",
+      "userId": "family",
+      "date": "2026-06-30",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 32.01,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-29",
+      "userId": "family",
+      "date": "2026-06-28",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 168.49,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-31",
+      "userId": "family",
+      "date": "2026-06-28",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 91.28,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-24",
+      "userId": "family",
+      "date": "2026-06-26",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 99.95,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-25",
+      "userId": "family",
+      "date": "2026-06-26",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 76.82,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-23",
+      "userId": "family",
+      "date": "2026-06-25",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 72.7,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-30",
+      "userId": "family",
+      "date": "2026-06-25",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 63.3,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-22",
+      "userId": "family",
+      "date": "2026-06-24",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 177.65,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-6",
+      "userId": "family",
+      "date": "2026-06-24",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 67.16,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-16",
+      "userId": "family",
+      "date": "2026-06-22",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 98.87,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-18",
+      "userId": "family",
+      "date": "2026-06-21",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 112.63,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-12",
+      "userId": "family",
+      "date": "2026-06-20",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 28.36,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-4",
+      "userId": "family",
+      "date": "2026-06-20",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 51.56,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-19",
+      "userId": "family",
+      "date": "2026-06-19",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 43.96,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-5",
+      "userId": "family",
+      "date": "2026-06-18",
+      "merchant": "Family Kitchen",
+      "description": "Dinner and food",
+      "amount": 32.34,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-9",
+      "userId": "family",
+      "date": "2026-06-18",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 152.07,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-20",
+      "userId": "family",
+      "date": "2026-06-16",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 74.82,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-0",
+      "userId": "family",
+      "date": "2026-06-14",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 76.79,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-11",
+      "userId": "family",
+      "date": "2026-06-14",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 71.77,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-14",
+      "userId": "family",
+      "date": "2026-06-14",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 58.32,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-2",
+      "userId": "family",
+      "date": "2026-06-13",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 89.2,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-17",
+      "userId": "family",
+      "date": "2026-06-10",
+      "merchant": "Fresh Market",
+      "description": "Groceries and household produce",
+      "amount": 79.52,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-21",
+      "userId": "family",
+      "date": "2026-06-10",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 22.64,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-13",
+      "userId": "family",
+      "date": "2026-06-09",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 106.12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-27",
+      "userId": "family",
+      "date": "2026-06-09",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 87.76,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-3",
+      "userId": "family",
+      "date": "2026-06-08",
+      "merchant": "Little League",
+      "description": "Kids activities",
+      "amount": 45.6,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-15",
+      "userId": "family",
+      "date": "2026-06-07",
+      "merchant": "Metro Transit",
+      "description": "Transport passes",
+      "amount": 25.91,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-10",
+      "userId": "family",
+      "date": "2026-06-06",
+      "merchant": "Fresh Market",
+      "description": "Weekly groceries",
+      "amount": 173.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-32",
+      "userId": "family",
+      "date": "2026-06-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 18.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-33",
+      "userId": "family",
+      "date": "2026-06-05",
+      "merchant": "Family Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 12.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-8",
+      "userId": "family",
+      "date": "2026-06-05",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 69.93,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-7",
+      "userId": "family",
+      "date": "2026-06-04",
+      "merchant": "City Water",
+      "description": "Utilities water bill",
+      "amount": 65.85,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "family-tx-1",
+      "userId": "family",
+      "date": "2026-06-03",
+      "merchant": "Bright Energy",
+      "description": "Utilities electricity bill",
+      "amount": 179.05,
+      "currency": "USD",
+      "source": "synthetic"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "family-sub-0",
+      "userId": "family",
+      "merchant": "Streambox",
+      "monthlyPrice": 18.99,
+      "lastUsedDate": "2026-11-02",
+      "status": "active"
+    },
+    {
+      "id": "family-sub-1",
+      "userId": "family",
+      "merchant": "Family Cloud",
+      "monthlyPrice": 12.99,
+      "lastUsedDate": "2026-10-26",
+      "status": "active"
+    }
+  ]
+}

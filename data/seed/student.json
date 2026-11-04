@@ -1,0 +1,2045 @@
+{
+  "persona": {
+    "id": "student",
+    "name": "Student",
+    "firstName": "Alex",
+    "initials": "AL",
+    "description": "Campus life & little everyday things",
+    "monthlyBudget": 850,
+    "budgets": {
+      "groceries": 150,
+      "food & coffee": 180,
+      "transport": 80,
+      "subscriptions": 65,
+      "shopping": 150,
+      "utilities": 100,
+      "other": 125
+    }
+  },
+  "transactions": [
+    {
+      "id": "student-tx-171",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.17,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-172",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 3.07,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-176",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 12.55,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-177",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 7,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-183",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 6.19,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-187",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 5.32,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-190",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 7.71,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-192",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 7.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-195",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Soundwave Music",
+      "description": "Monthly subscription renewal",
+      "amount": 10.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-196",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 15.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-197",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Study Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 9.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-198",
+      "userId": "student",
+      "date": "2026-11-03",
+      "merchant": "Fit Club",
+      "description": "Monthly subscription renewal",
+      "amount": 24.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-166",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 27.36,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-168",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 15.65,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-170",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 19.63,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-173",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 8.86,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-178",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 12.57,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-181",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 5.11,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-182",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 6.69,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-186",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 6.29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-188",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 5.28,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-189",
+      "userId": "student",
+      "date": "2026-11-02",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 7.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-167",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 13.01,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-169",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 17.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-174",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 19.88,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-175",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 5.34,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-179",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 3.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-180",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.48,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-184",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 5.01,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-185",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 6.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-191",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 12.75,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-193",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 14.51,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-194",
+      "userId": "student",
+      "date": "2026-11-01",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 13.3,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-161",
+      "userId": "student",
+      "date": "2026-10-31",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 33.12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-151",
+      "userId": "student",
+      "date": "2026-10-29",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 4.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-158",
+      "userId": "student",
+      "date": "2026-10-29",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 9.35,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-136",
+      "userId": "student",
+      "date": "2026-10-28",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 8.3,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-141",
+      "userId": "student",
+      "date": "2026-10-28",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 24.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-155",
+      "userId": "student",
+      "date": "2026-10-27",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 7.79,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-146",
+      "userId": "student",
+      "date": "2026-10-26",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 39.29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-156",
+      "userId": "student",
+      "date": "2026-10-25",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 25.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-150",
+      "userId": "student",
+      "date": "2026-10-23",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.42,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-135",
+      "userId": "student",
+      "date": "2026-10-19",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 13.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-140",
+      "userId": "student",
+      "date": "2026-10-19",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 12.07,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-144",
+      "userId": "student",
+      "date": "2026-10-18",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 16.62,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-142",
+      "userId": "student",
+      "date": "2026-10-17",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 9.18,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-149",
+      "userId": "student",
+      "date": "2026-10-15",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 19.7,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-148",
+      "userId": "student",
+      "date": "2026-10-13",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 4.3,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-160",
+      "userId": "student",
+      "date": "2026-10-13",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 6.67,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-152",
+      "userId": "student",
+      "date": "2026-10-09",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 34.23,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-145",
+      "userId": "student",
+      "date": "2026-10-07",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 30.77,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-138",
+      "userId": "student",
+      "date": "2026-10-05",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 19.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-147",
+      "userId": "student",
+      "date": "2026-10-05",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 19.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-154",
+      "userId": "student",
+      "date": "2026-10-05",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-162",
+      "userId": "student",
+      "date": "2026-10-05",
+      "merchant": "Soundwave Music",
+      "description": "Monthly subscription renewal",
+      "amount": 10.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-163",
+      "userId": "student",
+      "date": "2026-10-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 15.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-164",
+      "userId": "student",
+      "date": "2026-10-05",
+      "merchant": "Study Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 9.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-165",
+      "userId": "student",
+      "date": "2026-10-05",
+      "merchant": "Fit Club",
+      "description": "Monthly subscription renewal",
+      "amount": 24.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-134",
+      "userId": "student",
+      "date": "2026-10-04",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 7.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-143",
+      "userId": "student",
+      "date": "2026-10-03",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 36.02,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-137",
+      "userId": "student",
+      "date": "2026-10-02",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 9.51,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-157",
+      "userId": "student",
+      "date": "2026-10-02",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 38.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-159",
+      "userId": "student",
+      "date": "2026-10-02",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 6.48,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-139",
+      "userId": "student",
+      "date": "2026-10-01",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.33,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-153",
+      "userId": "student",
+      "date": "2026-10-01",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 12.59,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-111",
+      "userId": "student",
+      "date": "2026-09-30",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 22.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-129",
+      "userId": "student",
+      "date": "2026-09-30",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 24.98,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-126",
+      "userId": "student",
+      "date": "2026-09-28",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 44.45,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-105",
+      "userId": "student",
+      "date": "2026-09-27",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 6.24,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-125",
+      "userId": "student",
+      "date": "2026-09-27",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 4.72,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-120",
+      "userId": "student",
+      "date": "2026-09-25",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 5.36,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-122",
+      "userId": "student",
+      "date": "2026-09-25",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 19.82,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-106",
+      "userId": "student",
+      "date": "2026-09-24",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 9.38,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-127",
+      "userId": "student",
+      "date": "2026-09-24",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 7.92,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-107",
+      "userId": "student",
+      "date": "2026-09-21",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 7.21,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-118",
+      "userId": "student",
+      "date": "2026-09-20",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 6.03,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-124",
+      "userId": "student",
+      "date": "2026-09-20",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 5.27,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-110",
+      "userId": "student",
+      "date": "2026-09-17",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 10.94,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-128",
+      "userId": "student",
+      "date": "2026-09-17",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 20.2,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-102",
+      "userId": "student",
+      "date": "2026-09-16",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 32.53,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-103",
+      "userId": "student",
+      "date": "2026-09-16",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 19.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-119",
+      "userId": "student",
+      "date": "2026-09-16",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 9.73,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-108",
+      "userId": "student",
+      "date": "2026-09-15",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 5.9,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-109",
+      "userId": "student",
+      "date": "2026-09-13",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 8.78,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-113",
+      "userId": "student",
+      "date": "2026-09-12",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 36.78,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-112",
+      "userId": "student",
+      "date": "2026-09-08",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 20.32,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-116",
+      "userId": "student",
+      "date": "2026-09-07",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 7.23,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-117",
+      "userId": "student",
+      "date": "2026-09-06",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 3.13,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-104",
+      "userId": "student",
+      "date": "2026-09-05",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 6.27,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-130",
+      "userId": "student",
+      "date": "2026-09-05",
+      "merchant": "Soundwave Music",
+      "description": "Monthly subscription renewal",
+      "amount": 10.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-131",
+      "userId": "student",
+      "date": "2026-09-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 15.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-132",
+      "userId": "student",
+      "date": "2026-09-05",
+      "merchant": "Study Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 9.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-133",
+      "userId": "student",
+      "date": "2026-09-05",
+      "merchant": "Fit Club",
+      "description": "Monthly subscription renewal",
+      "amount": 24.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-114",
+      "userId": "student",
+      "date": "2026-09-04",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 4.45,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-121",
+      "userId": "student",
+      "date": "2026-09-04",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 11.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-115",
+      "userId": "student",
+      "date": "2026-09-03",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 33.2,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-123",
+      "userId": "student",
+      "date": "2026-09-03",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-88",
+      "userId": "student",
+      "date": "2026-08-28",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 2.26,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-70",
+      "userId": "student",
+      "date": "2026-08-25",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 18.25,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-80",
+      "userId": "student",
+      "date": "2026-08-25",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 17.27,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-91",
+      "userId": "student",
+      "date": "2026-08-21",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 26.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-87",
+      "userId": "student",
+      "date": "2026-08-20",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 14.13,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-96",
+      "userId": "student",
+      "date": "2026-08-20",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 6.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-89",
+      "userId": "student",
+      "date": "2026-08-17",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 41.33,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-69",
+      "userId": "student",
+      "date": "2026-08-16",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 32.28,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-73",
+      "userId": "student",
+      "date": "2026-08-15",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 2.49,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-72",
+      "userId": "student",
+      "date": "2026-08-14",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 7.56,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-85",
+      "userId": "student",
+      "date": "2026-08-13",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 7.39,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-68",
+      "userId": "student",
+      "date": "2026-08-11",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 34.92,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-94",
+      "userId": "student",
+      "date": "2026-08-11",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 26.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-84",
+      "userId": "student",
+      "date": "2026-08-09",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 6.85,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-97",
+      "userId": "student",
+      "date": "2026-08-09",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.43,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-74",
+      "userId": "student",
+      "date": "2026-08-07",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 16.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-79",
+      "userId": "student",
+      "date": "2026-08-07",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 7.4,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-95",
+      "userId": "student",
+      "date": "2026-08-07",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 5.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-82",
+      "userId": "student",
+      "date": "2026-08-06",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 11.45,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-100",
+      "userId": "student",
+      "date": "2026-08-05",
+      "merchant": "Study Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 9.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-101",
+      "userId": "student",
+      "date": "2026-08-05",
+      "merchant": "Fit Club",
+      "description": "Monthly subscription renewal",
+      "amount": 24.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-90",
+      "userId": "student",
+      "date": "2026-08-05",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 5.7,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-98",
+      "userId": "student",
+      "date": "2026-08-05",
+      "merchant": "Soundwave Music",
+      "description": "Monthly subscription renewal",
+      "amount": 10.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-99",
+      "userId": "student",
+      "date": "2026-08-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 15.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-76",
+      "userId": "student",
+      "date": "2026-08-04",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 12.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-83",
+      "userId": "student",
+      "date": "2026-08-03",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 18.76,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-86",
+      "userId": "student",
+      "date": "2026-08-03",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 28.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-77",
+      "userId": "student",
+      "date": "2026-08-02",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 16.12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-93",
+      "userId": "student",
+      "date": "2026-08-02",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 40.77,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-71",
+      "userId": "student",
+      "date": "2026-08-01",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 7.84,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-75",
+      "userId": "student",
+      "date": "2026-08-01",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 21.63,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-78",
+      "userId": "student",
+      "date": "2026-08-01",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 14.86,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-81",
+      "userId": "student",
+      "date": "2026-08-01",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 6.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-92",
+      "userId": "student",
+      "date": "2026-08-01",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 4.64,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-38",
+      "userId": "student",
+      "date": "2026-07-31",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 17.33,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-43",
+      "userId": "student",
+      "date": "2026-07-31",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.82,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-57",
+      "userId": "student",
+      "date": "2026-07-31",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 11.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-42",
+      "userId": "student",
+      "date": "2026-07-30",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 12.04,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-36",
+      "userId": "student",
+      "date": "2026-07-28",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 26.51,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-39",
+      "userId": "student",
+      "date": "2026-07-28",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 17.82,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-54",
+      "userId": "student",
+      "date": "2026-07-28",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 34.01,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-56",
+      "userId": "student",
+      "date": "2026-07-28",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 7.77,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-59",
+      "userId": "student",
+      "date": "2026-07-28",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 15.51,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-44",
+      "userId": "student",
+      "date": "2026-07-27",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 4.04,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-46",
+      "userId": "student",
+      "date": "2026-07-23",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 6.23,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-48",
+      "userId": "student",
+      "date": "2026-07-20",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 44.64,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-37",
+      "userId": "student",
+      "date": "2026-07-18",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 31.23,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-62",
+      "userId": "student",
+      "date": "2026-07-18",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 7.44,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-49",
+      "userId": "student",
+      "date": "2026-07-16",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 18.61,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-55",
+      "userId": "student",
+      "date": "2026-07-16",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 5.55,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-58",
+      "userId": "student",
+      "date": "2026-07-16",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 11.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-45",
+      "userId": "student",
+      "date": "2026-07-15",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 9.42,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-51",
+      "userId": "student",
+      "date": "2026-07-15",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 6.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-41",
+      "userId": "student",
+      "date": "2026-07-14",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 7.62,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-40",
+      "userId": "student",
+      "date": "2026-07-12",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 8.75,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-52",
+      "userId": "student",
+      "date": "2026-07-08",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 5.11,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-50",
+      "userId": "student",
+      "date": "2026-07-07",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.97,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-60",
+      "userId": "student",
+      "date": "2026-07-07",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.26,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-47",
+      "userId": "student",
+      "date": "2026-07-06",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.35,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-61",
+      "userId": "student",
+      "date": "2026-07-05",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.64,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-64",
+      "userId": "student",
+      "date": "2026-07-05",
+      "merchant": "Soundwave Music",
+      "description": "Monthly subscription renewal",
+      "amount": 10.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-65",
+      "userId": "student",
+      "date": "2026-07-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 15.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-66",
+      "userId": "student",
+      "date": "2026-07-05",
+      "merchant": "Study Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 9.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-67",
+      "userId": "student",
+      "date": "2026-07-05",
+      "merchant": "Fit Club",
+      "description": "Monthly subscription renewal",
+      "amount": 24.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-53",
+      "userId": "student",
+      "date": "2026-07-04",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 10.65,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-63",
+      "userId": "student",
+      "date": "2026-07-03",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 8.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-13",
+      "userId": "student",
+      "date": "2026-06-30",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 4.42,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-14",
+      "userId": "student",
+      "date": "2026-06-30",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 5.74,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-16",
+      "userId": "student",
+      "date": "2026-06-29",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 4.06,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-18",
+      "userId": "student",
+      "date": "2026-06-29",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 19.61,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-27",
+      "userId": "student",
+      "date": "2026-06-29",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 4.79,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-0",
+      "userId": "student",
+      "date": "2026-06-28",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 11.18,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-17",
+      "userId": "student",
+      "date": "2026-06-28",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 6.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-6",
+      "userId": "student",
+      "date": "2026-06-28",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 8.49,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-21",
+      "userId": "student",
+      "date": "2026-06-27",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 19.93,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-2",
+      "userId": "student",
+      "date": "2026-06-26",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 9.03,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-20",
+      "userId": "student",
+      "date": "2026-06-26",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 11.87,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-19",
+      "userId": "student",
+      "date": "2026-06-23",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 11.71,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-23",
+      "userId": "student",
+      "date": "2026-06-23",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 32.61,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-11",
+      "userId": "student",
+      "date": "2026-06-22",
+      "merchant": "Campus Coffee",
+      "description": "Afternoon latte",
+      "amount": 5.7,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-15",
+      "userId": "student",
+      "date": "2026-06-20",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 35.57,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-28",
+      "userId": "student",
+      "date": "2026-06-20",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 14.68,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-29",
+      "userId": "student",
+      "date": "2026-06-20",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 14.15,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-4",
+      "userId": "student",
+      "date": "2026-06-20",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 4.12,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-3",
+      "userId": "student",
+      "date": "2026-06-19",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and breakfast",
+      "amount": 5.22,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-1",
+      "userId": "student",
+      "date": "2026-06-18",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 2.17,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-12",
+      "userId": "student",
+      "date": "2026-06-17",
+      "merchant": "Campus Coffee",
+      "description": "Coffee and snack",
+      "amount": 9.37,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-31",
+      "userId": "student",
+      "date": "2026-06-17",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 3.14,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-5",
+      "userId": "student",
+      "date": "2026-06-17",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 5.13,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-10",
+      "userId": "student",
+      "date": "2026-06-14",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 6.92,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-8",
+      "userId": "student",
+      "date": "2026-06-14",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 13.1,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-26",
+      "userId": "student",
+      "date": "2026-06-13",
+      "merchant": "Noodle House",
+      "description": "Lunch and takeaway",
+      "amount": 12.31,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-7",
+      "userId": "student",
+      "date": "2026-06-13",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 15.29,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-9",
+      "userId": "student",
+      "date": "2026-06-12",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 24.89,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-22",
+      "userId": "student",
+      "date": "2026-06-11",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 19.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-30",
+      "userId": "student",
+      "date": "2026-06-06",
+      "merchant": "Fresh Market",
+      "description": "Groceries and produce",
+      "amount": 20.24,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-32",
+      "userId": "student",
+      "date": "2026-06-05",
+      "merchant": "Soundwave Music",
+      "description": "Monthly subscription renewal",
+      "amount": 10.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-33",
+      "userId": "student",
+      "date": "2026-06-05",
+      "merchant": "Streambox",
+      "description": "Monthly subscription renewal",
+      "amount": 15.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-34",
+      "userId": "student",
+      "date": "2026-06-05",
+      "merchant": "Study Cloud",
+      "description": "Monthly subscription renewal",
+      "amount": 9.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-35",
+      "userId": "student",
+      "date": "2026-06-05",
+      "merchant": "Fit Club",
+      "description": "Monthly subscription renewal",
+      "amount": 24.99,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-24",
+      "userId": "student",
+      "date": "2026-06-02",
+      "merchant": "Book Nook",
+      "description": "Shopping for books",
+      "amount": 20.09,
+      "currency": "USD",
+      "source": "synthetic"
+    },
+    {
+      "id": "student-tx-25",
+      "userId": "student",
+      "date": "2026-06-02",
+      "merchant": "Metro Transit",
+      "description": "Bus fare and transport",
+      "amount": 3.56,
+      "currency": "USD",
+      "source": "synthetic"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "student-sub-0",
+      "userId": "student",
+      "merchant": "Soundwave Music",
+      "monthlyPrice": 10.99,
+      "lastUsedDate": "2026-11-01",
+      "status": "active"
+    },
+    {
+      "id": "student-sub-1",
+      "userId": "student",
+      "merchant": "Streambox",
+      "monthlyPrice": 15.99,
+      "lastUsedDate": "2026-08-28",
+      "status": "active"
+    },
+    {
+      "id": "student-sub-2",
+      "userId": "student",
+      "merchant": "Study Cloud",
+      "monthlyPrice": 9.99,
+      "lastUsedDate": "2026-10-30",
+      "status": "active"
+    },
+    {
+      "id": "student-sub-3",
+      "userId": "student",
+      "merchant": "Fit Club",
+      "monthlyPrice": 24.99,
+      "lastUsedDate": "2026-08-14",
+      "status": "active"
+    }
+  ]
+}
