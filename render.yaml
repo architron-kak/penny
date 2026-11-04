@@ -2,22 +2,20 @@ services:
   - type: web
     name: penny
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeployTrigger: "off"
-    disk:
-      name: pennybot-data
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
       - key: NODE_VERSION
         value: 22.23.4
-      - key: DATA_DIR
-        value: /var/data/pennybot
+      - key: DATABASE_URL
+        sync: false
+      - key: REQUIRE_REMOTE_DATABASE
+        value: "true"
       - key: PAYPAL_CLIENT_ID
         sync: false
       - key: PAYPAL_CLIENT_SECRET

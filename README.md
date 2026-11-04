@@ -64,7 +64,7 @@ If you cancel at PayPal, no capture is requested. You may resume the prepared or
 flowchart TD
   UI[Next.js / React adaptive dashboard]
   API[Next.js Node route handlers]
-  JSON[(JSON database · persistent disk)]
+  JSON[(State document · local JSON or PostgreSQL)]
   Seed[Seeded synthetic persona history]
   Classifier[Batch classification + Zod validation]
   Rules[Deterministic fallback rules]
@@ -88,7 +88,7 @@ flowchart TD
   PP -->|Signature-verified completion webhook| API
 ```
 
-Next.js App Router, TypeScript, Tailwind CSS 4 with custom CSS, Framer Motion, AG Grid Community, Zod, and fetch-based PayPal REST integration. The JSON store uses atomic rename plus a filesystem lock for serialized writes across workers on one persistent disk. OAuth tokens are cached server-side until near expiration. Money is summed in integer cents.
+Next.js App Router, TypeScript, Tailwind CSS 4 with custom CSS, Framer Motion, AG Grid Community, Zod, and fetch-based PayPal REST integration. Local JSON storage uses atomic rename plus a filesystem lock. When `DATABASE_URL` is set, the same state document is stored as one PostgreSQL JSONB row. Writes use a single checked-out connection and `SELECT ... FOR UPDATE` inside an explicit transaction, so concurrent financial confirmations are serialized and failures roll back. The small connection pool uses verified TLS for remote databases. OAuth tokens are cached server-side until near expiration. Money is summed in integer cents.
 
 ### AI behavior
 
@@ -109,7 +109,7 @@ The home page shows a single conclusion per card. Clicking it sends its topic/en
 
 Planning mutations use `/api/planning/preview` to simulate a change on a clone, followed by `/api/planning` with `confirmed: true` and a stable request UUID. Repayments reduce both available balance and the corresponding remaining installments. Receiving a debt/refund increases balance only after explicit confirmation. Repeated request IDs and repeated refund-receipt confirmations cannot double-apply money. Local records never call PayPal.
 
-Old databases are lazily upgraded with an optional versioned `planning` store and stable synthetic demo-example IDs. Existing transactions are preserved, example records are appended once, and Sandbox order/capture history is retained. The original `pennybot.json` path and session cookie stay unchanged. A new seed has a few additional synthetic transactions/subscriptions beyond the original datasets.
+Old databases are lazily upgraded with an optional versioned `planning` store and stable synthetic demo-example IDs. Existing transactions are preserved, example records are appended once, and Sandbox order/capture history is retained. The original local `pennybot.json` path and session cookie stay unchanged; an optional one-time PostgreSQL import preserves the same state document. A new seed has a few additional synthetic transactions/subscriptions beyond the original datasets.
 
 Price alerts require matching USD merchant charges and equal monthly/annual periods, with plausible billing intervals. They show the increase and its annualized difference only; acknowledging a plan change does not alter billing. Expected refunds are bounded by the original purchase amount across all tracked refunds.
 
@@ -117,19 +117,21 @@ Voice support uses the browser's experimental [SpeechRecognition API](https://de
 
 ### Environment variables
 
-| Variable               | Default                                               | Purpose                                                                                             |
-| ---------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `APP_URL`              | local: `http://localhost:3000`; Render: automatic URL | Optional explicit origin for custom domains; used for return URLs, origin checks and HTTPS cookies. |
-| `RENDER_EXTERNAL_URL`  | Provided automatically by Render                      | Default public HTTPS origin on Render when `APP_URL` is unset.                                      |
-| `DATA_DIR`             | `./data/runtime`                                      | Writable durable JSON-store directory.                                                              |
-| `PAYPAL_CLIENT_ID`     | empty                                                 | Sandbox REST app client ID; required for payments.                                                  |
-| `PAYPAL_CLIENT_SECRET` | empty                                                 | Sandbox secret; server only.                                                                        |
-| `PAYPAL_WEBHOOK_ID`    | empty                                                 | ID of the webhook registered on the same Sandbox app.                                               |
-| `LLM_PROVIDER`         | `openai`                                              | `openai` or `compatible`; unrecognized providers fall back to rules.                                |
-| `LLM_API_KEY`          | empty                                                 | Optional; missing/failed key activates rules.                                                       |
-| `LLM_MODEL`            | `gpt-4.1-mini`                                        | Model identifier supported by your provider.                                                        |
-| `LLM_BASE_URL`         | empty                                                 | Required for `compatible`, e.g. an endpoint ending in `/v1`; keep credentials out of URLs.          |
-| `PORT`                 | `3000`                                                | Next.js serving port; Render sets this automatically.                                               |
+| Variable                  | Default                                               | Purpose                                                                                             |
+| ------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `APP_URL`                 | local: `http://localhost:3000`; Render: automatic URL | Optional explicit origin for custom domains; used for return URLs, origin checks and HTTPS cookies. |
+| `RENDER_EXTERNAL_URL`     | Provided automatically by Render                      | Default public HTTPS origin on Render when `APP_URL` is unset.                                      |
+| `DATA_DIR`                | `./data/runtime`                                      | Local JSON storage directory, used only when `DATABASE_URL` is empty.                               |
+| `DATABASE_URL`            | empty                                                 | Server-only PostgreSQL URL; required on Render Free. Keep it out of Git and browser code.           |
+| `REQUIRE_REMOTE_DATABASE` | `false` locally; `true` in Render Blueprint           | Refuse ephemeral JSON fallback if hosted PostgreSQL is missing.                                     |
+| `PAYPAL_CLIENT_ID`        | empty                                                 | Sandbox REST app client ID; required for payments.                                                  |
+| `PAYPAL_CLIENT_SECRET`    | empty                                                 | Sandbox secret; server only.                                                                        |
+| `PAYPAL_WEBHOOK_ID`       | empty                                                 | ID of the webhook registered on the same Sandbox app.                                               |
+| `LLM_PROVIDER`            | `openai`                                              | `openai` or `compatible`; unrecognized providers fall back to rules.                                |
+| `LLM_API_KEY`             | empty                                                 | Optional; missing/failed key activates rules.                                                       |
+| `LLM_MODEL`               | `gpt-4.1-mini`                                        | Model identifier supported by your provider.                                                        |
+| `LLM_BASE_URL`            | empty                                                 | Required for `compatible`, e.g. an endpoint ending in `/v1`; keep credentials out of URLs.          |
+| `PORT`                    | `3000`                                                | Next.js serving port; Render sets this automatically.                                               |
 
 ### API
 
@@ -169,7 +171,7 @@ The webhook does not capture on `CHECKOUT.ORDER.APPROVED`; only a user action in
 - The active navigation indicator moves between views. A thin native CSS reading-progress line is shown in browsers supporting scroll timelines; other browsers omit it. Pointer hover effects are limited to devices with a fine pointer.
 - Use the **Motion / Calm** button in the header to reduce animations. The preference persists locally, and the operating system's reduced-motion setting always takes precedence. This applies to reveals, charts, card layout, chat, notifications, CSS transitions, smooth chat scrolling, and AG Grid rows.
 - Polling pauses in hidden tabs and refreshes on return. Superseded home requests are aborted, unchanged snapshots are reused, and chart/card leaves are memoized. AG Grid remains loaded only when its tab is opened.
-- Existing `pennybot.json`, browser-session cookies, and persistent disk identifiers keep their original internal names to preserve saved demo data after renaming the project to Penny.
+- Existing local `pennybot.json` and browser-session cookies keep their original internal names to preserve saved demo data after renaming the project to Penny.
 
 See the implementation guidance for [Motion lazy loading](https://motion.dev/docs/react-lazy-motion) and [layout animation](https://motion.dev/docs/react-layout-animations).
 
@@ -181,26 +183,44 @@ npm run lint
 npm run typecheck
 npm run build
 npm start
+# Optional real database integration tests, against an isolated local database only:
+PG_TEST_URL=postgresql://YOUR_USER@127.0.0.1:55439/postgres npm test
 ```
 
 Tests additionally cover the $100 → $60 → $60 purchase/debt invariant, actual weekdays, partial repayments, refund receipt idempotency, billing-period comparison, income-delay shortfalls, legacy upgrades, confirmation-only mutations, and voice-style requests that must not create orders. Tests cover monetary aggregation, time boundaries, unused-subscription thresholds, deterministic seed data and ranking, persona differences, schema validation and retry fallback, and payment approval/amount/idempotency invariants. External PayPal and LLM calls in unit tests are mocked; a successful automated test is not a claim that a live Sandbox payment has been verified.
 
-## Render deployment
+## Free deployment: Render Free + Neon Free
 
-`render.yaml` configures a **Node Web Service** (not a Static Site) with a persistent 1 GB disk at `/var/data`. Connect Render to the private GitHub repository `architron-kak/penny`, then create a **Blueprint** using `render.yaml` on `main`.
+The default `render.yaml` uses a **free Node Web Service**, no paid disk, and an external PostgreSQL database. Render Free loses local file changes when it spins down/restarts, so hosted financial records must not use the JSON fallback. The Blueprint enforces this with `REQUIRE_REMOTE_DATABASE=true`; missing `DATABASE_URL` makes the health endpoint return 503.
 
-- Build: `npm ci --include=dev && npm run build`.
-- Start: `npm start`; Next.js uses Render's assigned `PORT`.
-- Health check: `/api/health`.
-- Storage: `DATA_DIR=/var/data/pennybot`; the first home request initializes the demo database. Later deploys reuse the persistent disk.
-- Public origin: leave `APP_URL` unset for the default Render domain. `lib/origin.ts` uses Render's automatic `RENDER_EXTERNAL_URL` for PayPal return/cancel URLs, mutation origin checks, and HTTPS session cookies. Set `APP_URL=https://your-custom-domain.example` only when using your own domain. Do not copy the localhost `APP_URL` from `.env.local` into Render.
-- Provide `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` as secret environment values during Blueprint creation. Their values are never committed.
-- Add `PAYPAL_WEBHOOK_ID` later, after registering the deployed HTTPS webhook URL in the same Sandbox app. `LLM_API_KEY` is optional and can also be added later; the app works with rules while it is absent.
-- Auto-deploys are disabled with `autoDeployTrigger: "off"`; trigger a manual deploy when ready.
+1. Create a **Free** Neon project/database. Choose a region near the Render service. Copy its PostgreSQL connection string, preferably the pooled URL, into Render's secret `DATABASE_URL` setting. Do not commit it or place it in `.env.example`.
+2. Connect Render to the private GitHub repository `architron-kak/penny`. Create a **Blueprint** from `render.yaml` on `main` and confirm the service plan is **Free**. The Blueprint does not create a paid database or disk.
+3. Provide `DATABASE_URL`, `PAYPAL_CLIENT_ID`, and `PAYPAL_CLIENT_SECRET` during setup. If testing without payments, empty PayPal credentials leave review/analysis available and payment approval disabled. `LLM_API_KEY` remains optional.
+4. Keep `APP_URL` unset for Render's default domain. The app uses `RENDER_EXTERNAL_URL` for origin checks, HTTPS cookies, and PayPal return/cancel URLs. For a custom domain, set `APP_URL` explicitly. Do not copy the localhost `APP_URL` from `.env.local` into Render.
+5. Build: `npm ci --include=dev && npm run build`. Start: `npm start`; Next.js uses Render's assigned `PORT`. Health: `/api/health` reports storage configuration without continuously waking the remote database.
+6. Open the home page. Its first database access creates `penny_state` and initializes the seeded document if absent. Future restarts/redeploys read the existing PostgreSQL document. Do not run `npm run seed -- --reset` on your hosted database.
+7. After deployment, add `PAYPAL_WEBHOOK_ID` only after registering the deployed HTTPS webhook in your Sandbox app. `LLM_API_KEY` can also be added later. Auto-deploys are disabled with `autoDeployTrigger: "off"`.
 
-The Blueprint selects the paid `starter` plan to support its persistent disk. Review Render's current service/storage pricing before provisioning; this file alone does not create a service or charge an account. This repository includes deployment configuration, not an already-provisioned hosted demo. The file store is intended for one service instance, not horizontal replicas or serverless deployments.
+The app creates the `penny_state` table, so the database role must be allowed to create tables in its selected schema. Remote connections use certificate-verified TLS. Only loopback connections to local development/test PostgreSQL may use plain TCP. This single-document store is intended for a small shared hackathon demo, not high-throughput multi-tenant banking.
 
-After deployment, check `/api/health`, load all three personas, try a planning action to verify origin checks, and confirm that a record survives a service restart. Complete one Sandbox buyer payment before claiming the hosted payment flow is verified.
+### Preserve existing local history
+
+If you want to bring existing local JSON history into PostgreSQL, import it **before opening the hosted home page**, into an empty dedicated destination:
+
+```bash
+# Set DATABASE_URL privately in .env.local or your shell first.
+npm run db:import
+# Or explicitly choose a source file:
+npm run db:import -- --from=./data/runtime/pennybot.json
+```
+
+The importer validates the state document, preserves order/capture history, does not modify the source JSON, and refuses to overwrite a database that already has a state row. With `DATABASE_URL` empty, normal local development continues to use JSON exactly as before.
+
+### Free-tier limitations
+
+Both services must remain on their **Free** plans and within their included quotas. This is deployment configuration, not a claim that accounts have been created or the app is already hosted. Render Free sleeps after inactivity, so the first request can be slow; its PostgreSQL free trial is time-limited and is not used by this configuration. Neon Free has storage/compute limits and may suspend compute when idle. Review [Render Free limitations](https://render.com/docs/free) and [Neon Free limits](https://neon.com/pricing) before launching. No automatic plan upgrade is configured by this repository.
+
+After deployment, check `/api/health`, try a confirmed planning action, restart the web service, and verify the record remains. Complete one Sandbox buyer payment before claiming the hosted payment flow is verified.
 
 ## Known limitations
 

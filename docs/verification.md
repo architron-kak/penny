@@ -43,3 +43,14 @@ Implemented the attached planning brief in the existing app. Verified using a se
 - Existing user runtime data was not reset for testing. The optional planning store upgrades lazily and retains previous Sandbox records.
 
 The new desktop screenshot shows the Student scenario after the confirmed cash repayment. `screenshots/planning-chat-mobile.png` shows the detailed mobile planning chat. Planning remains an explicitly labeled synthetic, seed-date snapshot with a fictional headphone catalog; it is not a live bank feed.
+
+## Free hosting storage — 4 November 2026
+
+Replaced the paid-disk Render default with Render Free plus an external PostgreSQL URL, intended for Neon Free. Local JSON remains the default when `DATABASE_URL` is absent. The hosted Blueprint requires PostgreSQL and does not provision any paid disk/database.
+
+- `npm run lint`, `npm run typecheck`, and `npm run build` pass.
+- `PG_TEST_URL=... npm test` against a temporary isolated local PostgreSQL: **49 tests passed**, including five real database integration tests. Ordinary `npm test` runs 44 tests and skips those five if `PG_TEST_URL` is unset.
+- Verified persistence after closing/reopening the application pool, rollback on callback failure without automatic callback retries, concurrent updates without lost writes, single-credit concurrent refund receipt, and legacy order/capture import with overwrite refusal.
+- Production HTTP check on PostgreSQL: `/api/health` reports `storage: postgres`; the home purchase limit starts at $100, a confirmed $40 debt changes it to $60, and $60 plus the debt record remains after restarting the Next.js server. The configured JSON data path was never created.
+- Remote URLs require certificate-verified TLS. Hosted mode without `DATABASE_URL` returns health 503 instead of using ephemeral JSON.
+- Tests used a private temporary PostgreSQL cluster and an isolated application port. Existing local JSON/history and external provider accounts were not changed. No live Neon/Render deployment or remote Neon TLS connection is claimed; those require connected accounts and an actual provisioned database.
