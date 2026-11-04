@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { appOrigin } from "./origin";
 import { HttpError } from "./http";
 import type { Suggestion } from "./types";
 const BASE = "https://api-m.sandbox.paypal.com";
@@ -92,7 +93,7 @@ const orderSchema = z.object({
 });
 export type PayPalOrder = z.infer<typeof orderSchema>;
 export async function createOrder(suggestion: Suggestion) {
-  const origin = new URL(process.env.APP_URL || "http://localhost:3000").origin;
+  const origin = appOrigin();
   const body = {
     intent: "CAPTURE",
     purchase_units: [

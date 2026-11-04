@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { createHash, randomBytes } from "node:crypto";
 import { HttpError } from "./http";
+import { appOrigin } from "./origin";
 const cookieName = "pennybot-session";
 export async function ensureSession() {
   const jar = await cookies();
@@ -8,7 +9,7 @@ export async function ensureSession() {
     jar.set(cookieName, randomBytes(32).toString("hex"), {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.APP_URL?.startsWith("https://") || false,
+      secure: appOrigin().startsWith("https://"),
       path: "/",
       maxAge: 86400 * 7,
     });

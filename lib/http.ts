@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { personaIds } from "./types";
+import { appOrigin } from "./origin";
 export class HttpError extends Error {
   constructor(
     public status: number,
@@ -17,7 +18,7 @@ export function requestUser(request: NextRequest) {
 }
 export function assertSameOrigin(request: NextRequest) {
   const origin = request.headers.get("origin");
-  const expected = new URL(process.env.APP_URL || "http://localhost:3000").origin;
+  const expected = appOrigin();
   if (origin !== expected || request.headers.get("sec-fetch-site") === "cross-site")
     throw new HttpError(403, "Please perform this action from the Penny app.");
 }

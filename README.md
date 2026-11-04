@@ -117,18 +117,19 @@ Voice support uses the browser's experimental [SpeechRecognition API](https://de
 
 ### Environment variables
 
-| Variable               | Default                 | Purpose                                                                                                  |
-| ---------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
-| `APP_URL`              | `http://localhost:3000` | Public app origin for return URLs and same-origin mutation checks. Use your exact HTTPS URL when hosted. |
-| `DATA_DIR`             | `./data/runtime`        | Writable durable JSON-store directory.                                                                   |
-| `PAYPAL_CLIENT_ID`     | empty                   | Sandbox REST app client ID; required for payments.                                                       |
-| `PAYPAL_CLIENT_SECRET` | empty                   | Sandbox secret; server only.                                                                             |
-| `PAYPAL_WEBHOOK_ID`    | empty                   | ID of the webhook registered on the same Sandbox app.                                                    |
-| `LLM_PROVIDER`         | `openai`                | `openai` or `compatible`; unrecognized providers fall back to rules.                                     |
-| `LLM_API_KEY`          | empty                   | Optional; missing/failed key activates rules.                                                            |
-| `LLM_MODEL`            | `gpt-4.1-mini`          | Model identifier supported by your provider.                                                             |
-| `LLM_BASE_URL`         | empty                   | Required for `compatible`, e.g. an endpoint ending in `/v1`; keep credentials out of URLs.               |
-| `PORT`                 | `3000`                  | Next.js serving port; Render sets this automatically.                                                    |
+| Variable               | Default                                               | Purpose                                                                                             |
+| ---------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `APP_URL`              | local: `http://localhost:3000`; Render: automatic URL | Optional explicit origin for custom domains; used for return URLs, origin checks and HTTPS cookies. |
+| `RENDER_EXTERNAL_URL`  | Provided automatically by Render                      | Default public HTTPS origin on Render when `APP_URL` is unset.                                      |
+| `DATA_DIR`             | `./data/runtime`                                      | Writable durable JSON-store directory.                                                              |
+| `PAYPAL_CLIENT_ID`     | empty                                                 | Sandbox REST app client ID; required for payments.                                                  |
+| `PAYPAL_CLIENT_SECRET` | empty                                                 | Sandbox secret; server only.                                                                        |
+| `PAYPAL_WEBHOOK_ID`    | empty                                                 | ID of the webhook registered on the same Sandbox app.                                               |
+| `LLM_PROVIDER`         | `openai`                                              | `openai` or `compatible`; unrecognized providers fall back to rules.                                |
+| `LLM_API_KEY`          | empty                                                 | Optional; missing/failed key activates rules.                                                       |
+| `LLM_MODEL`            | `gpt-4.1-mini`                                        | Model identifier supported by your provider.                                                        |
+| `LLM_BASE_URL`         | empty                                                 | Required for `compatible`, e.g. an endpoint ending in `/v1`; keep credentials out of URLs.          |
+| `PORT`                 | `3000`                                                | Next.js serving port; Render sets this automatically.                                               |
 
 ### API
 
@@ -186,9 +187,20 @@ Tests additionally cover the $100 → $60 → $60 purchase/debt invariant, actua
 
 ## Render deployment
 
-`render.yaml` configures a Node web service with a **persistent disk** at `/var/data`. Import this repository into Render as a Blueprint, supply the Sandbox secrets, and set `APP_URL` to the actual Render HTTPS URL. The optional LLM secret can stay empty. The first home request initializes data; subsequent deploys reuse the persistent disk.
+`render.yaml` configures a **Node Web Service** (not a Static Site) with a persistent 1 GB disk at `/var/data`. Connect Render to the private GitHub repository `architron-kak/penny`, then create a **Blueprint** using `render.yaml` on `main`.
 
-The Blueprint selects Render's `starter` plan to support its persistent disk; check Render's pricing before provisioning. This repository includes deployment configuration, not an already-provisioned hosted demo. Do not use an ephemeral filesystem for payment records. The file store is intended for one service instance, not horizontal replicas or serverless deployments.
+- Build: `npm ci --include=dev && npm run build`.
+- Start: `npm start`; Next.js uses Render's assigned `PORT`.
+- Health check: `/api/health`.
+- Storage: `DATA_DIR=/var/data/pennybot`; the first home request initializes the demo database. Later deploys reuse the persistent disk.
+- Public origin: leave `APP_URL` unset for the default Render domain. `lib/origin.ts` uses Render's automatic `RENDER_EXTERNAL_URL` for PayPal return/cancel URLs, mutation origin checks, and HTTPS session cookies. Set `APP_URL=https://your-custom-domain.example` only when using your own domain. Do not copy the localhost `APP_URL` from `.env.local` into Render.
+- Provide `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` as secret environment values during Blueprint creation. Their values are never committed.
+- Add `PAYPAL_WEBHOOK_ID` later, after registering the deployed HTTPS webhook URL in the same Sandbox app. `LLM_API_KEY` is optional and can also be added later; the app works with rules while it is absent.
+- Auto-deploys are disabled with `autoDeployTrigger: "off"`; trigger a manual deploy when ready.
+
+The Blueprint selects the paid `starter` plan to support its persistent disk. Review Render's current service/storage pricing before provisioning; this file alone does not create a service or charge an account. This repository includes deployment configuration, not an already-provisioned hosted demo. The file store is intended for one service instance, not horizontal replicas or serverless deployments.
+
+After deployment, check `/api/health`, load all three personas, try a planning action to verify origin checks, and confirm that a record survives a service restart. Complete one Sandbox buyer payment before claiming the hosted payment flow is verified.
 
 ## Known limitations
 
