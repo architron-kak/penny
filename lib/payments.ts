@@ -49,7 +49,7 @@ export function settleOrder(
       id: `capture-${capture.id}`,
       userId: order.userId,
       date: now.slice(0, 10),
-      merchant: "Penny Sandbox Merchant",
+      merchant: suggestion.habitMerchant || "Penny Sandbox Merchant",
       description: suggestion.title,
       amount: order.amount,
       currency: "USD",

@@ -7,6 +7,7 @@ import { POST as approve } from "../app/api/suggestions/[id]/approve/route";
 import { POST as capture } from "../app/api/paypal/capture/route";
 import { createOrder, getOrder, captureOrder } from "../lib/paypal";
 import { readDatabase, withDatabase } from "../lib/db";
+import { currentHabitSuggestions } from "../lib/adaptive-home";
 vi.mock("../lib/session", () => ({ sessionHash: async () => "browser-owner" }));
 vi.mock("../lib/paypal", () => ({
   createOrder: vi.fn(),
@@ -39,8 +40,7 @@ beforeEach(async () => {
   vi.mocked(createOrder).mockResolvedValue({
     id: remote.id,
     status: "CREATED",
-    approvalUrl:
-      "https://www.sandbox.paypal.com/checkoutnow?token=SANDBOXORDER123",
+    approvalUrl: "https://www.sandbox.paypal.com/checkoutnow?token=SANDBOXORDER123",
   });
   vi.mocked(getOrder).mockResolvedValue(remote);
   vi.mocked(captureOrder).mockResolvedValue({
@@ -77,6 +77,35 @@ async function approvedOrder() {
   );
 }
 describe("payment route consent and persistence", () => {
+  it("creates a habitual payment only after consent to its exact server-derived amount", async () => {
+    const db = await readDatabase();
+    const shortcut = currentHabitSuggestions(db, "student")[0];
+    expect(shortcut).toBeDefined();
+    expect(db.suggestions.some((s) => s.id === shortcut.id)).toBe(false);
+    const ctx = { params: Promise.resolve({ id: shortcut.id }) };
+    const body = { user: "student", approved: true, expectedAmount: shortcut.amount };
+    expect((await approve(post("/approve", { ...body, approved: false }), ctx)).status).toBe(400);
+    expect(
+      (await approve(post("/approve", { ...body, expectedAmount: shortcut.amount + 1 }), ctx))
+        .status,
+    ).toBe(409);
+    expect(createOrder).not.toHaveBeenCalled();
+    expect((await approve(post("/approve", body), ctx)).status).toBe(200);
+    expect(vi.mocked(createOrder).mock.calls[0][0].amount).toBe(shortcut.amount);
+    expect(captureOrder).not.toHaveBeenCalled();
+    expect((await approve(post("/approve", body), ctx)).status).toBe(200);
+    expect(createOrder).toHaveBeenCalledTimes(1);
+  });
+  it("refuses an invented daily shortcut without creating a PayPal order", async () => {
+    expect(
+      (
+        await approve(post("/approve", { user: "student", approved: true, expectedAmount: 5 }), {
+          params: Promise.resolve({ id: "habit-invented" }),
+        })
+      ).status,
+    ).toBe(409);
+    expect(createOrder).not.toHaveBeenCalled();
+  });
   it("refuses cross-origin mutations before calling PayPal", async () => {
     const response = await approve(
       post(
@@ -114,9 +143,7 @@ describe("payment route consent and persistence", () => {
   });
   it("rejects capture without the explicit return-page action", async () => {
     await approvedOrder();
-    const response = await capture(
-      post("/api/paypal/capture", { orderId: remote.id }),
-    );
+    const response = await capture(post("/api/paypal/capture", { orderId: remote.id }));
     expect(response.status).toBe(400);
     expect(captureOrder).not.toHaveBeenCalled();
   });
@@ -150,8 +177,6 @@ describe("payment route consent and persistence", () => {
     const db = await readDatabase();
     expect(db.orders[0].status).toBe("COMPLETED");
     expect(db.suggestions[0].status).toBe("paid");
-    expect(
-      db.transactions.filter((t) => t.source === "paypal-sandbox"),
-    ).toHaveLength(1);
+    expect(db.transactions.filter((t) => t.source === "paypal-sandbox")).toHaveLength(1);
   });
 });

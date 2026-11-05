@@ -54,3 +54,12 @@ Replaced the paid-disk Render default with Render Free plus an external PostgreS
 - Production HTTP check on PostgreSQL: `/api/health` reports `storage: postgres`; the home purchase limit starts at $100, a confirmed $40 debt changes it to $60, and $60 plus the debt record remains after restarting the Next.js server. The configured JSON data path was never created.
 - Remote URLs require certificate-verified TLS. Hosted mode without `DATABASE_URL` returns health 503 instead of using ephemeral JSON.
 - Tests used a private temporary PostgreSQL cluster and an isolated application port. Existing local JSON/history and external provider accounts were not changed. No live Neon/Render deployment or remote Neon TLS connection is claimed; those require connected accounts and an actual provisioned database.
+
+## Adaptive Home and daily shortcuts — 5 November 2026
+
+Adaptive Home now caps output at seven cards: two evidence-based frequent-purchase shortcuts, four essential information cards, and one context alert. Weekly preference order persists in existing JSON/PostgreSQL state and refreshes on the first visit after Monday 00:00 UTC. New patterns update immediately; absent evidence produces fewer shortcuts. Detection requires three distinct purchase days in a rolling seven-day history window and uses the most repeated charge, with latest-charge tie breaking.
+
+- `npm test`: 54 passed; five PostgreSQL integration tests skipped because no isolated `PG_TEST_URL` was supplied. New tests cover frequency evidence, amount selection, weekly rollover, new patterns, seven-card limits, daily order identity, server-side amount checking, consent and duplicate-order reuse.
+- `npm run lint` and `npm run typecheck` passed. Production build passed before browser verification; the final copy-only refinement was also rebuilt.
+- Chromium checked the production app with an isolated local JSON directory and LLM disabled: seven cards, two payment shortcuts, review dialog with zero approval/capture requests, savings preview without writes, confirmed savings persistence after reload, unchanged available balance, no browser errors and no horizontal overflow at 390 px.
+- Browser screenshots were kept in `/tmp/penny-adaptive-qa/desktop.png` and `/tmp/penny-adaptive-qa/mobile.png`. No PayPal payment was initiated. Current changes were tested locally and have not been published to Render.

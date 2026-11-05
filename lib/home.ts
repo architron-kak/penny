@@ -1,13 +1,11 @@
 import { planningView } from "./planning";
-import { planningCards } from "./planning-cards";
-import { money } from "./money";
+import { adaptiveHome } from "./adaptive-home";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { applyClassification, ensureClassified } from "./classify";
 import { readDatabase, withDatabase } from "./db";
 import { computeInsights } from "./insights";
 import { structuredLLM } from "./llm";
-import { rankCards } from "./ranking";
 import type { HomeData, PersonaId } from "./types";
 export async function getHome(userId: PersonaId): Promise<HomeData> {
   await ensureClassified(userId);
@@ -19,33 +17,10 @@ export async function getHome(userId: PersonaId): Promise<HomeData> {
   const insights = computeInsights(transactions, subscriptions, persona, new Date(db.seedDate));
   const suggestions = db.suggestions.filter((s) => s.userId === userId);
   const planning = planningView(db, userId);
-  const legacy = rankCards(insights, persona, suggestions)
-    .filter((c) => c.kind !== "SubscriptionAlert" || insights.unusedSubscriptions.length)
-    .filter((c) => c.kind !== "CategoryBudget" || c.priority >= 75)
-    .map((c) => ({
-      ...c,
-      headline:
-        c.kind === "SpendingSummary"
-          ? `${money(insights.currentSpend)} spent this month`
-          : c.kind === "CategoryBudget"
-            ? `${c.category} · ${money(Math.abs(insights.categoryRemaining[c.category!]))} ${insights.categoryRemaining[c.category!] < 0 ? "over budget" : "remaining"}`
-            : c.kind === "SubscriptionAlert"
-              ? `${insights.unusedSubscriptions.length} subscriptions unused for over 45 days`
-              : c.kind === "SuggestedPayment"
-                ? `Review ${money(suggestions.find((s) => s.id === c.suggestionId)!.amount)} Sandbox payment`
-                : `${c.merchant} · a recurring habit`,
-      topic: (c.kind === "SuggestedPayment"
-        ? "payment"
-        : c.kind === "SubscriptionAlert"
-          ? "subscriptions"
-          : c.kind === "MerchantShortcut"
-            ? "merchant"
-            : "overview") as import("./planning-types").ChatContext["topic"],
-      entityId: c.suggestionId || c.merchant,
-    }));
-  const cards = [...legacy, ...planningCards(planning)].sort(
-    (a, b) => b.priority - a.priority || a.id.localeCompare(b.id),
+  const adaptive = await withDatabase((current) =>
+    adaptiveHome(current, persona, transactions, insights, planning),
   );
+  const cards = adaptive.cards;
   const cacheKey = createHash("sha256")
     .update(
       JSON.stringify({
@@ -90,6 +65,7 @@ export async function getHome(userId: PersonaId): Promise<HomeData> {
     });
   }
   return {
+    adaptive: adaptive.metadata,
     planning,
     persona,
     personas: db.personas,

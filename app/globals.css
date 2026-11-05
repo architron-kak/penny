@@ -643,7 +643,7 @@ h1 {
 }
 .adaptive-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   align-items: stretch;
 }
@@ -3264,6 +3264,29 @@ html[data-motion="reduced"] .card-pay:hover svg {
 }
 
 /* Adaptive Home is a concise entry point; pennybot holds the full reasoning. */
+.habit-payment {
+  padding: 0 21px 18px;
+  display: grid;
+  gap: 8px;
+}
+.card-supporting {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 8px 0 0;
+}
+.habit-payment small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.adaptive-grid .habit-card {
+  border-color: #becfb8;
+  background: #f4f8ef;
+}
+.adaptive-grid .focus-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
 .adaptive-grid .focus-card {
   grid-column: auto;
   min-height: 195px;

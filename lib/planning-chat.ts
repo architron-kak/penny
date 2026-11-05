@@ -58,6 +58,15 @@ export function planningChat(
     context: { topic, entityId: context?.entityId },
     ...extra,
   });
+  if (context?.topic === "savings") {
+    const goal = p.savingsGoal;
+    return reply(
+      goal
+        ? `${goal.name}: ${money(goal.saved)} set aside toward ${money(goal.target)}. Available after essentials: ${money(view.purchase.limit)}. Money set aside should already be excluded from available balance; this record makes no transfer.`
+        : "Create your savings goal below. Record money already set aside separately from your available balance. Preview and confirm before saving; no money is transferred.",
+      "savings",
+    );
+  }
   if (context?.debtDraft && !/(?:i owe|owes me|я должен|должен мне)/i.test(text)) {
     const due = dateIn(text, p.asOf, p.nextIncome?.date);
     if (due) {

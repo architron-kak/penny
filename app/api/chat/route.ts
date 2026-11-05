@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
               .optional(),
             topic: z.enum([
               "purchase",
+              "savings",
               "debts",
               "refunds",
               "price",

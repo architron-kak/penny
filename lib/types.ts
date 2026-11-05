@@ -40,6 +40,7 @@ export type Persona = {
   budgets: Record<Category, number>;
 };
 export type Suggestion = {
+  habitMerchant?: string;
   id: string;
   userId: PersonaId;
   title: string;
@@ -71,6 +72,7 @@ export type Activity = {
   kind: "analysis" | "payment" | "user";
 };
 export type Database = {
+  adaptive?: Partial<Record<PersonaId, { week: string; merchants: string[] }>>;
   planning?: import("./planning-types").PlanningStore;
   version: 1;
   seedDate: string;
@@ -119,7 +121,9 @@ export type HomeCard = {
     | "SubscriptionAlert"
     | "SuggestedPayment"
     | "MerchantShortcut";
+  payment?: Suggestion;
   headline?: string;
+  supportingText?: string;
   topic?: import("./planning-types").ChatContext["topic"];
   entityId?: string;
   priority: number;
@@ -129,6 +133,7 @@ export type HomeCard = {
   suggestionId?: string;
 };
 export type HomeData = {
+  adaptive?: { reviewedWeek: string; nextReview: string; analysisDate: string };
   planning?: import("./planning-types").PlanningView;
   persona: Persona;
   personas: Persona[];

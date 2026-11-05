@@ -29,6 +29,11 @@ export async function structuredLLM<T>(
           },
           body: JSON.stringify({
             model: process.env.LLM_MODEL || "gpt-4.1-mini",
+            // Keep Gemini's reasoning within the interactive request timeout.
+            ...(provider === "compatible" &&
+            /^https:\/\/generativelanguage\.googleapis\.com\//.test(base)
+              ? { reasoning_effort: "low" }
+              : {}),
             messages: [
               {
                 role: "system",

@@ -2,6 +2,12 @@
 
 A little clarity for your money. **Penny** is an adaptive money workspace built for the PayPal AI Hackathon. **pennybot**, its AI assistant, helps you understand your habits and prepares payment suggestions. Your home rearranges around your spending, and payments only move forward when **you** approve them.
 
+Adaptive Home shows **at most seven cards**: up to two frequent-purchase shortcuts first, followed by debts, subscriptions, a savings jar and cash flow; the last card surfaces the most urgent income-delay, refund or price alert, or an available-budget insight. With insufficient history there are fewer cards rather than invented payment suggestions.
+
+A shortcut requires purchases on at least three distinct days in the latest seven-day history window. Its amount is the most repeated recent charge (ties use the latest charge), never the sum of past purchases. A 28-day history breaks frequency ties. The weekly preference order is reviewed on the first visit after Monday 00:00 UTC; new habits and urgent information update immediately. This uses persisted server state and needs no background worker. Synthetic history remains anchored to its data snapshot, shown separately from the calendar review date.
+
+**Pay $…** opens a review dialog. Only explicit approval creates a Sandbox order; the server checks the displayed amount, and a second approval for the same daily shortcut reuses its order. PayPal approval and explicit completion on return remain required. These are test payments to Penny's configured Sandbox merchant, not actual payments to the named shop. Savings goals are previewed and confirmed local records of funds already set aside; they do not move money and should be excluded from the available balance.
+
 ![Penny desktop dashboard](docs/screenshots/desktop.png)
 
 [Mobile preview](docs/screenshots/mobile.png)

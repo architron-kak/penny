@@ -18,16 +18,22 @@ export async function POST(request: NextRequest) {
       trial = structuredClone(original);
     applyPlanningCommand(trial, user, command, randomUUID());
     const after = planningView(trial, user);
-    const topic = command.type.startsWith("debt")
-      ? "debts"
-      : command.type.startsWith("refund")
-        ? "refunds"
-        : command.type === "profile"
-          ? "purchase"
-          : "delay";
+    const topic =
+      command.type === "savings-save"
+        ? "savings"
+        : command.type.startsWith("debt")
+          ? "debts"
+          : command.type.startsWith("refund")
+            ? "refunds"
+            : command.type === "profile"
+              ? "purchase"
+              : "delay";
     return {
       mode: "rules",
-      answer: `Preview only — nothing saved. ${command.type}: available balance ${money(before.profile.balance || 0)} → ${money(after.profile.balance || 0)}; headphone limit ${money(before.purchase.limit)} → ${money(after.purchase.limit)}. ${after.debtForecast.firstShortfall ? `First cash shortfall ${money(after.debtForecast.firstShortfall.amount)} on ${after.debtForecast.firstShortfall.date}, for ${after.debtForecast.firstShortfall.payment}.` : "Scheduled payments fit this cash forecast."} Confirm below to save this local record. This action does not call PayPal.`,
+      answer:
+        command.type === "savings-save"
+          ? `Preview only — ${command.name}: ${money(command.saved)} saved toward ${money(command.target)}. No balance change or transfer. Confirm below to save.`
+          : `Preview only — nothing saved. ${command.type}: available balance ${money(before.profile.balance || 0)} → ${money(after.profile.balance || 0)}; headphone limit ${money(before.purchase.limit)} → ${money(after.purchase.limit)}. ${after.debtForecast.firstShortfall ? `First cash shortfall ${money(after.debtForecast.firstShortfall.amount)} on ${after.debtForecast.firstShortfall.date}, for ${after.debtForecast.firstShortfall.payment}.` : "Scheduled payments fit this cash forecast."} Confirm below to save this local record. This action does not call PayPal.`,
       context: { topic },
       planning: after,
       preview: command.type === "debt-schedule" ? after.debtForecast : undefined,

@@ -1,6 +1,7 @@
 import type { PersonaId } from "./types";
 export type Income = { date: string; amount: number; label: string };
 export type MoneyProfile = {
+  savingsGoal?: { name: string; target: number; saved: number };
   userId: PersonaId;
   asOf: string;
   balance: number | null;
@@ -106,6 +107,7 @@ export type ChatContext = {
   };
   topic:
     | "purchase"
+    | "savings"
     | "debts"
     | "refunds"
     | "price"
@@ -119,6 +121,7 @@ export type ChatContext = {
   options?: PurchaseOptions;
 };
 export type PlanningCommand =
+  | { type: "savings-save"; name: string; target: number; saved: number }
   | { type: "profile"; options: PurchaseOptions }
   | {
       type: "debt-create";

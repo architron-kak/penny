@@ -56,6 +56,68 @@ export default function PlanningPanel({
       : []),
   ]);
   const preview = (command: PlanningCommand) => onPreview(command);
+  const [goalName, setGoalName] = useState(view.profile.savingsGoal?.name || "");
+  const [goalTarget, setGoalTarget] = useState(String(view.profile.savingsGoal?.target || ""));
+  const [goalSaved, setGoalSaved] = useState(String(view.profile.savingsGoal?.saved || 0));
+  if (context.topic === "savings")
+    return (
+      <div className="planning-tools">
+        <h4>Your savings jar</h4>
+        <p>
+          Track money already set aside. Exclude it from your available balance. No transfer is
+          made.
+        </p>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            preview({
+              type: "savings-save",
+              name: goalName,
+              target: Number(goalTarget),
+              saved: Number(goalSaved),
+            });
+          }}
+        >
+          <label>
+            Saving for
+            <input
+              required
+              maxLength={60}
+              value={goalName}
+              onChange={(e) => setGoalName(e.target.value)}
+              placeholder="Headphones, a trip, an emergency fund…"
+            />
+          </label>
+          <label>
+            Target · USD
+            <input
+              required
+              type="number"
+              min="0.01"
+              max="100000"
+              step="0.01"
+              value={goalTarget}
+              onChange={(e) => setGoalTarget(e.target.value)}
+            />
+          </label>
+          <label>
+            Already set aside · USD
+            <input
+              required
+              type="number"
+              min="0"
+              max={goalTarget || "100000"}
+              step="0.01"
+              value={goalSaved}
+              onChange={(e) => setGoalSaved(e.target.value)}
+            />
+          </label>
+          <button className="outline-button" disabled={busy}>
+            Preview savings goal
+          </button>
+        </form>
+      </div>
+    );
   if (context.topic === "purchase")
     return (
       <div className="planning-tools">

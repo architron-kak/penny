@@ -1,33 +1,41 @@
 import type { NextRequest } from "next/server";
 import { z } from "zod";
-import {
-  api,
-  assertSameOrigin,
-  HttpError,
-  jsonBody,
-  userSchema,
-} from "@/lib/http";
+import { api, assertSameOrigin, HttpError, jsonBody, userSchema } from "@/lib/http";
 import { withDatabase, logActivity } from "@/lib/db";
 import { sessionHash } from "@/lib/session";
 import { createOrder } from "@/lib/paypal";
-export async function POST(
-  request: NextRequest,
-  context: { params: Promise<{ id: string }> },
-) {
+import { currentHabitSuggestions } from "@/lib/adaptive-home";
+import { cents } from "@/lib/money";
+export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   return api(async () => {
     assertSameOrigin(request);
-    const { user, approved } = await jsonBody(
+    const { user, approved, expectedAmount } = await jsonBody(
       request,
-      z.object({ user: userSchema, approved: z.literal(true) }),
+      z.object({
+        user: userSchema,
+        approved: z.literal(true),
+        expectedAmount: z.number().positive().optional(),
+      }),
     );
     void approved;
     const { id } = await context.params;
     const owner = await sessionHash();
     return withDatabase(async (db) => {
-      const suggestion = db.suggestions.find(
-        (s) => s.id === id && s.userId === user,
-      );
+      let suggestion = db.suggestions.find((s) => s.id === id && s.userId === user);
+      if (!suggestion && id.startsWith("habit-")) {
+        suggestion = currentHabitSuggestions(db, user).find((s) => s.id === id);
+        if (!suggestion)
+          throw new HttpError(409, "This daily shortcut has expired. Refresh your home.");
+        if (expectedAmount === undefined || cents(expectedAmount) !== cents(suggestion.amount))
+          throw new HttpError(409, "The usual amount changed. Refresh and review it again.");
+        db.suggestions.unshift(suggestion);
+      }
       if (!suggestion) throw new HttpError(404, "Suggestion not found.");
+      if (
+        suggestion.habitMerchant &&
+        (expectedAmount === undefined || cents(expectedAmount) !== cents(suggestion.amount))
+      )
+        throw new HttpError(409, "Review the payment amount again before approving.");
       if (suggestion.status === "dismissed" || suggestion.status === "paid")
         throw new HttpError(409, "This suggestion has already been resolved.");
       const existing = db.orders.find((o) => o.suggestionId === id);

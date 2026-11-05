@@ -27,6 +27,12 @@ const installments = z
   .min(1)
   .max(24);
 export const commandSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("savings-save"),
+    name: z.string().trim().min(1).max(60),
+    target: amount,
+    saved: z.number().finite().min(0).max(100000).multipleOf(0.01),
+  }),
   z.object({ type: z.literal("profile"), options: purchaseOptionsSchema }),
   z.object({
     type: z.literal("debt-create"),
@@ -61,6 +67,12 @@ export function applyPlanningCommand(
     throw new HttpError(409, message);
   };
   switch (command.type) {
+    case "savings-save": {
+      if (cents(command.saved) > cents(command.target))
+        fail("Saved money cannot exceed the goal target.");
+      p.savingsGoal = { name: command.name, target: command.target, saved: command.saved };
+      break;
+    }
     case "profile": {
       const o = command.options;
       if (o.incomeDate && (o.incomeDate <= p.asOf || o.incomeDate > addDays(p.asOf, 180)))

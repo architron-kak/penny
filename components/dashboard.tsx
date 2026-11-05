@@ -319,7 +319,7 @@ function DashboardContent() {
     try {
       const result = await request<{ approvalUrl: string }>(
         `/api/suggestions/${payment.id}/approve`,
-        { user, approved: true },
+        { user, approved: true, expectedAmount: payment.amount },
       );
       window.location.assign(result.approvalUrl);
     } catch (e) {
@@ -445,7 +445,10 @@ function DashboardContent() {
         ...previous,
         {
           role: "assistant",
-          text: `Saved after your confirmation. Available balance ${money(result.planning.profile.balance || 0)}; headphones up to ${money(result.planning.purchase.limit)}. No PayPal transfer was initiated.`,
+          text:
+            action.command?.type === "savings-save"
+              ? `Savings goal saved after your confirmation. No money was moved.`
+              : `Saved after your confirmation. Available balance ${money(result.planning.profile.balance || 0)}; headphones up to ${money(result.planning.purchase.limit)}. No PayPal transfer was initiated.`,
           reply: {
             mode: "rules",
             answer: "Saved planning calculation",
@@ -718,17 +721,21 @@ function DashboardContent() {
                               <Sparkles size={11} /> ADAPTIVE HOME
                             </span>
                           </h2>
-                          <p>A few things worth your attention, picked just for you.</p>
+                          <p>
+                            Two usual purchases, four essentials, one timely insight. Up to seven
+                            cards.
+                          </p>
                         </div>
                         <span className="ranking-caption">
-                          <SlidersHorizontal size={13} /> Ranked by your habits
+                          <SlidersHorizontal size={13} /> Weekly review ·{" "}
+                          {data.adaptive?.nextReview || "next Monday"} UTC
                         </span>
                       </div>
                     </Reveal>
                     <m.section
                       layout={false}
                       className="adaptive-grid"
-                      aria-label="Cards ranked by priority"
+                      aria-label="Adaptive home: usual purchases and essential information"
                     >
                       {data.cards.map((card, index) => (
                         <m.article
@@ -736,10 +743,10 @@ function DashboardContent() {
                           layoutDependency={cardLayout}
                           transition={{ layout: { type: "spring", stiffness: 260, damping: 28 } }}
                           key={card.id}
-                          className={`focus-card card-${card.kind} ${index === 0 ? "top-card" : ""}`}
+                          className={`focus-card card-${card.kind} ${card.payment ? "habit-card" : ""} ${index === 0 ? "top-card" : ""}`}
                         >
                           <Reveal className="card-content" delay={index * 45}>
-                            <Card card={card} data={data} onOpen={openCard} />
+                            <Card card={card} data={data} onOpen={openCard} onPay={setPayment} />
                           </Reveal>
                         </m.article>
                       ))}
@@ -1101,7 +1108,7 @@ function DashboardContent() {
                   {busy ? <LoaderCircle className="spin" size={17} /> : <ShieldCheck size={17} />}{" "}
                   Approve & continue to PayPal <ArrowUpRight size={16} />
                 </button>
-                {payment?.status === "proposed" && (
+                {payment?.status === "proposed" && !payment.habitMerchant && (
                   <button
                     className="text-button wide"
                     disabled={busy}
@@ -1261,10 +1268,12 @@ function Why({ card }: { card: HomeCard }) {
 const Card = memo(function Card({
   card,
   onOpen,
+  onPay,
 }: {
   card: HomeCard;
   data: HomeData;
   onOpen: (card: HomeCard) => void;
+  onPay: (payment: Suggestion) => void;
 }) {
   const Icon =
     card.kind === "DebtReminder" || card.kind === "IncomeDelay"
@@ -1294,10 +1303,28 @@ const Card = memo(function Card({
           {card.kind.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase()}
         </span>
         <h3>{card.headline}</h3>
+        {card.supportingText && <p className="card-supporting">{card.supportingText}</p>}
         <span className="insight-card-footer">
           Explore with pennybot <ArrowUpRight size={16} />
         </span>
       </button>
+      {card.payment && (
+        <div className="habit-payment">
+          <button
+            className="dark-button wide"
+            disabled={card.payment.status === "paid" || card.payment.status === "dismissed"}
+            onClick={() => onPay(card.payment!)}
+          >
+            <Wallet size={16} />{" "}
+            {card.payment.status === "paid"
+              ? "Paid today"
+              : card.payment.status === "dismissed"
+                ? "Skipped today"
+                : `Pay ${money(card.payment.amount)}`}
+          </button>
+          <small>Review first · PayPal Sandbox · no real money</small>
+        </div>
+      )}
       <Why card={card} />
     </>
   );
