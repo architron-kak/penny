@@ -63,3 +63,9 @@ Adaptive Home now caps output at seven cards: two evidence-based frequent-purcha
 - `npm run lint` and `npm run typecheck` passed. Production build passed before browser verification; the final copy-only refinement was also rebuilt.
 - Chromium checked the production app with an isolated local JSON directory and LLM disabled: seven cards, two payment shortcuts, review dialog with zero approval/capture requests, savings preview without writes, confirmed savings persistence after reload, unchanged available balance, no browser errors and no horizontal overflow at 390 px.
 - Browser screenshots were kept in `/tmp/penny-adaptive-qa/desktop.png` and `/tmp/penny-adaptive-qa/mobile.png`. No PayPal payment was initiated. Current changes were tested locally and have not been published to Render.
+
+## Minimal visual refresh — 12 November 2026
+
+Introduced a scoped `app/modern.css` visual layer with a dark navigation rail, neutral white cards, one mint accent, system sans-serif typography and a three-card financial summary. Adaptive Home retains its seven-card limit and confirmed payment workflow. Mobile uses a bottom navigation with all five sections visible and safe-area spacing. AG Grid, chat, payment review and planning forms share the new colors and typography. No font downloads, images or new runtime dependencies were added; existing reduced-motion preferences remain supported.
+
+Validation: TypeScript, ESLint and the production build passed. Chromium exercised production pages at widths 320, 390, 760, 800, 1024 and 1440 px without horizontal overflow or JavaScript errors. Checked all five sections, payment review and pennybot chat. Both secondary summary cards and all five navigation buttons remain visible on mobile. No payment was initiated. Screenshots are in `/tmp/penny-design-browser/` for this session.

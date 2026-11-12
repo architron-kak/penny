@@ -1,18 +1,14 @@
 "use client";
-import {
-  AllCommunityModule,
-  ModuleRegistry,
-  themeQuartz,
-} from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
 ModuleRegistry.registerModules([AllCommunityModule]);
 export const gridTheme = themeQuartz.withParams({
   backgroundColor: "#ffffff",
-  foregroundColor: "#343a34",
-  headerBackgroundColor: "#f7f8f5",
-  headerTextColor: "#7c8177",
-  borderColor: "#eceee6",
-  accentColor: "#5b733d",
-  fontFamily: "Arial, Helvetica, sans-serif",
+  foregroundColor: "#182521",
+  headerBackgroundColor: "#f7f9f8",
+  headerTextColor: "#56675f",
+  borderColor: "#e7ece9",
+  accentColor: "#167653",
+  fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
   fontSize: 13,
   rowHeight: 61,
   headerHeight: 43,

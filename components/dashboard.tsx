@@ -466,10 +466,7 @@ function DashboardContent() {
     }
   }
   const latestReply = [...messages].reverse().find((message) => message.reply)?.reply;
-  const heading =
-    tab === "overview"
-      ? `A little clarity, ${data?.persona.firstName || "Alex"}.`
-      : navItems.find((n) => n.id === tab)?.label;
+  const heading = tab === "overview" ? "Overview" : navItems.find((n) => n.id === tab)?.label;
   const displayRows = useMemo(
     () =>
       (data?.transactions || []).filter((t) => !merchantFilter || t.merchant === merchantFilter),
@@ -484,7 +481,7 @@ function DashboardContent() {
     : "";
   const returned = data?.orders.find((o) => o.id === returnOrder);
   return (
-    <div className="app-shell">
+    <div className="app-shell modern-shell">
       <div className="reading-progress" aria-hidden="true" />
       <aside className="sidebar">
         <Link className="brand" href="/" aria-label="Penny home">
@@ -493,7 +490,7 @@ function DashboardContent() {
             penny<span className="brand-dot">.</span>
           </span>
         </Link>
-        <div className="workspace-label">YOUR MONEY, IN FOCUS</div>
+        <div className="workspace-label">WORKSPACE</div>
         <nav aria-label="Main navigation">
           {navItems.map((item) => (
             <button
@@ -524,11 +521,8 @@ function DashboardContent() {
           <span className="assistant-orbit">
             <Sparkles size={22} />
           </span>
-          <h3>A penny for your thoughts?</h3>
-          <p>
-            Big questions. Little questions. <br />
-            Let’s make sense of your money.
-          </p>
+          <h3>A clearer next step.</h3>
+          <p>Plan a purchase, check your budget, or just ask pennybot.</p>
           <button onClick={() => setChatOpen(true)}>
             Talk to pennybot <ArrowUpRight size={16} />
           </button>
@@ -545,7 +539,7 @@ function DashboardContent() {
       <div className="main-shell">
         <header className="topbar">
           <div className="breadcrumb">
-            Your workspace <ChevronRight size={14} />
+            Workspace <ChevronRight size={14} />
             <strong>{navItems.find((n) => n.id === tab)?.label}</strong>
           </div>
           <div className="topbar-actions">
@@ -601,12 +595,14 @@ function DashboardContent() {
           <div className="page-heading">
             <div>
               <div className="eyebrow">
-                <span className="little-sun">✳</span> YOUR MONEY, A LITTLE MORE MINDFUL
+                {tab === "overview"
+                  ? `YOUR MONEY, ${data?.persona.firstName?.toUpperCase() || "ALEX"}`
+                  : "YOUR WORKSPACE"}
               </div>
               <h1>{heading}</h1>
               <p>
                 {tab === "overview"
-                  ? "The right things, at the right time. A home that grows with you."
+                  ? "Your money, at a glance. A little more clarity for what’s next."
                   : tab === "transactions"
                     ? "Every little transaction, all in one place."
                     : tab === "subscriptions"
@@ -623,8 +619,7 @@ function DashboardContent() {
           <div className="data-notice">
             <ShieldCheck size={16} />
             <span>
-              <strong>A safe space to explore.</strong> Spending history is synthetic. Payments use
-              PayPal Sandbox only.
+              <strong>Demo workspace.</strong> Sample spending data. PayPal Sandbox payments only.
             </span>
             <span className="notice-right">
               {data?.aiMode === "llm" ? "AI connected" : "Built-in intelligence"}
@@ -674,9 +669,9 @@ function DashboardContent() {
                             </span>
                           </div>
                           <small>vs. previous full month</small>
-                        </div>
-                        <div className="summary-chart">
-                          <MiniChart monthly={data.insights.monthly} />
+                          <div className="summary-chart">
+                            <MiniChart monthly={data.insights.monthly} />
+                          </div>
                         </div>
                         <div className="summary-secondary">
                           <span className="stat-label">Monthly budget</span>
@@ -716,19 +711,21 @@ function DashboardContent() {
                       <div className="section-heading">
                         <div>
                           <h2>
-                            Your focus, right now{" "}
+                            Adaptive Home{" "}
                             <span className="ai-tag">
-                              <Sparkles size={11} /> ADAPTIVE HOME
+                              <Sparkles size={11} /> FOR YOU
                             </span>
                           </h2>
-                          <p>
-                            Two usual purchases, four essentials, one timely insight. Up to seven
-                            cards.
-                          </p>
+                          <p>Your usual payments and what matters right now.</p>
                         </div>
                         <span className="ranking-caption">
-                          <SlidersHorizontal size={13} /> Weekly review ·{" "}
-                          {data.adaptive?.nextReview || "next Monday"} UTC
+                          <SlidersHorizontal size={13} /> Next review{" "}
+                          {data.adaptive?.nextReview
+                            ? new Date(`${data.adaptive.nextReview}T12:00:00Z`).toLocaleDateString(
+                                "en-US",
+                                { month: "short", day: "numeric", timeZone: "UTC" },
+                              )
+                            : "Monday"}
                         </span>
                       </div>
                     </Reveal>
@@ -754,7 +751,7 @@ function DashboardContent() {
                     <Reveal>
                       <div className="section-heading recent-heading">
                         <div>
-                          <h2>The little things add up</h2>
+                          <h2>Recent activity</h2>
                           <p>Your latest transactions, at a glance.</p>
                         </div>
                         <button className="text-button" onClick={() => navigate("transactions")}>
@@ -1300,12 +1297,27 @@ const Card = memo(function Card({
           <Icon size={19} />
         </span>
         <span className="card-kicker">
-          {card.kind.replace(/([a-z])([A-Z])/g, "$1 $2").toUpperCase()}
+          {card.payment
+            ? "USUAL PAYMENT"
+            : card.topic === "savings"
+              ? "SAVINGS GOAL"
+              : {
+                  DebtReminder: "DEBTS",
+                  IncomeDelay: "INCOME FORECAST",
+                  PriceAlert: "PRICE CHANGE",
+                  SubscriptionAlert: "SUBSCRIPTIONS",
+                  RefundAlert: "EXPECTED REFUND",
+                  PurchaseBudget: "PURCHASE PLAN",
+                  SpendingSummary: "CASH FLOW",
+                  CategoryBudget: "BUDGET",
+                  SuggestedPayment: "PAYMENT",
+                  MerchantShortcut: "SPENDING HABIT",
+                }[card.kind]}
         </span>
         <h3>{card.headline}</h3>
         {card.supportingText && <p className="card-supporting">{card.supportingText}</p>}
         <span className="insight-card-footer">
-          Explore with pennybot <ArrowUpRight size={16} />
+          View details <ArrowUpRight size={16} />
         </span>
       </button>
       {card.payment && (
