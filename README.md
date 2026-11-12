@@ -20,7 +20,8 @@ A shortcut requires purchases on at least three distinct days in the latest seve
 - **Public source:** https://github.com/architron-kak/penny · **License:** [MIT](LICENSE).
 - **PayPal Sandbox Orders API v2:** creates checkout orders and captures explicitly approved payments. Server-side **PayPal OAuth 2.0** obtains the API access token. Each payment requires review in Penny, approval in PayPal Sandbox, and explicit completion after returning to Penny.
 - **Google Gemini 3.5 Flash Lite:** the hosted AI model, accessed through Google's OpenAI-compatible endpoint. It classifies transaction descriptions, explains Adaptive Home cards, and selects relevant server-computed facts for pennybot's answers. Zod validates model output; deterministic rules handle unavailable or invalid responses. Financial calculations and payment execution remain server-controlled.
-- **Render:** hosts the Next.js application as a Node web service with HTTPS. This is the additional sponsor integration used by Penny.
+- **Render (additional sponsor):** hosts the Next.js application as a Node web service with HTTPS.
+- **AG Grid Community (additional sponsor):** powers the interactive Transactions and Subscriptions tables, including sorting, filtering, resizable columns, custom cell renderers and row action buttons. Penny uses AG Grid Community; AG Studio and Studio Agent Framework are not integrated.
 - **Neon PostgreSQL:** stores the demo state, planning records and Sandbox order history across application restarts.
 - **Browser Web Speech API:** optional dictation fills an editable chat field in supported browsers. The user reviews and sends it; dictation never executes a payment.
 - **Other technologies:** Next.js, React, TypeScript, Tailwind CSS, Framer Motion, AG Grid Community and Zod.
