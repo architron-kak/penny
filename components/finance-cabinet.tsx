@@ -346,7 +346,7 @@ export default function FinanceCabinet() {
             </div>
           )}
           <section className="ledger-judge-access" aria-labelledby="judge-access-title">
-            <span className="ledger-eyebrow">ДЛЯ СУДЕЙ · QUICK DEMO</span>
+            <span className="ledger-eyebrow">QUICK DEMO</span>
             <h2 id="judge-access-title">Проверить без регистрации</h2>
             <p>Выберите готовый аккаунт — счета и операции уже заполнены.</p>
             <div className="ledger-judge-profiles">
