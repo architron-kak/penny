@@ -119,6 +119,7 @@ export function seedJudgeWorkspace(s: PrivateState, profile: DemoProfile): Priva
       debtMinor: family ? 24000 : freelance ? 12000 : 6500,
       goalName: family ? "Family holiday" : freelance ? "New laptop" : "Summer trip",
       goalTargetMinor: family ? 300000 : freelance ? 180000 : 80000,
+      monthlyBudgetMinor: family ? 450000 : freelance ? 150000 : 100000,
     },
   };
   return user;

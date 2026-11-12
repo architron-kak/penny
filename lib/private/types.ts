@@ -13,6 +13,7 @@ export type PrivateUser = {
   demoVersion?: number;
   homePlan?: Partial<Record<Currency, HomePlan>>;
   adaptive?: Partial<Record<Currency, { week: string; habits: string[] }>>;
+  subscriptionReviews?: string[];
 };
 export type LoginSession = { hash: string; userId: string; createdAt: number; expiresAt: number };
 export type FinanceAccount = {
@@ -59,6 +60,8 @@ export type PrivateState = {
   entries: FinanceEntry[];
   drafts: EntryDraft[];
   limits: { key: string; count: number; expiresAt: number }[];
+  payments?: WorkspacePayment[];
+  activity?: WorkspaceActivity[];
 };
 export type PublicUser = Pick<
   PrivateUser,
@@ -67,7 +70,46 @@ export type PublicUser = Pick<
 export type AccountView = Omit<FinanceAccount, "ownerId"> & { balanceMinor: number };
 export type EntryView = Omit<FinanceEntry, "ownerId">;
 export type DraftView = Omit<EntryDraft, "ownerId">;
-export type HomePlan = { debtMinor: number; goalName: string; goalTargetMinor: number };
+export type HomePlan = {
+  debtMinor: number;
+  goalName: string;
+  goalTargetMinor: number;
+  monthlyBudgetMinor?: number;
+};
+export type WorkspacePayment = {
+  id: string;
+  ownerId: string;
+  amountMinor: number;
+  currency: "USD";
+  description: string;
+  status: "CREATING" | "CREATED" | "COMPLETED" | "FAILED";
+  paypalOrderId?: string;
+  approvalUrl?: string;
+  captureId?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+export type PaymentView = Omit<WorkspacePayment, "ownerId">;
+export type WorkspaceActivity = {
+  id: string;
+  ownerId: string;
+  title: string;
+  detail: string;
+  kind: "record" | "account" | "planning" | "assistant" | "payment";
+  createdAt: string;
+};
+export type ActivityView = Omit<WorkspaceActivity, "ownerId">;
+export type SubscriptionView = {
+  key: string;
+  name: string;
+  currency: Currency;
+  amountMinor: number;
+  monthMinor: number;
+  lastDate: string;
+  count: number;
+  reviewRequested: boolean;
+};
+export type MonthlyPoint = { month: string; incomeMinor: number; expenseMinor: number };
 export type PersonalHomeCard = {
   id: string;
   kind: "habit" | "debts" | "subscriptions" | "savings" | "cashflow" | "insight" | "onboarding";
@@ -95,4 +137,17 @@ export type FinanceOverview = {
   month: string;
   today: string;
   adaptiveHome: Record<Currency, PersonalHome>;
+  subscriptions: SubscriptionView[];
+  payments: PaymentView[];
+  activity: ActivityView[];
+  analytics: Record<
+    Currency,
+    {
+      monthly: MonthlyPoint[];
+      categories: { category: Category; amountMinor: number }[];
+      previousSpendMinor: number;
+      changePercent: number | null;
+    }
+  >;
+  paypalConfigured: boolean;
 };

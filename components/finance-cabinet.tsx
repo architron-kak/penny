@@ -1,21 +1,14 @@
 "use client";
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import {
-  ArrowDownLeft,
   ArrowUpRight,
   Check,
   ChevronRight,
-  CirclePlus,
-  CreditCard,
-  LayoutDashboard,
   LoaderCircle,
   LockKeyhole,
-  LogOut,
   Plus,
   Search,
-  Settings2,
   ShieldCheck,
   Sparkles,
   Sprout,
@@ -29,17 +22,14 @@ import type {
   EntryView,
   FinanceOverview,
   PersonalHomeCard,
+  PaymentView,
+  SubscriptionView,
 } from "@/lib/private/types";
 import type { Category } from "@/lib/types";
 import { amountInput, categoryLabels, formatMoney } from "./personal-money";
 import { demoProfiles, type DemoProfile } from "@/lib/private/demo-profiles";
-import PersonalAdaptiveHome from "./personal-adaptive-home";
 import VoiceInput from "./voice-input";
-const FinanceGrid = dynamic(() => import("./finance-grid"), {
-  ssr: false,
-  loading: () => <p className="ledger-muted">Loading table…</p>,
-});
-type Tab = "overview" | "entries" | "accounts" | "bot";
+import AccountWorkspace, { type WorkspaceTab } from "./account-workspace";
 type EditValues = {
   accountId: string;
   kind: "income" | "expense";
@@ -128,12 +118,6 @@ function Modal({
     </dialog>
   );
 }
-const tabs = [
-  { id: "overview", label: "Adaptive Home", icon: LayoutDashboard },
-  { id: "entries", label: "Transactions", icon: ArrowDownLeft },
-  { id: "accounts", label: "Accounts", icon: Wallet },
-  { id: "bot", label: "pennybot", icon: Sparkles },
-] as const;
 export default function FinanceCabinet() {
   const [data, setData] = useState<FinanceOverview | null>(null),
     [loading, setLoading] = useState(true),
@@ -141,7 +125,7 @@ export default function FinanceCabinet() {
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState("");
   const [register, setRegister] = useState(false),
-    [tab, setTab] = useState<Tab>("overview"),
+    [tab, setTab] = useState<WorkspaceTab>("overview"),
     [currency, setCurrency] = useState<Currency>("KZT"),
     [accountId, setAccountId] = useState(""),
     [search, setSearch] = useState("");
@@ -156,7 +140,16 @@ export default function FinanceCabinet() {
     goalName: string;
     goalTarget: string;
     reviewed: boolean;
+    monthlyBudget: string;
   } | null>(null);
+  const [paymentReview, setPaymentReview] = useState<{
+    requestId: string;
+    amount: string;
+    description: string;
+    cardId?: string;
+    reviewed: boolean;
+  } | null>(null);
+  const [captureReview, setCaptureReview] = useState<PaymentView | null>(null);
   const [botInput, setBotInput] = useState(""),
     [useAI, setUseAI] = useState(false),
     [botReply, setBotReply] = useState("");
@@ -180,6 +173,19 @@ export default function FinanceCabinet() {
         setData(fresh);
         setAccountId(fresh.accounts[0]?.id || "");
         setCurrency(fresh.accounts[0]?.currency || "KZT");
+        const query = new URLSearchParams(window.location.search);
+        if (query.get("checkout") === "return") {
+          const payment = fresh.payments.find((p) => p.paypalOrderId === query.get("token"));
+          if (payment) {
+            setTab("payments");
+            setCaptureReview(payment);
+          } else setError("This PayPal return does not match an order in your account.");
+          window.history.replaceState({}, "", "/cabinet");
+        } else if (query.get("checkout") === "cancel") {
+          setTab("payments");
+          setNotice("PayPal approval was cancelled. No capture was requested.");
+          window.history.replaceState({}, "", "/cabinet");
+        }
       })
       .catch((e) => {
         if (e.name !== "AbortError" && e.status !== 401) setError(e.message);
@@ -225,7 +231,7 @@ export default function FinanceCabinet() {
           ? { name: f.get("name"), timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }
           : {}),
       });
-      window.location.replace("/cabinet");
+      window.location.replace(window.location.pathname + window.location.search);
     });
   }
   function openJudgeDemo(profile: DemoProfile) {
@@ -275,6 +281,38 @@ export default function FinanceCabinet() {
     [data],
   );
   const requestVoid = useCallback((entry: EntryView) => setVoiding(entry), []);
+  const reviewPayment = useCallback((card?: PersonalHomeCard) => {
+    setError("");
+    setPaymentReview({
+      requestId: crypto.randomUUID(),
+      amount: card?.entry ? amountInput(card.entry.amountMinor) : "",
+      description: card?.title || "",
+      ...(card?.entry ? { cardId: card.id } : {}),
+      reviewed: !!card?.entry,
+    });
+  }, []);
+  function resumePayment(payment: PaymentView) {
+    if (!payment.approvalUrl) return;
+    const url = new URL(payment.approvalUrl);
+    if (
+      url.protocol !== "https:" ||
+      !["www.sandbox.paypal.com", "sandbox.paypal.com"].includes(url.hostname)
+    ) {
+      setError("Invalid PayPal Sandbox approval link.");
+      return;
+    }
+    window.location.assign(url.toString());
+  }
+  function reviewSubscription(subscription: SubscriptionView) {
+    void work(async () => {
+      await call("/api/finance/subscriptions/review", {
+        key: subscription.key,
+        reviewRequested: !subscription.reviewRequested,
+      });
+      await refresh();
+      setNotice("Subscription review reminder updated. Merchant billing is unchanged.");
+    });
+  }
   const homeAction = useCallback(
     (card: PersonalHomeCard) => {
       if (!data) return;
@@ -287,11 +325,13 @@ export default function FinanceCabinet() {
           debtAmount: amountInput(p.debtMinor),
           goalName: p.goalName,
           goalTarget: amountInput(p.goalTargetMinor),
+          monthlyBudget: amountInput(p.monthlyBudgetMinor || 0),
           reviewed: false,
         });
       } else if (card.action === "accounts") setTab("accounts");
+      else if (card.action === "subscriptions") setTab("subscriptions");
       else {
-        setSearch(card.action === "subscriptions" ? "Subscriptions" : "");
+        setSearch("");
         setTab("entries");
       }
     },
@@ -456,18 +496,7 @@ export default function FinanceCabinet() {
         </section>
       </div>
     );
-  const totals = data.totals[currency],
-    selectedAccount = data.accounts.find((a) => a.id === accountId);
-  const activeEntries = data.entries.filter((e) => !e.voidedAt && e.currency === currency),
-    monthName = new Intl.DateTimeFormat("en-US", {
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    }).format(new Date(data.today + "T12:00:00Z"));
-  const currencyAccounts = data.accounts.filter((a) => a.currency === currency);
-  const displayCurrencies: Currency[] = data.user.demoProfile
-    ? [...new Set<Currency>(["USD", ...data.accounts.map((a) => a.currency)])]
-    : ["KZT", "USD", "EUR"];
+  const selectedAccount = data.accounts.find((a) => a.id === accountId);
   const botPanel = (
     <section className="ledger-bot ledger-panel">
       <div className="ledger-panel-title">
@@ -581,390 +610,181 @@ export default function FinanceCabinet() {
     </section>
   );
   return (
-    <div className="cabinet" lang="en">
-      <aside className="ledger-sidebar">
-        <Link href="/cabinet">
-          <Logo />
-        </Link>
-        <span className="ledger-sidebar-label">YOUR WORKSPACE</span>
-        <nav aria-label="Workspace navigation">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              aria-current={tab === t.id ? "page" : undefined}
-              className={tab === t.id ? "is-active" : ""}
-              onClick={() => setTab(t.id)}
-            >
-              <t.icon size={18} />
-              <span>{t.label}</span>
-            </button>
-          ))}
-        </nav>
-        <div className="ledger-sidebar-foot">
-          <span className="ledger-user-avatar">{data.user.name.slice(0, 1).toUpperCase()}</span>
-          <div>
-            <strong>{data.user.name}</strong>
-            <small>{data.user.demoProfile ? "Demo workspace" : "Personal account"}</small>
-          </div>
-          <button
-            className="ledger-icon-button"
-            aria-label="Sign out"
-            disabled={busy}
-            onClick={signOut}
-          >
-            <LogOut size={18} />
-          </button>
-        </div>
-      </aside>
-      <div className="ledger-main">
-        <header className="ledger-topbar">
-          <span>
-            <LockKeyhole size={14} />{" "}
-            {data.user.demoProfile ? "Demo account" : "Your private workspace"}
-          </span>
-          <div>
-            <Link href="/demo">
-              PayPal Sandbox <ArrowUpRight size={13} />
-            </Link>
-            {!data.user.demoProfile && (
-              <button
-                className="ledger-icon-button"
-                aria-label="Change password"
-                onClick={() => setPasswordModal(true)}
-              >
-                <Settings2 size={18} />
-              </button>
-            )}
-            <button
-              className="ledger-icon-button ledger-compact-logout"
-              aria-label="Sign out"
-              disabled={busy}
-              onClick={signOut}
-            >
-              <LogOut size={18} />
-            </button>
-          </div>
-        </header>
-        <main className="ledger-content">
-          {data.user.demoProfile && (
-            <section className="ledger-judge-banner" aria-label="Demo data">
-              <Sparkles size={20} />
-              <div>
-                <strong>
-                  Demo account · {demoProfiles.find((p) => p.id === data.user.demoProfile)?.name}
-                </strong>
-                <p>
-                  This workspace uses fictional data. Try pennybot, add expenses and accounts. Your
-                  changes are separate from other visitors. The demo lasts 24 hours; use sample
-                  data.
-                </p>
-              </div>
-              <button disabled={busy} onClick={signOut}>
-                Switch profile <ArrowUpRight size={14} />
-              </button>
-            </section>
-          )}
-          <div className="ledger-heading">
-            <div>
-              <span className="ledger-eyebrow">{monthName.toUpperCase()}</span>
-              <h1>
-                {tab === "overview"
-                  ? `Your Adaptive Home, ${data.user.name}`
-                  : tab === "entries"
-                    ? "Income and expenses"
-                    : tab === "accounts"
-                      ? "Your accounts"
-                      : "Your assistant"}
-              </h1>
+    <>
+      <AccountWorkspace
+        data={data}
+        currency={currency}
+        onCurrency={setCurrency}
+        tab={tab}
+        onTab={setTab}
+        busy={busy}
+        error={error}
+        notice={notice}
+        clearError={() => setError("")}
+        signOut={signOut}
+        openPassword={() => setPasswordModal(true)}
+        newEntry={newEntry}
+        newAccount={() => setAccountModal(true)}
+        onCard={homeAction}
+        onPay={reviewPayment}
+        onResume={resumePayment}
+        onComplete={setCaptureReview}
+        onSubscription={reviewSubscription}
+        addSubscription={() => {
+          const id = data.accounts.find((a) => a.currency === currency)?.id || data.accounts[0]?.id;
+          if (!id) {
+            setAccountModal(true);
+            return;
+          }
+          setEdit({
+            accountId: id,
+            kind: "expense",
+            amount: "",
+            description: "",
+            category: "subscriptions",
+            date: data.today,
+          });
+        }}
+        onRecordAccount={(a) => {
+          setAccountId(a.id);
+          setEdit({
+            accountId: a.id,
+            kind: "expense",
+            amount: "",
+            description: "",
+            category: "other",
+            date: data.today,
+          });
+        }}
+        onVoid={requestVoid}
+        search={search}
+        onSearch={setSearch}
+        botPanel={botPanel}
+      />
+      {paymentReview && (
+        <Modal
+          title={
+            paymentReview.reviewed ? "A little review before you pay." : "Prepare a Sandbox payment"
+          }
+          busy={busy}
+          onClose={() => setPaymentReview(null)}
+        >
+          {paymentReview.reviewed ? (
+            <>
+              <span className="eyebrow">YOU’RE ALWAYS IN CONTROL</span>
+              <h3>{paymentReview.description}</h3>
+              <strong className="workspace-review-amount">${paymentReview.amount}</strong>
               <p>
-                {tab === "overview"
-                  ? "Your financial picture, shaped around your habits."
-                  : tab === "entries"
-                    ? "Confirmed transactions and a history of corrections."
-                    : tab === "accounts"
-                      ? "Bank, cash and savings accounts with separate balances."
-                      : "Record expenses in your own words."}
+                USD · PayPal Sandbox · no real money. This test payment goes to Penny’s configured
+                Sandbox merchant. It does not pay the named shop or change your personal ledger.
               </p>
-            </div>
-            <button className="ledger-primary" onClick={newEntry} disabled={busy}>
-              <Plus size={17} />
-              New transaction
-            </button>
-          </div>
-          {error && (
-            <div className="ledger-error" role="alert">
-              {error}
-              <button aria-label="Dismiss error" onClick={() => setError("")}>
-                <X size={15} />
-              </button>
-            </div>
-          )}
-          {notice && (
-            <div className="ledger-success" role="status">
-              <Check size={17} />
-              {notice}
-            </div>
-          )}
-          {!data.accounts.length && tab !== "overview" && (
-            <section className="ledger-onboarding ledger-panel">
-              <span className="ledger-round-icon">
-                <Wallet size={26} />
-              </span>
-              <div>
-                <h2>Start with your first account</h2>
-                <p>
-                  Choose a currency and enter your current balance. Your workspace starts empty.
+              <p>You approve in PayPal, then explicitly complete the payment when you return.</p>
+              {error && (
+                <p className="ledger-error" role="alert">
+                  {error}
                 </p>
-              </div>
-              <button className="ledger-primary" onClick={() => setAccountModal(true)}>
-                <Plus size={16} />
-                Create account
-              </button>
-            </section>
-          )}
-          {tab === "overview" && (
-            <>
-              <div className="ledger-section-line">
-                <h2>Adaptive Home</h2>
-                <label className="ledger-currency-picker">
-                  <span>Currency</span>
-                  <select
-                    value={currency}
-                    onChange={(e) => setCurrency(e.target.value as Currency)}
-                  >
-                    {displayCurrencies.map((c) => (
-                      <option key={c}>{c}</option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-              <PersonalAdaptiveHome
-                home={data.adaptiveHome[currency]}
-                busy={busy}
-                onAction={homeAction}
-              />
-              <div className="ledger-section-line">
-                <h2>Financial overview</h2>
-              </div>
-              <div className="ledger-summary">
-                <section className="ledger-balance">
-                  <span>Total balance · {currency}</span>
-                  <strong>{formatMoney(totals.balanceMinor, currency)}</strong>
-                  <small>
-                    {currencyAccounts.length}{" "}
-                    {currencyAccounts.length === 1 ? "account" : "accounts"} in this currency
-                  </small>
-                </section>
-                <section className="ledger-panel">
-                  <span>
-                    <ArrowDownLeft size={16} />
-                    Income this month
-                  </span>
-                  <strong className="ledger-positive">
-                    {formatMoney(totals.incomeMinor, currency)}
-                  </strong>
-                  <small>From confirmed records</small>
-                </section>
-                <section className="ledger-panel">
-                  <span>
-                    <ArrowUpRight size={16} />
-                    Expenses this month
-                  </span>
-                  <strong>{formatMoney(totals.expenseMinor, currency)}</strong>
-                  <small>Opening balances are excluded from income</small>
-                </section>
-              </div>
-              <div className="ledger-columns">
-                <div>
-                  <section className="ledger-panel">
-                    <div className="ledger-section-line">
-                      <h2>Accounts</h2>
-                      <button className="ledger-text-button" onClick={() => setAccountModal(true)}>
-                        <Plus size={14} />
-                        Add
-                      </button>
-                    </div>
-                    {data.accounts.map((a) => (
-                      <div className="ledger-account-row" key={a.id}>
-                        <span className="ledger-round-icon">
-                          <CreditCard size={19} />
-                        </span>
-                        <div>
-                          <strong>{a.name}</strong>
-                          <small>
-                            {a.kind === "bank"
-                              ? "Bank account"
-                              : a.kind === "cash"
-                                ? "Cash"
-                                : "Savings"}{" "}
-                            · {a.currency}
-                          </small>
-                        </div>
-                        <b>{formatMoney(a.balanceMinor, a.currency)}</b>
-                      </div>
-                    ))}
-                    {!data.accounts.length && (
-                      <p className="ledger-muted">Create an account to get started.</p>
-                    )}
-                  </section>
-                  <section className="ledger-panel">
-                    <div className="ledger-section-line">
-                      <h2>Recent transactions</h2>
-                      <button className="ledger-text-button" onClick={() => setTab("entries")}>
-                        View all <ArrowUpRight size={14} />
-                      </button>
-                    </div>
-                    {activeEntries.slice(0, 6).map((e) => (
-                      <div className="ledger-entry-row" key={e.id}>
-                        <span className="ledger-round-icon">
-                          {e.kind === "income" ? (
-                            <ArrowDownLeft size={18} />
-                          ) : (
-                            <ArrowUpRight size={18} />
-                          )}
-                        </span>
-                        <div>
-                          <strong>{e.description}</strong>
-                          <small>
-                            {categoryLabels[e.category]} · {e.date}
-                          </small>
-                        </div>
-                        <b className={e.kind === "income" ? "ledger-positive" : ""}>
-                          {e.kind === "income" ? "+" : "−"}
-                          {formatMoney(e.amountMinor, e.currency)}
-                        </b>
-                      </div>
-                    ))}
-                    {!activeEntries.length && (
-                      <div className="ledger-empty">
-                        <CirclePlus size={25} />
-                        <p>Record your first income or expense in {currency}.</p>
-                        <button className="ledger-text-button" onClick={newEntry}>
-                          Add transaction
-                        </button>
-                      </div>
-                    )}
-                  </section>
-                </div>
-                {botPanel}
-              </div>
-            </>
-          )}
-          {tab === "entries" && (
-            <section className="ledger-panel ledger-entries-panel">
-              <div className="ledger-section-line">
-                <h2>
-                  Transaction journal <span className="ledger-count">{data.entries.length}</span>
-                </h2>
-                <label className="ledger-search">
-                  <Search size={16} />
-                  <input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search transactions"
-                    aria-label="Search transactions"
-                  />
-                </label>
-              </div>
-              <FinanceGrid
-                entries={data.entries}
-                accounts={data.accounts}
-                search={search}
-                onVoid={requestVoid}
-              />
-              <p className="ledger-muted">
-                Voiding excludes the record from balances and preserves its history. It does not
-                refund money or reverse a bank payment.
-              </p>
-            </section>
-          )}
-          {tab === "accounts" && (
-            <>
-              <div className="ledger-section-line">
-                <h2>Balances by currency</h2>
-                <button className="ledger-secondary" onClick={() => setAccountModal(true)}>
-                  <Plus size={16} />
-                  New account
+              )}
+              <div className="ledger-modal-actions">
+                <button
+                  className="ledger-secondary"
+                  disabled={busy}
+                  onClick={() => setPaymentReview(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="ledger-primary"
+                  disabled={busy || !data.paypalConfigured}
+                  onClick={() =>
+                    void work(async () => {
+                      const { reviewed: _reviewed, ...input } = paymentReview;
+                      void _reviewed;
+                      const result = await call<{ payment: PaymentView }>("/api/finance/payments", {
+                        ...input,
+                        confirmed: true,
+                      });
+                      if (result.payment.status === "COMPLETED") {
+                        setPaymentReview(null);
+                        await refresh();
+                        setNotice("This Sandbox payment is already complete.");
+                      } else resumePayment(result.payment);
+                    })
+                  }
+                >
+                  Approve & continue to PayPal
                 </button>
               </div>
-              <div className="ledger-summary">
-                {displayCurrencies.map((c) => (
-                  <section className="ledger-panel" key={c}>
-                    <span>{c}</span>
-                    <strong>{formatMoney(data.totals[c].balanceMinor, c)}</strong>
-                    <small>No currency conversion</small>
-                  </section>
-                ))}
-              </div>
-              <div className="ledger-account-grid">
-                {data.accounts.map((a) => (
-                  <section key={a.id} className="ledger-panel">
-                    <div className="ledger-section-line">
-                      <span className="ledger-round-icon">
-                        <Wallet size={21} />
-                      </span>
-                      <span className="ledger-currency-tag">{a.currency}</span>
-                    </div>
-                    <h2>{a.name}</h2>
-                    <strong className="ledger-account-amount">
-                      {formatMoney(a.balanceMinor, a.currency)}
-                    </strong>
-                    <p className="ledger-muted">
-                      Opening balance: {formatMoney(a.openingMinor, a.currency)}
-                    </p>
-                    <button
-                      className="ledger-secondary"
-                      onClick={() => {
-                        setAccountId(a.id);
-                        setEdit({
-                          accountId: a.id,
-                          kind: "expense",
-                          amount: "",
-                          description: "",
-                          category: "other",
-                          date: data.today,
-                        });
-                      }}
-                    >
-                      <Plus size={15} />
-                      Record a transaction
-                    </button>
-                  </section>
-                ))}
-              </div>
+              {!data.paypalConfigured && (
+                <p className="ledger-muted">PayPal Sandbox is currently unavailable.</p>
+              )}
             </>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setPaymentReview({ ...paymentReview, reviewed: true });
+              }}
+            >
+              <p>Prepare a test payment in USD. Review comes before any PayPal request.</p>
+              <label>
+                Description
+                <input
+                  required
+                  maxLength={240}
+                  value={paymentReview.description}
+                  onChange={(e) =>
+                    setPaymentReview({ ...paymentReview, description: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Amount · USD
+                <input
+                  required
+                  inputMode="decimal"
+                  maxLength={32}
+                  value={paymentReview.amount}
+                  onChange={(e) => setPaymentReview({ ...paymentReview, amount: e.target.value })}
+                />
+              </label>
+              <button className="ledger-primary">Review Sandbox payment</button>
+            </form>
           )}
-          {tab === "bot" && (
-            <div className="ledger-bot-page">
-              {botPanel}
-              <section className="ledger-panel">
-                <h2>How it works</h2>
-                <ol>
-                  <li>Select an account and enter one amount in your message.</li>
-                  <li>Review the proposed amount, date, category and account.</li>
-                  <li>Confirm to save. Only then does your recorded balance change.</li>
-                </ol>
-                <p>
-                  {data.user.demoProfile
-                    ? "For example: “Bought groceries for 24.50 USD” or “Received payment of 800 USD”."
-                    : "For example: “Bought groceries for 4500 KZT” or “Received salary of 300000 KZT”."}
-                </p>
-                <p className="ledger-muted">
-                  You can omit the currency to use the selected account’s currency. Enter separate
-                  messages for multiple amounts.
-                </p>
-              </section>
-            </div>
+        </Modal>
+      )}
+      {captureReview && (
+        <Modal title="One last check." busy={busy} onClose={() => setCaptureReview(null)}>
+          <p>
+            You’re back from PayPal Sandbox. Explicitly confirm completion of your approved payment.
+          </p>
+          <h3>{captureReview.description}</h3>
+          <strong className="workspace-review-amount">
+            {formatMoney(captureReview.amountMinor, "USD")}
+          </strong>
+          <p>Sandbox test funds. Your personal ledger stays unchanged.</p>
+          {error && (
+            <p className="ledger-error" role="alert">
+              {error}
+            </p>
           )}
-          <footer className="ledger-footer">
-            <span>
-              <ShieldCheck size={14} />
-              Personal records stay separate from demo data
-            </span>
-            <span>{displayCurrencies.join(" · ")}</span>
-          </footer>
-        </main>
-      </div>
+          <button
+            className="ledger-primary"
+            disabled={busy}
+            onClick={() =>
+              void work(async () => {
+                await call(`/api/finance/payments/${captureReview.id}/capture`, {
+                  confirmed: true,
+                });
+                setCaptureReview(null);
+                await refresh();
+                setNotice("Sandbox payment completed. Your ledger balance is unchanged.");
+              })
+            }
+          >
+            Complete Sandbox payment
+          </button>
+        </Modal>
+      )}
       {homePlan && (
         <Modal
           title={homePlan.reviewed ? "Confirm your settings" : "Savings goal and obligations"}
@@ -975,6 +795,12 @@ export default function FinanceCabinet() {
             <>
               <p>
                 Currency: <strong>{homePlan.currency}</strong>
+              </p>
+              <p>
+                Monthly budget:{" "}
+                <strong>
+                  {homePlan.monthlyBudget} {homePlan.currency}
+                </strong>
               </p>
               <p>
                 Outstanding debt:{" "}
@@ -1032,6 +858,16 @@ export default function FinanceCabinet() {
               <p className="ledger-muted">
                 Settings for {homePlan.currency}. Other currencies are calculated separately.
               </p>
+              <label>
+                Monthly budget
+                <input
+                  inputMode="decimal"
+                  required
+                  maxLength={32}
+                  value={homePlan.monthlyBudget}
+                  onChange={(e) => setHomePlan({ ...homePlan, monthlyBudget: e.target.value })}
+                />
+              </label>
               <label>
                 Outstanding debt
                 <input
@@ -1391,6 +1227,6 @@ export default function FinanceCabinet() {
           </form>
         </Modal>
       )}
-    </div>
+    </>
   );
 }

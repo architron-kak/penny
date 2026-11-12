@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { AnimatePresence, m } from "framer-motion";
 import { AnimationProvider, useAnimationPreference } from "./animation-provider";
-import { ChartBar, Reveal } from "./reveal";
+import { Reveal } from "./reveal";
 import {
   Activity,
   ArrowDownLeft,
@@ -52,6 +52,13 @@ import type {
   PlanningView,
 } from "@/lib/planning-types";
 import VoiceInput from "./voice-input";
+import {
+  WorkspaceFrame,
+  WorkspaceBrand,
+  WorkspaceNavigation,
+  WorkspaceAssistant,
+  WorkspaceBars,
+} from "./workspace-shell";
 const PlanningPanel = dynamic(() => import("./planning-panel"), { ssr: false });
 const TransactionGrid = dynamic(() => import("./transaction-grid"), {
   ssr: false,
@@ -224,7 +231,7 @@ function DashboardContent() {
         setChatOpen(false);
         if (returnOrder) {
           setReturnOrder(null);
-          window.history.replaceState({}, "", `/?user=${user}`);
+          window.history.replaceState({}, "", `/demo?user=${user}`);
         }
       }
     }
@@ -279,7 +286,7 @@ function DashboardContent() {
         text: "A fresh perspective for this persona. What would you like to know?",
       },
     ]);
-    window.history.replaceState({}, "", `/?user=${next}`);
+    window.history.replaceState({}, "", `/demo?user=${next}`);
     void refresh(next);
   }
   const navigate = useCallback((next: Tab) => {
@@ -337,7 +344,7 @@ function DashboardContent() {
         userApproved: true,
       });
       setReturnOrder(null);
-      window.history.replaceState({}, "", `/?user=${user}`);
+      window.history.replaceState({}, "", `/demo?user=${user}`);
       setTab("payments");
       await refresh(user, true);
       setToast(
@@ -482,52 +489,18 @@ function DashboardContent() {
     : "";
   const returned = data?.orders.find((o) => o.id === returnOrder);
   return (
-    <div className="app-shell modern-shell">
+    <WorkspaceFrame>
       <div className="reading-progress" aria-hidden="true" />
       <aside className="sidebar">
-        <Link className="brand" href="/" aria-label="Penny home">
-          <Mark />
-          <span>
-            penny<span className="brand-dot">.</span>
-          </span>
-        </Link>
+        <WorkspaceBrand />
         <div className="workspace-label">WORKSPACE</div>
-        <nav aria-label="Main navigation">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              aria-label={item.label}
-              aria-current={tab === item.id ? "page" : undefined}
-              className={`nav-item ${tab === item.id ? "active" : ""}`}
-              onClick={() => navigate(item.id)}
-            >
-              {tab === item.id && (
-                <m.span
-                  className="nav-indicator"
-                  layoutId={reduced ? undefined : "active-navigation"}
-                  transition={{ type: "spring", stiffness: 420, damping: 36 }}
-                  aria-hidden="true"
-                />
-              )}
-              <item.icon size={19} />
-              <span>{item.label}</span>
-              {item.id === "overview" && <span className="nav-active-dot" />}
-              {item.id === "subscriptions" && !!data?.insights.unusedSubscriptions.length && (
-                <span className="nav-count">{data.insights.unusedSubscriptions.length}</span>
-              )}
-            </button>
-          ))}
-        </nav>
-        <div className="sidebar-assistant">
-          <span className="assistant-orbit">
-            <Sparkles size={22} />
-          </span>
-          <h3>A clearer next step.</h3>
-          <p>Plan a purchase, check your budget, or just ask pennybot.</p>
-          <button onClick={() => setChatOpen(true)}>
-            Talk to pennybot <ArrowUpRight size={16} />
-          </button>
-        </div>
+        <WorkspaceNavigation
+          items={navItems}
+          active={tab}
+          onNavigate={navigate}
+          subscriptionCount={data?.insights.unusedSubscriptions.length || 0}
+        />
+        <WorkspaceAssistant onOpen={() => setChatOpen(true)} />
         <div className="sidebar-bottom">
           <span className="sandbox-dot" />
           <div>
@@ -1043,7 +1016,7 @@ function DashboardContent() {
               onClick={() => {
                 setPayment(null);
                 setReturnOrder(null);
-                window.history.replaceState({}, "", `/?user=${user}`);
+                window.history.replaceState({}, "", `/demo?user=${user}`);
               }}
               aria-label="Close payment dialog"
             >
@@ -1251,7 +1224,7 @@ function DashboardContent() {
           </m.aside>
         )}
       </AnimatePresence>
-    </div>
+    </WorkspaceFrame>
   );
 }
 
@@ -1353,28 +1326,16 @@ const MiniChart = memo(function MiniChart({
   monthly: HomeData["insights"]["monthly"];
   large?: boolean;
 }) {
-  const max = Math.max(...monthly.map((m) => m.amount), 1);
   return (
-    <div
-      className={`bar-chart ${large ? "large" : ""}`}
-      role="img"
-      aria-label={monthly.map((m) => `${m.label}: ${money(m.amount)}`).join(", ")}
-    >
-      {monthly.map((month, index) => (
-        <div className="bar-column" key={month.month}>
-          <div className="bar-space">
-            <ChartBar
-              key={`${month.month}-${month.amount}`}
-              height={Math.max((month.amount / max) * 100, 3)}
-              current={index === 5}
-              label={`${month.label}: ${money(month.amount)}`}
-              index={index}
-            />
-          </div>
-          <span className="bar-label">{month.label}</span>
-        </div>
-      ))}
-    </div>
+    <WorkspaceBars
+      large={large}
+      points={monthly.map((m) => ({
+        key: m.month,
+        label: m.label,
+        value: m.amount,
+        valueLabel: money(m.amount),
+      }))}
+    />
   );
 });
 const RecentTransactions = memo(function RecentTransactions({

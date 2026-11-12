@@ -25,10 +25,12 @@ export default memo(function PersonalAdaptiveHome({
   home,
   busy,
   onAction,
+  onPay,
 }: {
   home: PersonalHome;
   busy: boolean;
   onAction: (card: PersonalHomeCard) => void;
+  onPay?: (card: PersonalHomeCard) => void;
 }) {
   return (
     <section className="ledger-adaptive" aria-label="Adaptive Home">
@@ -38,43 +40,52 @@ export default memo(function PersonalAdaptiveHome({
         </span>
         <span>{home.cards.length} / 7 cards</span>
       </div>
-      <div className="ledger-adaptive-grid" role="list">
+      <div className="adaptive-grid workspace-personal-grid" role="list">
         {home.cards.map((card) => {
           const Icon = icons[card.kind];
           return (
             <article
               key={card.id}
               role="listitem"
-              className={`ledger-adaptive-card${card.urgent ? " is-urgent" : ""}${card.kind === "onboarding" ? " ledger-onboarding" : ""}`}
+              className={`focus-card personal-home-card${card.kind === "habit" ? " habit-card" : ""}${card.urgent ? " is-urgent" : ""}${card.kind === "onboarding" ? " ledger-onboarding" : ""}`}
               data-kind={card.kind}
               data-card-id={card.id}
             >
-              <div className="ledger-adaptive-card-head">
-                <span className="ledger-round-icon">
+              <button
+                className="insight-card-trigger"
+                disabled={busy}
+                onClick={() => onAction(card)}
+              >
+                <span className="card-icon green">
                   <Icon size={19} />
                 </span>
-                <span>
+                <span className="card-kicker">
                   {card.kind === "habit"
                     ? "FREQUENT EXPENSE"
                     : card.kind === "insight"
                       ? "YOUR NEXT STEP"
                       : "YOUR FINANCES"}
                 </span>
-              </div>
-              <h3>{card.title}</h3>
-              <strong className="ledger-adaptive-value">{card.value}</strong>
-              <p>{card.description}</p>
-              {card.progress !== undefined && (
-                <progress aria-label="Savings progress" max={100} value={card.progress} />
-              )}
-              <button
-                disabled={busy}
-                onClick={() => onAction(card)}
-                className={card.kind === "habit" ? "ledger-primary" : "ledger-text-button"}
-              >
-                {card.actionLabel}
-                <ArrowUpRight size={15} />
+                <h3>
+                  {card.title} · {card.value}
+                </h3>
+                <p className="card-supporting">{card.description}</p>
+                {card.progress !== undefined && (
+                  <progress aria-label="Savings progress" max={100} value={card.progress} />
+                )}
+                <span className="insight-card-footer">
+                  {card.actionLabel}
+                  <ArrowUpRight size={15} />
+                </span>
               </button>
+              {card.kind === "habit" && card.entry?.currency === "USD" && onPay && (
+                <div className="habit-payment">
+                  <button className="dark-button wide" disabled={busy} onClick={() => onPay(card)}>
+                    Pay {card.value}
+                  </button>
+                  <small>Review first · PayPal Sandbox</small>
+                </div>
+              )}
             </article>
           );
         })}

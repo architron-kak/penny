@@ -36,6 +36,7 @@ import {
 } from "./ledger";
 import { categorizeWithConsent, parseOperation } from "./pennybot";
 import { seedJudgeWorkspace } from "./demo";
+import { recordActivity } from "./activity";
 const credentials = z.object({ email: emailSchema, password: z.string().min(1).max(128) }).strict();
 const signup = credentials
   .extend({
@@ -196,6 +197,7 @@ export function saveHomePlan(request: NextRequest) {
           debtAmount: z.string().max(32),
           goalName: z.string().trim().max(80),
           goalTarget: z.string().max(32),
+          monthlyBudget: z.string().max(32).optional(),
           confirmed: z.literal(true),
         })
         .strict(),
@@ -211,7 +213,19 @@ export function saveHomePlan(request: NextRequest) {
         debtMinor,
         goalTargetMinor,
         goalName: goalTargetMinor ? input.goalName : "",
+        ...(input.monthlyBudget !== undefined
+          ? { monthlyBudgetMinor: parseMinor(input.monthlyBudget) }
+          : user.homePlan[input.currency]?.monthlyBudgetMinor !== undefined
+            ? { monthlyBudgetMinor: user.homePlan[input.currency]!.monthlyBudgetMinor }
+            : {}),
       };
+      recordActivity(
+        s,
+        user.id,
+        "Financial plan updated",
+        `${input.currency} savings goal, obligations and budget reviewed.`,
+        "planning",
+      );
       return { plan: user.homePlan[input.currency] };
     });
   });
@@ -235,6 +249,13 @@ export function createAccount(request: NextRequest) {
         createdAt: new Date().toISOString(),
       };
       s.accounts.push(account);
+      recordActivity(
+        s,
+        user.id,
+        "Account added",
+        `${account.name} · ${account.currency}`,
+        "account",
+      );
       const { ownerId: _owner, ...view } = account;
       void _owner;
       return { account: { ...view, balanceMinor: accountBalance(s, account) } };

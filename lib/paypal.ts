@@ -92,7 +92,10 @@ const orderSchema = z.object({
     .optional(),
 });
 export type PayPalOrder = z.infer<typeof orderSchema>;
-export async function createOrder(suggestion: Suggestion) {
+export async function createOrder(
+  suggestion: Pick<Suggestion, "id" | "title" | "amount"> & { userId: string },
+  returnPath: "/" | "/cabinet" = "/",
+) {
   const origin = appOrigin();
   const body = {
     intent: "CAPTURE",
@@ -100,7 +103,7 @@ export async function createOrder(suggestion: Suggestion) {
       {
         reference_id: suggestion.id,
         custom_id: suggestion.id,
-        description: `Penny demo: ${suggestion.title}`,
+        description: `Penny demo: ${suggestion.title}`.slice(0, 120),
         amount: { currency_code: "USD", value: suggestion.amount.toFixed(2) },
       },
     ],
@@ -110,8 +113,8 @@ export async function createOrder(suggestion: Suggestion) {
           brand_name: "Penny · Sandbox",
           shipping_preference: "NO_SHIPPING",
           user_action: "PAY_NOW",
-          return_url: `${origin}/?checkout=return&user=${suggestion.userId}`,
-          cancel_url: `${origin}/?checkout=cancel&user=${suggestion.userId}`,
+          return_url: `${origin}${returnPath}?checkout=return${returnPath === "/" ? `&user=${suggestion.userId}` : ""}`,
+          cancel_url: `${origin}${returnPath}?checkout=cancel${returnPath === "/" ? `&user=${suggestion.userId}` : ""}`,
         },
       },
     },
@@ -124,6 +127,7 @@ export async function createOrder(suggestion: Suggestion) {
   )?.href;
   if (
     !approvalUrl ||
+    new URL(approvalUrl).protocol !== "https:" ||
     (new URL(approvalUrl).hostname !== "www.sandbox.paypal.com" &&
       new URL(approvalUrl).hostname !== "sandbox.paypal.com")
   )

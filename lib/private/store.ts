@@ -64,6 +64,8 @@ export function prunePrivateState(s: PrivateState, now = Date.now()) {
     s.accounts = s.accounts.filter((a) => !expiredDemoIds.has(a.ownerId));
     s.entries = s.entries.filter((e) => !expiredDemoIds.has(e.ownerId));
     s.drafts = s.drafts.filter((d) => !expiredDemoIds.has(d.ownerId));
+    s.payments = (s.payments || []).filter((p) => !expiredDemoIds.has(p.ownerId));
+    s.activity = (s.activity || []).filter((a) => !expiredDemoIds.has(a.ownerId));
   }
   s.sessions = s.sessions.filter((x) => x.expiresAt > now && !expiredDemoIds.has(x.userId));
   s.drafts = s.drafts.filter((x) =>

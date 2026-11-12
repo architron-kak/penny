@@ -15,6 +15,10 @@ import { publicUser, authenticatedUser } from "./auth";
 import type { NextRequest } from "next/server";
 import { personalAdaptiveHome } from "./adaptive-home";
 import { formatCurrency } from "../currency";
+import { workspaceViews } from "./views";
+import { sumMinor } from "./arithmetic";
+export { sumMinor } from "./arithmetic";
+import { recordActivity } from "./activity";
 export const emailSchema = z.string().trim().toLowerCase().email().max(254);
 export const passwordSchema = z
   .string()
@@ -55,12 +59,6 @@ export function parseMinor(value: string, allowNegative = false) {
   return Number(integer) * (negative ? -1 : 1);
 }
 export const formatMinor = formatCurrency;
-export function sumMinor(values: number[]) {
-  const total = values.reduce((sum, value) => sum + BigInt(value), 0n);
-  if (total > BigInt(Number.MAX_SAFE_INTEGER) || total < BigInt(Number.MIN_SAFE_INTEGER))
-    throw new HttpError(409, "The total exceeds the supported range.");
-  return Number(total);
-}
 export const accountSchema = z
   .object({
     name: z.string().trim().min(1).max(60),
@@ -129,6 +127,15 @@ export function prepareDraft(
     mode,
   };
   s.drafts.push(draft);
+  if (source === "pennybot")
+    recordActivity(
+      s,
+      ownerId,
+      "pennybot prepared a transaction",
+      fields.description,
+      "assistant",
+      "draft-" + draft.id,
+    );
   return viewDraft(draft);
 }
 export function confirmDraft(s: PrivateState, ownerId: string, id: string) {
@@ -227,5 +234,14 @@ export function overview(s: PrivateState, request: NextRequest): FinanceOverview
   const adaptiveHome = Object.fromEntries(
     currencies.map((c) => [c, personalAdaptiveHome(user, accounts, entries, c, day)]),
   ) as FinanceOverview["adaptiveHome"];
-  return { user: publicUser(user), accounts, entries, totals, month, today: day, adaptiveHome };
+  return {
+    user: publicUser(user),
+    accounts,
+    entries,
+    totals,
+    month,
+    today: day,
+    adaptiveHome,
+    ...workspaceViews(s, user, entries, day),
+  };
 }
