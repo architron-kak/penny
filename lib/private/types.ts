@@ -8,6 +8,8 @@ export type PrivateUser = {
   passwordHash: string;
   timeZone: string;
   createdAt: string;
+  demoProfile?: "student" | "family" | "freelancer";
+  demoExpiresAt?: number;
 };
 export type LoginSession = { hash: string; userId: string; createdAt: number; expiresAt: number };
 export type FinanceAccount = {
@@ -55,7 +57,10 @@ export type PrivateState = {
   drafts: EntryDraft[];
   limits: { key: string; count: number; expiresAt: number }[];
 };
-export type PublicUser = Pick<PrivateUser, "id" | "name" | "email" | "timeZone">;
+export type PublicUser = Pick<
+  PrivateUser,
+  "id" | "name" | "email" | "timeZone" | "demoProfile" | "demoExpiresAt"
+>;
 export type AccountView = Omit<FinanceAccount, "ownerId"> & { balanceMinor: number };
 export type EntryView = Omit<FinanceEntry, "ownerId">;
 export type DraftView = Omit<EntryDraft, "ownerId">;

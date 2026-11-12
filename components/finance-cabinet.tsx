@@ -39,6 +39,7 @@ import type {
 } from "@/lib/private/types";
 import type { Category } from "@/lib/types";
 import { amountInput, categoryLabels, formatMoney } from "./personal-money";
+import { demoProfiles, type DemoProfile } from "@/lib/private/demo-profiles";
 const FinanceGrid = dynamic(() => import("./finance-grid"), {
   ssr: false,
   loading: () => <p className="ledger-muted">Загружаем таблицу…</p>,
@@ -223,6 +224,12 @@ export default function FinanceCabinet() {
       window.location.replace("/cabinet");
     });
   }
+  function openJudgeDemo(profile: DemoProfile) {
+    void work(async () => {
+      await call("/api/account/demo", { profile });
+      window.location.replace("/cabinet");
+    });
+  }
   const newEntry = () => {
     if (!data?.accounts.length) {
       setAccountModal(true);
@@ -333,6 +340,40 @@ export default function FinanceCabinet() {
           </Link>
         </section>
         <section className="ledger-auth-form">
+          {error && (
+            <div className="ledger-error" role="alert">
+              {error}
+            </div>
+          )}
+          <section className="ledger-judge-access" aria-labelledby="judge-access-title">
+            <span className="ledger-eyebrow">ДЛЯ СУДЕЙ · QUICK DEMO</span>
+            <h2 id="judge-access-title">Проверить без регистрации</h2>
+            <p>Выберите готовый аккаунт — счета и операции уже заполнены.</p>
+            <div className="ledger-judge-profiles">
+              {demoProfiles.map((profile) => (
+                <button
+                  key={profile.id}
+                  type="button"
+                  disabled={busy}
+                  onClick={() => openJudgeDemo(profile.id)}
+                  aria-label={`Открыть демо ${profile.name}`}
+                >
+                  <span>
+                    <strong>
+                      {profile.name} <small>{profile.title}</small>
+                    </strong>
+                    <span>{profile.description}</span>
+                    <small>{profile.currencies}</small>
+                  </span>
+                  {busy ? <LoaderCircle size={18} className="spin" /> : <ArrowUpRight size={18} />}
+                </button>
+              ))}
+            </div>
+            <p className="ledger-judge-note">
+              Вход в один клик. Тестовые данные, отдельная копия для каждого посетителя.
+            </p>
+          </section>
+          <div className="ledger-auth-divider">или войдите в свой аккаунт</div>
           <div className="ledger-auth-switch">
             <button
               type="button"
@@ -357,11 +398,6 @@ export default function FinanceCabinet() {
           </div>
           <h2>{register ? "Начнём с вашего аккаунта" : "С возвращением"}</h2>
           <p>Личный учёт без общих демоданных.</p>
-          {error && (
-            <div className="ledger-error" role="alert">
-              {error}
-            </div>
-          )}
           <form onSubmit={authenticate}>
             {register && (
               <label>
@@ -554,7 +590,7 @@ export default function FinanceCabinet() {
           <span className="ledger-user-avatar">{data.user.name.slice(0, 1).toUpperCase()}</span>
           <div>
             <strong>{data.user.name}</strong>
-            <small>Личный учёт</small>
+            <small>{data.user.demoProfile ? "Демо для судей" : "Личный учёт"}</small>
           </div>
           <button
             className="ledger-icon-button"
@@ -569,19 +605,22 @@ export default function FinanceCabinet() {
       <div className="ledger-main">
         <header className="ledger-topbar">
           <span>
-            <LockKeyhole size={14} /> Только ваши данные
+            <LockKeyhole size={14} />{" "}
+            {data.user.demoProfile ? "Демонстрационный аккаунт" : "Только ваши данные"}
           </span>
           <div>
             <Link href="/">
               Демо Penny <ArrowUpRight size={13} />
             </Link>
-            <button
-              className="ledger-icon-button"
-              aria-label="Сменить пароль"
-              onClick={() => setPasswordModal(true)}
-            >
-              <Settings2 size={18} />
-            </button>
+            {!data.user.demoProfile && (
+              <button
+                className="ledger-icon-button"
+                aria-label="Сменить пароль"
+                onClick={() => setPasswordModal(true)}
+              >
+                <Settings2 size={18} />
+              </button>
+            )}
             <button
               className="ledger-icon-button ledger-compact-logout"
               aria-label="Выйти"
@@ -593,6 +632,24 @@ export default function FinanceCabinet() {
           </div>
         </header>
         <main className="ledger-content">
+          {data.user.demoProfile && (
+            <section className="ledger-judge-banner" aria-label="Демонстрационные данные">
+              <Sparkles size={20} />
+              <div>
+                <strong>
+                  Демоаккаунт · {demoProfiles.find((p) => p.id === data.user.demoProfile)?.name}
+                </strong>
+                <p>
+                  Это пример с вымышленными данными. Проверяйте pennybot, добавляйте расходы и счета
+                  — изменения видны только в вашем браузере. Демо действует 24 часа; не вносите
+                  личные данные.
+                </p>
+              </div>
+              <button disabled={busy} onClick={signOut}>
+                Сменить профиль <ArrowUpRight size={14} />
+              </button>
+            </section>
+          )}
           <div className="ledger-heading">
             <div>
               <span className="ledger-eyebrow">{monthName.toUpperCase()}</span>

@@ -16,7 +16,9 @@ A shortcut requires purchases on at least three distinct days in the latest seve
 
 ## Personal finance workspace
 
-Open **[Personal workspace](https://penny-g1zu.onrender.com/cabinet)**, or select its lock icon in the demo header. Register with your name, email and a password of at least 12 characters. A new account starts empty: create bank, cash or savings accounts, enter their opening balances, then record your actual income and expenses. Accounts support **KZT, USD and EUR**; balances and monthly totals remain separate for each currency, with no inferred exchange rate. Your browser time zone determines today's date and the current month.
+Open **[Personal workspace / judge access](https://penny-g1zu.onrender.com/cabinet)**, or select its lock icon in the demo header. **Judges can click Student, Family or Freelancer to enter immediately, without registration, email or a password.** Each profile has three currency accounts, sample income, expenses and recurring-purchase shortcuts. Try pennybot, confirm a new entry, switch currencies and explore the journal. The cabinet labels these records as fictional. Each visitor gets an independent server-side copy, so one judge's edits cannot change another's demo or a registered user's records. The temporary session lasts up to 24 hours; expired demo data is pruned on a subsequent session/demo creation. “Сменить профиль” signs out and returns to profile selection. Demo users cannot set a password or log in through the personal-email form.
+
+For your own data, use the sign-in/registration form below the demo profiles. Register with your name, email and a password of at least 12 characters. A new personal account starts empty: create bank, cash or savings accounts, enter their opening balances, then record your actual income and expenses. Accounts support **KZT, USD and EUR**; balances and monthly totals remain separate for each currency, with no inferred exchange rate. Your browser time zone determines today's date and the current month.
 
 Select an account and tell **pennybot**: **«Купил продукты на 4500 ₸»**. It prepares a review showing the amount, currency, account, date and category. **Only “Подтвердить и сохранить” saves the entry.** You can edit the proposal first. Repeated confirmations of the same draft create one entry; drafts expire after 15 minutes. Manual forms use the same review. The journal supports search, filtering and sorting through AG Grid. Cancelling a record preserves its history and removes it from balances; it never refunds or transfers money. Repeated personal expenses can appear as shortcuts to another reviewed ledger entry.
 
@@ -31,6 +33,7 @@ Email verification and email-based password recovery are **not implemented yet**
 ## Hackathon integrations and judge access
 
 - **Hosted demo:** https://penny-g1zu.onrender.com
+- **One-click judge accounts:** https://penny-g1zu.onrender.com/cabinet — choose **Student**, **Family** or **Freelancer**; no credentials required.
 - **Public source:** https://github.com/architron-kak/penny · **License:** [MIT](LICENSE).
 - **PayPal Sandbox Orders API v2:** creates checkout orders and captures explicitly approved payments. Server-side **PayPal OAuth 2.0** obtains the API access token. Each payment requires review in Penny, approval in PayPal Sandbox, and explicit completion after returning to Penny.
 - **Google Gemini 3.5 Flash Lite:** the hosted AI model, accessed through Google's OpenAI-compatible endpoint. It classifies transaction descriptions, explains Adaptive Home cards, and selects relevant server-computed facts for pennybot's answers. Zod validates model output; deterministic rules handle unavailable or invalid responses. Financial calculations and payment execution remain server-controlled.
@@ -199,6 +202,7 @@ Mutation requests require an `Origin` header matching the configured application
 
 | Method | Route | Behavior |
 | ------ | ----- | -------- |
+| POST | `/api/account/demo` | `{ profile: "student" \| "family" \| "freelancer" }`; issue an isolated, seeded, temporary judge session. |
 | POST | `/api/account/register`, `/api/account/login` | Create an account or sign in; issue a session cookie. |
 | GET | `/api/account/me` | Current user, without password or session hashes. |
 | POST | `/api/account/logout`, `/api/account/password` | Revoke the session or change the password. |

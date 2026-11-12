@@ -13,6 +13,7 @@ export const publicUser = (u: PrivateUser): PublicUser => ({
   name: u.name,
   email: u.email,
   timeZone: u.timeZone,
+  ...(u.demoProfile ? { demoProfile: u.demoProfile, demoExpiresAt: u.demoExpiresAt } : {}),
 });
 let activeHashes = 0;
 async function derive(password: string, salt: Buffer) {
@@ -63,7 +64,8 @@ export function authenticatedUser(s: PrivateState, request: NextRequest): Privat
     throw new HttpError(401, "Войдите в личный кабинет.");
   const session = s.sessions.find((x) => x.hash === digest(token) && x.expiresAt > Date.now());
   const user = session && s.users.find((x) => x.id === session.userId);
-  if (!user) throw new HttpError(401, "Сессия завершена. Войдите снова.");
+  if (!user || (user.demoProfile && (!user.demoExpiresAt || user.demoExpiresAt <= Date.now())))
+    throw new HttpError(401, "Сессия завершена. Войдите снова.");
   return user;
 }
 export function issueSession(s: PrivateState, userId: string, request: NextRequest) {
@@ -77,16 +79,22 @@ export function issueSession(s: PrivateState, userId: string, request: NextReque
     .sort((a, b) => b.createdAt - a.createdAt)
     .slice(0, 7);
   s.sessions = s.sessions.filter((x) => x.userId !== userId || own.some((v) => v.hash === x.hash));
-  s.sessions.push({ hash: digest(token), userId, createdAt: now, expiresAt: now + lifetime });
+  const user = s.users.find((u) => u.id === userId);
+  s.sessions.push({
+    hash: digest(token),
+    userId,
+    createdAt: now,
+    expiresAt: Math.min(now + lifetime, user?.demoExpiresAt ?? Infinity),
+  });
   return token;
 }
-export function setAuthCookie(response: NextResponse, token: string) {
+export function setAuthCookie(response: NextResponse, token: string, maxAge = lifetime / 1000) {
   response.cookies.set(authCookieName(), token, {
     httpOnly: true,
     secure: appOrigin().startsWith("https://"),
     sameSite: "lax",
     path: "/",
-    maxAge: token ? lifetime / 1000 : 0,
+    maxAge: token ? maxAge : 0,
   });
   return response;
 }
@@ -107,11 +115,7 @@ export async function authThrottle(
   email: string,
   action: "login" | "register",
 ) {
-  const forwarded =
-    process.env.RENDER === "true"
-      ? request.headers.get("x-forwarded-for")?.split(",").at(-1)?.trim()
-      : "local";
-  const ip = digest((forwarded || "unknown").slice(0, 128));
+  const ip = requestIpHash(request);
   const allowed = await withPrivateState((s) => {
     prunePrivateState(s);
     const byIp = consumeLimit(
@@ -124,5 +128,12 @@ export async function authThrottle(
     return byIp && byEmail;
   });
   if (!allowed) throw new HttpError(429, "Слишком много попыток. Повторите позже.");
+}
+export function requestIpHash(request: NextRequest) {
+  const forwarded =
+    process.env.RENDER === "true"
+      ? request.headers.get("x-forwarded-for")?.split(",").at(-1)?.trim()
+      : "local";
+  return digest((forwarded || "unknown").slice(0, 128));
 }
 export const newUserId = () => randomUUID();

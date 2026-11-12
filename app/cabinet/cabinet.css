@@ -124,6 +124,139 @@
   border-radius: 10px;
   margin-bottom: 35px;
 }
+.ledger-judge-access > p {
+  color: #6f8475;
+  font-size: 12px;
+  margin: 7px 0 16px;
+}
+.ledger-judge-profiles {
+  display: grid;
+  gap: 8px;
+}
+.ledger-judge-profiles > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 16px;
+  text-align: left;
+  border: 1px solid #cfe4d6;
+  border-radius: 12px;
+  background: #edf7f0;
+  color: #234d33;
+  transition: background 140ms ease;
+}
+.ledger-judge-profiles > button:hover {
+  background: #dcefe3;
+}
+.ledger-judge-profiles > button > span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.ledger-judge-profiles strong {
+  font-size: 14px;
+}
+.ledger-judge-profiles strong small {
+  margin-left: 8px;
+  font-weight: 400;
+  color: #6f8475;
+}
+.ledger-judge-profiles span span {
+  font-size: 11px;
+  line-height: 1.5;
+}
+.ledger-judge-profiles small {
+  color: #6f8475;
+  font-size: 10px;
+}
+.ledger-judge-profiles svg {
+  flex-shrink: 0;
+}
+.ledger-judge-access > .ledger-judge-note {
+  font-size: 10px;
+  margin: 12px 0 0;
+}
+.ledger-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 25px 0;
+  font-size: 10px;
+  color: #7a8d7f;
+}
+.ledger-auth-divider::before,
+.ledger-auth-divider::after {
+  content: "";
+  height: 1px;
+  background: #dce6df;
+  flex: 1;
+}
+.ledger-judge-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 18px 20px;
+  margin-bottom: 25px;
+  border: 1px solid #cfe4d6;
+  border-radius: 13px;
+  background: #edf7f0;
+  color: #315b40;
+}
+.ledger-judge-banner > svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.ledger-judge-banner > div {
+  flex: 1;
+  min-width: 0;
+}
+.ledger-judge-banner strong {
+  font-size: 13px;
+}
+.ledger-judge-banner p {
+  font-size: 11px;
+  color: #66816f;
+  margin-top: 4px;
+}
+.ledger-judge-banner button {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  background: transparent;
+  color: #315b40;
+  font-size: 11px;
+  padding: 3px;
+}
+@media (max-width: 760px) {
+  .ledger-judge-banner {
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 10px;
+  }
+  .ledger-judge-banner > div {
+    flex-basis: calc(100% - 34px);
+  }
+  .ledger-judge-banner button {
+    margin-left: 30px;
+  }
+  .ledger-auth-story {
+    padding-bottom: 24px;
+  }
+  .ledger-auth-story h1 {
+    display: none;
+  }
+  .ledger-auth-story > p {
+    display: none;
+  }
+  .ledger-auth-story > a:first-child {
+    margin-bottom: 10px;
+  }
+  .ledger-auth-story .ledger-demo-link {
+    margin-top: 8px;
+  }
+}
 .ledger-auth-switch button {
   padding: 10px;
   border-radius: 7px;

@@ -49,7 +49,18 @@ export async function withPrivateState<T>(fn: (state: PrivateState) => T | Promi
   }
 }
 export function prunePrivateState(s: PrivateState, now = Date.now()) {
-  s.sessions = s.sessions.filter((x) => x.expiresAt > now);
+  const expiredDemoIds = new Set(
+    s.users
+      .filter((u) => u.demoProfile && (!u.demoExpiresAt || u.demoExpiresAt <= now))
+      .map((u) => u.id),
+  );
+  if (expiredDemoIds.size) {
+    s.users = s.users.filter((u) => !expiredDemoIds.has(u.id));
+    s.accounts = s.accounts.filter((a) => !expiredDemoIds.has(a.ownerId));
+    s.entries = s.entries.filter((e) => !expiredDemoIds.has(e.ownerId));
+    s.drafts = s.drafts.filter((d) => !expiredDemoIds.has(d.ownerId));
+  }
+  s.sessions = s.sessions.filter((x) => x.expiresAt > now && !expiredDemoIds.has(x.userId));
   s.drafts = s.drafts.filter((x) =>
     x.entryId ? x.createdAt > now - 7 * 86400000 : x.expiresAt > now,
   );

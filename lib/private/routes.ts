@@ -15,6 +15,7 @@ import {
   issueSession,
   newUserId,
   publicUser,
+  requestIpHash,
   setAuthCookie,
   verifyPassword,
 } from "./auth";
@@ -33,6 +34,7 @@ import {
   prepareDraft,
 } from "./ledger";
 import { categorizeWithConsent, parseOperation } from "./pennybot";
+import { seedJudgeWorkspace } from "./demo";
 const credentials = z.object({ email: emailSchema, password: z.string().min(1).max(128) }).strict();
 const signup = credentials
   .extend({
@@ -52,6 +54,45 @@ const signup = credentials
       }),
   })
   .strict();
+export function judgeDemo(request: NextRequest) {
+  return privateApi(async () => {
+    assertSameOrigin(request);
+    const input = await privateBody(
+      request,
+      z.object({ profile: z.enum(["student", "family", "freelancer"]) }).strict(),
+    );
+    const result = await withPrivateState((s) => {
+      prunePrivateState(s);
+      let current;
+      try {
+        current = authenticatedUser(s, request);
+      } catch (e) {
+        if (!(e instanceof HttpError) || e.status !== 401) throw e;
+      }
+      if (current && !current.demoProfile)
+        throw new HttpError(409, "Сначала выйдите из личного кабинета, чтобы открыть демо.");
+      // Commit rejected attempts too, so the request limit cannot be bypassed by rollback.
+      if (!consumeLimit(s, `judge-demo:${requestIpHash(request)}`, 30, 3600000))
+        return { error: "Слишком много запусков демо. Попробуйте позже.", status: 429 as const };
+      if (
+        current?.demoProfile !== input.profile &&
+        s.users.filter((u) => u.demoProfile).length >= 300
+      )
+        return { error: "Демо сейчас занято. Попробуйте чуть позже.", status: 503 as const };
+      const user =
+        current?.demoProfile === input.profile ? current : seedJudgeWorkspace(s, input.profile);
+      const token = issueSession(s, user.id, request);
+      return {
+        user: publicUser(user),
+        token,
+        maxAge: Math.max(1, Math.floor((user.demoExpiresAt! - Date.now()) / 1000)),
+      };
+    });
+    if ("error" in result)
+      return NextResponse.json({ error: result.error }, { status: result.status });
+    return setAuthCookie(NextResponse.json({ user: result.user }), result.token, result.maxAge);
+  });
+}
 export function register(request: NextRequest) {
   return privateApi(async () => {
     assertSameOrigin(request);
@@ -117,6 +158,11 @@ export function changePassword(request: NextRequest) {
         .strict(),
     );
     const user = await withPrivateState((s) => authenticatedUser(s, request));
+    if (user.demoProfile)
+      throw new HttpError(
+        403,
+        "У демоаккаунта нет пароля. Для личных данных создайте отдельный аккаунт.",
+      );
     await authThrottle(request, user.email, "login");
     if (!(await verifyPassword(input.currentPassword, user.passwordHash)))
       throw new HttpError(400, "Неверный текущий пароль.");
