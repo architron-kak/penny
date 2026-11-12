@@ -1136,3 +1136,26 @@ body {
     transition: none;
   }
 }
+
+.modern-shell .personal-workspace-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #356346;
+  border: 1px solid #dce8df;
+  padding: 8px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .modern-shell .personal-workspace-link {
+    min-width: 34px;
+    min-height: 34px;
+    justify-content: center;
+    padding: 7px;
+  }
+  .modern-shell .personal-workspace-link span {
+    display: none;
+  }
+}

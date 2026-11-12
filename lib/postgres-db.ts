@@ -36,6 +36,10 @@ function getPool() {
   }
   return pool;
 }
+// Shared TLS-verified pool; personal records live in a separate table.
+export function privatePostgresPool() {
+  return getPool();
+}
 async function initializeSchema() {
   const client = await getPool().connect();
   try {

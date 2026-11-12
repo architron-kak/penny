@@ -75,3 +75,13 @@ Validation: TypeScript, ESLint and the production build passed. Chromium exercis
 Reproduced a clipped pennybot card at 1440×560: the flex item collapsed to 61 px and its button extended below the card. The desktop rail now scrolls instead of shrinking its children. At desktop heights up to 800 px, the assistant becomes a compact icon and working button. Mobile and collapsed-tablet navigation retain their layout.
 
 Production build passed. Chromium verified card/button bounds and opened/closed chat at 1440×900, 1440×801, 1440×800, 1440×560, 1440×420 and 1280×540; also checked 1024×420 and 390×844 for horizontal overflow. No button clipping remained. Fix screenshots: `/tmp/penny-design-browser/sidebar-fixed.png`.
+
+## Personal accounts and reviewed ledger — 13 November 2026
+
+Added `/cabinet` with registration, sign-in, separate private storage, manual accounts in KZT/USD/EUR and reviewed income/expense entries. Public demo personas and Sandbox orders remain in their existing document. The private assistant prepares a server-owned draft; confirmation stores one entry, including concurrent retries. An optional category-only AI request sends the entered text after explicit opt-in.
+
+- All **91 tests pass**, including seven integration tests against an isolated PostgreSQL cluster. New coverage includes salted passwords and hashed tokens, HTTPS cookie attributes, session revocation and password changes, request-size and login limits, cross-origin rejection, owner isolation, integer money arithmetic, invalid currencies, consent, draft expiry, rollback, persistence and concurrent confirmations.
+- ESLint, TypeScript and the optimized production build pass.
+- Chromium tested registration, three currencies, manual income, pennybot expense preview, confirmation, journal filtering/rendering, record cancellation and logout. Starting from 50,000 KZT, previewing 4,500 KZT left the balance unchanged; confirmation produced 45,500 KZT. USD and EUR balances remained independent. A second account could neither read nor modify the first account's records. Revoked cookies received HTTP 401.
+- Responsive widths 320, 390, 760, 1024 and 1440 px showed no horizontal document overflow or browser runtime errors. Screenshots are in `/tmp/penny-private-browser/` for this session.
+- Tests used synthetic QA accounts and an isolated local database, never existing user records or live payments. The finance cabinet records manual ledger entries; it does not synchronize banks or execute payments. Email verification/recovery, CSV import and receipt OCR are not implemented.

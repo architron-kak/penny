@@ -12,7 +12,21 @@ A shortcut requires purchases on at least three distinct days in the latest seve
 
 [Mobile preview](docs/screenshots/mobile.png)
 
-**This is a working demo, with synthetic spending history and real PayPal Sandbox Orders integration.** It never reads your personal PayPal history. PayPal's Transaction Search API is merchant-side; we do not represent it as a consumer banking feed. Sandbox payments transfer test funds to the configured demo merchant, not the named grocery shop or subscription provider.
+**The public `/` demo uses synthetic spending history and real PayPal Sandbox Orders integration.** The separate `/cabinet` workspace records your own income and expenses after sign-in. Neither workspace reads your personal bank or PayPal history. PayPal's Transaction Search API is merchant-side; we do not represent it as a consumer banking feed. Sandbox payments transfer test funds to the configured demo merchant, not the named grocery shop or subscription provider.
+
+## Personal finance workspace
+
+Open **[Personal workspace](https://penny-g1zu.onrender.com/cabinet)**, or select its lock icon in the demo header. Register with your name, email and a password of at least 12 characters. A new account starts empty: create bank, cash or savings accounts, enter their opening balances, then record your actual income and expenses. Accounts support **KZT, USD and EUR**; balances and monthly totals remain separate for each currency, with no inferred exchange rate. Your browser time zone determines today's date and the current month.
+
+Select an account and tell **pennybot**: **«Купил продукты на 4500 ₸»**. It prepares a review showing the amount, currency, account, date and category. **Only “Подтвердить и сохранить” saves the entry.** You can edit the proposal first. Repeated confirmations of the same draft create one entry; drafts expire after 15 minutes. Manual forms use the same review. The journal supports search, filtering and sorting through AG Grid. Cancelling a record preserves its history and removes it from balances; it never refunds or transfers money. Repeated personal expenses can appear as shortcuts to another reviewed ledger entry.
+
+This is manual financial accounting: recording a purchase is separate from the demo's PayPal Sandbox checkout. There is no bank synchronization or live-money payment in the personal cabinet. CSV import and receipt recognition are planned for a later phase.
+
+Personal pennybot understands the supported Russian/English amount patterns without an AI service. Gemini categorization is **off by default**. If you explicitly enable it, only the entered message is sent to the configured AI provider; account lists, balances and transaction history are excluded. Its validated category cannot change the amount, currency, account or date. Ambiguous amounts and currency mismatches require correction.
+
+Passwords use salted **scrypt (N=32768, r=8, p=3)**. Seven-day opaque sessions use HttpOnly, SameSite cookies, with Secure and a `__Host-` name on HTTPS; only token hashes are stored. Logout revokes the current session; changing your password revokes other sessions and rotates the current one. Private APIs check ownership on the server, reject cross-origin mutations, limit authentication attempts and disable response caching. Private data is excluded from public persona APIs and stored separately: PostgreSQL table `penny_private_state`, or a mode-0600 `private-ledger.json` in local development. The same `DATABASE_URL` and verified TLS pool are used; no additional environment secret is required. This first version stores the private document in one locked JSONB row; it is intended for a small deployment rather than high-volume use.
+
+Email verification and email-based password recovery are **not implemented yet**; save your password. Authentication and ownership checks have automated coverage, but this is not an independently audited banking service.
 
 ## Hackathon integrations and judge access
 
@@ -22,7 +36,7 @@ A shortcut requires purchases on at least three distinct days in the latest seve
 - **Google Gemini 3.5 Flash Lite:** the hosted AI model, accessed through Google's OpenAI-compatible endpoint. It classifies transaction descriptions, explains Adaptive Home cards, and selects relevant server-computed facts for pennybot's answers. Zod validates model output; deterministic rules handle unavailable or invalid responses. Financial calculations and payment execution remain server-controlled.
 - **Render (additional sponsor):** hosts the Next.js application as a Node web service with HTTPS.
 - **AG Grid Community (additional sponsor):** powers the interactive Transactions and Subscriptions tables, including sorting, filtering, resizable columns, custom cell renderers and row action buttons. Penny uses AG Grid Community; AG Studio and Studio Agent Framework are not integrated.
-- **Neon PostgreSQL:** stores the demo state, planning records and Sandbox order history across application restarts.
+- **Neon PostgreSQL:** stores the demo state, planning records and Sandbox order history across application restarts, plus a separate private-account ledger document.
 - **Browser Web Speech API:** optional dictation fills an editable chat field in supported browsers. The user reviews and sends it; dictation never executes a payment.
 - **Other technologies:** Next.js, React, TypeScript, Tailwind CSS, Framer Motion, AG Grid Community and Zod.
 
@@ -181,7 +195,18 @@ Voice support uses the browser's experimental [SpeechRecognition API](https://de
 | POST   | `/api/planning`                  | `{ user, command, confirmed: true, requestId }`; validate and persist a local planning action once.        |
 | GET    | `/api/health`                    | Basic health check without creating or modifying payment records.                                          |
 
-Mutation requests require an `Origin` header matching `APP_URL`. Demo personas are public sample workspaces, not authenticated financial accounts.
+Mutation requests require an `Origin` header matching the configured application origin. Demo personas are public sample workspaces; the personal cabinet uses separate authenticated APIs:
+
+| Method | Route | Behavior |
+| ------ | ----- | -------- |
+| POST | `/api/account/register`, `/api/account/login` | Create an account or sign in; issue a session cookie. |
+| GET | `/api/account/me` | Current user, without password or session hashes. |
+| POST | `/api/account/logout`, `/api/account/password` | Revoke the session or change the password. |
+| GET | `/api/finance/overview` | Only the signed-in user's accounts, entries and totals by currency. |
+| POST | `/api/finance/accounts` | Create an owned account with an immutable currency. |
+| POST | `/api/finance/drafts`, `/api/finance/pennybot` | Prepare a manual or text-based entry; do not change the ledger. |
+| POST | `/api/finance/drafts/:id/confirm` | `{ confirmed: true }`; save the owned draft once. |
+| POST | `/api/finance/entries/:id/void` | `{ confirmed: true }`; cancel an owned record, preserving history. |
 
 ## Webhooks
 
@@ -255,8 +280,8 @@ After deployment, check `/api/health`, try a confirmed planning action, restart 
 
 ## Known limitations
 
-- All consumer spending history, planning balances/incomes/obligations, headphone models/prices, merchants, subscription usage, and budgets are synthetic. Sandbox captures are labeled separately. All amounts are USD.
-- No user authentication: the three personas share demonstration state. Payment capture is tied to the approving browser session, but this is not a production account system. Deploy privately for judging or use a disposable Sandbox app. This demo has no production rate-limiting or multi-tenant isolation.
+- The public demo's spending history, planning balances/incomes/obligations, headphone models/prices, merchants, subscription usage and budgets are synthetic and denominated in USD. Sandbox captures are labeled separately. The private cabinet uses your own manually entered KZT/USD/EUR records.
+- The three public personas share demonstration state without login; use sample data there. Payment capture is tied to the approving browser session. Personal records require a separate account at `/cabinet`; they are not incorporated into public demo forecasts or Sandbox payments. Email recovery, CSV import, receipt OCR and bank synchronization remain future work.
 - A cancellation suggestion does not cancel a real subscription. Real subscription plan creation (P2) is deliberately outside this finished flow.
 - The current demo month may be partial; the comparison explicitly uses the previous full month, not a like-for-like projection. Future captures beyond the seed date remain in the table/history but do not alter the historical snapshot aggregates; reseeding can refresh the snapshot with the reset caveat above.
 - Cash forecasts include only the single configured next income and explicit obligations plus estimated habits; they are scenarios, not a bank balance feed or a guarantee. The other-habits allowance excludes lunch and must be maintained separately from lunch. The planning clock is anchored to the seed-date snapshot.

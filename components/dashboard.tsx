@@ -21,6 +21,7 @@ import {
   Coffee,
   CreditCard,
   LayoutDashboard,
+  LockKeyhole,
   Leaf,
   LoaderCircle,
   Search,
@@ -543,6 +544,14 @@ function DashboardContent() {
             <strong>{navItems.find((n) => n.id === tab)?.label}</strong>
           </div>
           <div className="topbar-actions">
+            <Link
+              className="personal-workspace-link"
+              href="/cabinet"
+              aria-label="Personal workspace"
+            >
+              <LockKeyhole size={16} />
+              <span>Personal workspace</span>
+            </Link>
             <button
               className="icon-button motion-toggle"
               aria-label="Reduce animations"
