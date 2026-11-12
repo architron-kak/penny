@@ -8,3 +8,4 @@ data/runtime/
 *.tsbuildinfo
 *.log
 .DS_Store
+artifacts/
