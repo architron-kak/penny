@@ -14,6 +14,30 @@ A shortcut requires purchases on at least three distinct days in the latest seve
 
 **This is a working demo, with synthetic spending history and real PayPal Sandbox Orders integration.** It never reads your personal PayPal history. PayPal's Transaction Search API is merchant-side; we do not represent it as a consumer banking feed. Sandbox payments transfer test funds to the configured demo merchant, not the named grocery shop or subscription provider.
 
+## Hackathon integrations and judge access
+
+- **Hosted demo:** https://penny-g1zu.onrender.com
+- **Public source:** https://github.com/architron-kak/penny · **License:** [MIT](LICENSE).
+- **PayPal Sandbox Orders API v2:** creates checkout orders and captures explicitly approved payments. Server-side **PayPal OAuth 2.0** obtains the API access token. Each payment requires review in Penny, approval in PayPal Sandbox, and explicit completion after returning to Penny.
+- **Google Gemini 3.5 Flash Lite:** the hosted AI model, accessed through Google's OpenAI-compatible endpoint. It classifies transaction descriptions, explains Adaptive Home cards, and selects relevant server-computed facts for pennybot's answers. Zod validates model output; deterministic rules handle unavailable or invalid responses. Financial calculations and payment execution remain server-controlled.
+- **Render:** hosts the Next.js application as a Node web service with HTTPS. This is the additional sponsor integration used by Penny.
+- **Neon PostgreSQL:** stores the demo state, planning records and Sandbox order history across application restarts.
+- **Browser Web Speech API:** optional dictation fills an editable chat field in supported browsers. The user reviews and sends it; dictation never executes a payment.
+- **Other technologies:** Next.js, React, TypeScript, Tailwind CSS, Framer Motion, AG Grid Community and Zod.
+
+The supplied `.env.example` selects Gemini. To configure AI locally, put your Gemini key in the ignored `.env.local` file:
+
+```dotenv
+LLM_PROVIDER=compatible
+LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
+LLM_MODEL=gemini-3.5-flash-lite
+LLM_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+No registration or application login is required for the hosted demo. Select **Student**, **Family** or **Freelancer** in the persona menu. These are shared synthetic workspaces; use sample data. Explore Adaptive Home, Transactions, Subscriptions and pennybot chat. For example, ask **"Summarize my spending this month"**. Open the savings card to preview a goal, or explore debt and income-delay forecasts. Planning records save only after explicit confirmation.
+
+To test checkout, open a frequent-purchase **Pay $…** shortcut or a prepared suggestion in **Payments**, review the amount, and select **Approve & continue to PayPal**. A **PayPal Sandbox personal/buyer account** is required only to complete this optional checkout. Use a test buyer created in the PayPal Developer Dashboard, approve the test payment, return to Penny and click **Complete Sandbox payment**. Check Payments, Transactions and Agent activity for the result. No live PayPal account or real money is needed. Developer API keys and merchant secrets are already configured server-side and must not be shared with judges. If the free hosted service is waking from inactivity, wait for it to load and retry.
+
 ## Run locally
 
 Requires **Node.js 22+** and npm. No LLM key is required. The app also starts without PayPal credentials; payment actions are clearly disabled until they are configured.
@@ -200,7 +224,7 @@ Tests additionally cover the $100 → $60 → $60 purchase/debt invariant, actua
 The default `render.yaml` uses a **free Node Web Service**, no paid disk, and an external PostgreSQL database. Render Free loses local file changes when it spins down/restarts, so hosted financial records must not use the JSON fallback. The Blueprint enforces this with `REQUIRE_REMOTE_DATABASE=true`; missing `DATABASE_URL` makes the health endpoint return 503.
 
 1. Create a **Free** Neon project/database. Choose a region near the Render service. Copy its PostgreSQL connection string, preferably the pooled URL, into Render's secret `DATABASE_URL` setting. Do not commit it or place it in `.env.example`.
-2. Connect Render to the private GitHub repository `architron-kak/penny`. Create a **Blueprint** from `render.yaml` on `main` and confirm the service plan is **Free**. The Blueprint does not create a paid database or disk.
+2. Connect Render to the public GitHub repository `architron-kak/penny`. Create a **Blueprint** from `render.yaml` on `main` and confirm the service plan is **Free**. The Blueprint does not create a paid database or disk.
 3. Provide `DATABASE_URL`, `PAYPAL_CLIENT_ID`, and `PAYPAL_CLIENT_SECRET` during setup. If testing without payments, empty PayPal credentials leave review/analysis available and payment approval disabled. `LLM_API_KEY` remains optional.
 4. Keep `APP_URL` unset for Render's default domain. The app uses `RENDER_EXTERNAL_URL` for origin checks, HTTPS cookies, and PayPal return/cancel URLs. For a custom domain, set `APP_URL` explicitly. Do not copy the localhost `APP_URL` from `.env.local` into Render.
 5. Build: `npm ci --include=dev && npm run build`. Start: `npm start`; Next.js uses Render's assigned `PORT`. Health: `/api/health` reports storage configuration without continuously waking the remote database.
