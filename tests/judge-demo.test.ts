@@ -12,6 +12,7 @@ import {
   pennybotDraft,
   saveDraft,
   logout,
+  saveHomePlan,
 } from "../lib/private/routes";
 import { withPrivateState, prunePrivateState } from "../lib/private/store";
 import { requestIpHash } from "../lib/private/auth";
@@ -56,12 +57,17 @@ describe("one-click judge accounts", () => {
       expect(v.user.demoProfile).toBe(profile);
       expect(v.accounts).toHaveLength(3);
       expect(new Set(v.accounts.map((a: { currency: string }) => a.currency))).toEqual(
-        new Set(["KZT", "USD", "EUR"]),
+        new Set(["USD"]),
       );
       expect(v.entries).toHaveLength(11);
+      expect(v.entries.every((e: { currency: string }) => e.currency === "USD")).toBe(true);
+      expect(v.adaptiveHome.USD.cards).toHaveLength(7);
+      expect(
+        v.adaptiveHome.USD.cards.slice(0, 2).every((c: { kind: string }) => c.kind === "habit"),
+      ).toBe(true);
       expect(v.entries.some((e: { kind: string }) => e.kind === "income")).toBe(true);
       const groceries = v.entries.filter(
-        (e: { description: string }) => e.description === "Продукты",
+        (e: { description: string }) => e.description === "Groceries",
       );
       expect(new Set(groceries.map((e: { date: string }) => e.date)).size).toBe(3);
       expect(JSON.stringify(v)).not.toContain("passwordHash");
@@ -80,8 +86,8 @@ describe("one-click judge accounts", () => {
       vb = await view(b.cookie);
     expect(va.accounts[0].id).not.toBe(vb.accounts[0].id);
     const fields = {
-      accountId: va.accounts.find((a: { currency: string }) => a.currency === "KZT").id,
-      message: "Купил продукты на 4500 ₸",
+      accountId: va.accounts[0].id,
+      message: "Купил продукты на 24.50 USD",
     };
     expect((await pennybotDraft(req(fields, b.cookie))).status).toBe(404);
     const draft = (await (await pennybotDraft(req(fields, a.cookie))).json()).draft;
@@ -105,6 +111,56 @@ describe("one-click judge accounts", () => {
     expect((await judgeDemo(req({ profile: "admin" }))).status).toBe(400);
     expect((await judgeDemo(req({ profile: "student", ownerId: "victim" }))).status).toBe(400);
     expect(await withPrivateState((s) => s.users.length)).toBe(0);
+  });
+  it("answers English balance and home questions using the same private data", async () => {
+    const d = await demo(),
+      v = await view(d.cookie);
+    for (const message of [
+      "My balance",
+      "Explain my savings",
+      "Summarize my spending",
+      "Explain my Adaptive Home",
+    ]) {
+      const response = await pennybotDraft(req({ accountId: v.accounts[0].id, message }, d.cookie));
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body.kind).toBe("answer");
+      expect(body.answer.length).toBeGreaterThan(10);
+      expect(body.answer).not.toMatch(/[А-Яа-яЁё]/);
+    }
+    expect((await view(d.cookie)).entries).toHaveLength(11);
+  });
+  it("provides Adaptive Home to personal accounts and keeps confirmed plans private", async () => {
+    const r = await register(
+      req({
+        name: "Real",
+        email: "real@example.test",
+        password: "A very strong personal password!",
+      }),
+    );
+    const cookie = r.headers.get("set-cookie")!.split(";")[0];
+    const personal = await view(cookie);
+    expect(personal.adaptiveHome.KZT.cards[0].kind).toBe("onboarding");
+    const d = await demo();
+    const fields = {
+      currency: "USD",
+      debtAmount: "75.50",
+      goalName: "My trip",
+      goalTarget: "2000",
+      confirmed: true,
+    };
+    expect((await saveHomePlan(req(fields))).status).toBe(401);
+    expect((await saveHomePlan(req({ ...fields, confirmed: false }, cookie))).status).toBe(400);
+    expect((await saveHomePlan(req({ ...fields, ownerId: d.user.id }, cookie))).status).toBe(400);
+    expect((await saveHomePlan(req(fields, cookie, "https://attacker.test"))).status).toBe(403);
+    expect((await saveHomePlan(req(fields, cookie))).status).toBe(200);
+    expect((await view(cookie)).adaptiveHome.USD.plan).toEqual({
+      debtMinor: 7550,
+      goalName: "My trip",
+      goalTargetMinor: 200000,
+    });
+    expect((await view(d.cookie)).adaptiveHome.USD.plan.goalName).not.toBe("My trip");
+    expect((await view(cookie)).totals).toEqual(personal.totals);
   });
   it("does not replace personal accounts or allow demo password login/change", async () => {
     const r = await register(
@@ -138,7 +194,7 @@ describe("one-click judge accounts", () => {
     const realCookie = r.headers.get("set-cookie")!.split(";")[0],
       d = await demo();
     const v = await view(d.cookie);
-    await pennybotDraft(req({ accountId: v.accounts[0].id, message: "Купил на 100 ₸" }, d.cookie));
+    await pennybotDraft(req({ accountId: v.accounts[0].id, message: "Купил на 10 USD" }, d.cookie));
     await withPrivateState((s) => {
       s.users.find((u) => u.id === d.user.id)!.demoExpiresAt = Date.now() - 1;
     });

@@ -28,7 +28,7 @@ export function parseOperation(
       message,
     )
   )
-    throw new HttpError(400, "Поддерживаются тенге, доллары и евро.");
+    throw new HttpError(400, "KZT, USD and EUR are supported.");
   let date = asOf;
   const explicit =
     message.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0] || message.match(/\b\d{2}\.\d{2}\.\d{4}\b/)?.[0];
@@ -36,7 +36,7 @@ export function parseOperation(
   else if (/вчера|yesterday/i.test(message))
     date = new Date(Date.parse(asOf + "T12:00:00Z") - 86400000).toISOString().slice(0, 10);
   if (!dateSchema.safeParse(date).success)
-    throw new HttpError(400, "Укажите действительную дату не позднее сегодняшней.");
+    throw new HttpError(400, "Choose a valid date no later than today.");
   const text = explicit ? message.replace(explicit, "") : message;
   const pattern = new RegExp(
     `(${numberToken})\\s*(${currencyToken})|(${currencyToken})\\s*(${numberToken})`,
@@ -45,7 +45,10 @@ export function parseOperation(
   const matches = [...text.matchAll(pattern)];
   let amountText: string, span: string;
   if (matches.length > 1)
-    throw new HttpError(400, "В сообщении несколько сумм. Добавьте каждую операцию отдельно.");
+    throw new HttpError(
+      400,
+      "Your message contains multiple amounts. Add each transaction separately.",
+    );
   if (matches.length) {
     const m = matches[0];
     amountText = m[1] || m[4];
@@ -54,12 +57,12 @@ export function parseOperation(
     if (stated !== currency)
       throw new HttpError(
         409,
-        `В сообщении ${stated}, а выбран счёт ${currency}. Выберите счёт в ${stated}.`,
+        `Your message specifies ${stated}, but the selected account uses ${currency}. Select an account in ${stated}.`,
       );
   } else {
     const numbers = [...text.matchAll(new RegExp(numberToken, "g"))];
     if (numbers.length !== 1)
-      throw new HttpError(400, "Укажите одну сумму, например: «Купил продукты на 4500 ₸».");
+      throw new HttpError(400, "Enter one amount, for example: “Bought groceries for 24.50 USD”.");
     amountText = numbers[0][0];
     span = amountText;
   }
@@ -68,11 +71,14 @@ export function parseOperation(
     before = text[start - 1] || "",
     after = text[start + span.length] || "";
   if (/[\d.,eE-]/.test(before) || /^[\d]/.test(after))
-    throw new HttpError(400, "Используйте сумму вида 4500 или 4500,50.");
+    throw new HttpError(400, "Use an amount such as 4500 or 4500.50.");
   if (/\d/.test(text.replace(span, "")))
-    throw new HttpError(400, "В сообщении несколько чисел. Укажите одну операцию и одну сумму.");
+    throw new HttpError(
+      400,
+      "Your message contains multiple numbers. Specify one transaction and one amount.",
+    );
   const amountMinor = parseMinor(amountText);
-  if (amountMinor <= 0) throw new HttpError(400, "Сумма должна быть больше нуля.");
+  if (amountMinor <= 0) throw new HttpError(400, "The amount must be greater than zero.");
   const income = /получил|получила|зарплат|доход|зачисл|поступил|income|received|salary/i.test(
     message,
   );
@@ -91,7 +97,7 @@ export function parseOperation(
     currency,
     kind: income ? "income" : "expense",
     amountMinor,
-    description: (description || (income ? "Доход" : "Расход")).slice(0, 240),
+    description: (description || (income ? "Income" : "Expense")).slice(0, 240),
     category: income ? "other" : localCategory(message),
     date,
   };

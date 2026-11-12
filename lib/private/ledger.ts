@@ -4,7 +4,6 @@ import { categories } from "../types";
 import { HttpError } from "../http";
 import {
   currencies,
-  type Currency,
   type FinanceAccount,
   type PrivateState,
   type EntryFields,
@@ -14,10 +13,12 @@ import {
 } from "./types";
 import { publicUser, authenticatedUser } from "./auth";
 import type { NextRequest } from "next/server";
+import { personalAdaptiveHome } from "./adaptive-home";
+import { formatCurrency } from "../currency";
 export const emailSchema = z.string().trim().toLowerCase().email().max(254);
 export const passwordSchema = z
   .string()
-  .min(12, "Пароль должен содержать не менее 12 символов.")
+  .min(12, "Use a password with at least 12 characters.")
   .max(128);
 export const currencySchema = z.enum(currencies);
 export const today = () => new Date().toISOString().slice(0, 10);
@@ -39,28 +40,25 @@ export const dateSchema = z
       d >= "1900-01-01" &&
       d <= new Date(Date.now() + 86400000).toISOString().slice(0, 10)
     );
-  }, "Выберите дату не позднее сегодняшней.");
+  }, "Choose a valid date no later than today.");
 export function parseMinor(value: string, allowNegative = false) {
   const clean = value
     .trim()
     .replace(/[\s\u00a0\u202f]/g, "")
     .replace(",", ".");
   if (!new RegExp(`^${allowNegative ? "-?" : ""}\\d+(?:\\.\\d{1,2})?$`).test(clean))
-    throw new HttpError(400, "Введите сумму с точностью до двух знаков после запятой.");
+    throw new HttpError(400, "Enter an amount with no more than two decimal places.");
   const negative = clean.startsWith("-"),
     parts = clean.replace("-", "").split(".");
   const integer = BigInt(parts[0]) * 100n + BigInt((parts[1] || "").padEnd(2, "0"));
-  if (integer > 1000000000000n) throw new HttpError(400, "Сумма слишком велика.");
+  if (integer > 1000000000000n) throw new HttpError(400, "The amount is too large.");
   return Number(integer) * (negative ? -1 : 1);
 }
-export const formatMinor = (value: number, currency: Currency) =>
-  new Intl.NumberFormat("ru-KZ", { style: "currency", currency, maximumFractionDigits: 2 }).format(
-    value / 100,
-  );
+export const formatMinor = formatCurrency;
 export function sumMinor(values: number[]) {
   const total = values.reduce((sum, value) => sum + BigInt(value), 0n);
   if (total > BigInt(Number.MAX_SAFE_INTEGER) || total < BigInt(Number.MIN_SAFE_INTEGER))
-    throw new HttpError(409, "Сумма выходит за поддерживаемый диапазон.");
+    throw new HttpError(409, "The total exceeds the supported range.");
   return Number(total);
 }
 export const accountSchema = z
@@ -83,7 +81,7 @@ export const entrySchema = z
   .strict();
 export function ownedAccount(s: PrivateState, userId: string, id: string) {
   const a = s.accounts.find((a) => a.id === id && a.ownerId === userId);
-  if (!a) throw new HttpError(404, "Счёт не найден.");
+  if (!a) throw new HttpError(404, "Account not found.");
   return a;
 }
 export function accountBalance(s: PrivateState, account: FinanceAccount) {
@@ -94,7 +92,7 @@ export function accountBalance(s: PrivateState, account: FinanceAccount) {
       BigInt(account.openingMinor),
     );
   if (balance > BigInt(Number.MAX_SAFE_INTEGER) || balance < BigInt(Number.MIN_SAFE_INTEGER))
-    throw new HttpError(409, "Сумма выходит за поддерживаемый диапазон.");
+    throw new HttpError(409, "The total exceeds the supported range.");
   return Number(balance);
 }
 export function viewDraft(d: EntryDraft): DraftView {
@@ -111,17 +109,16 @@ export function prepareDraft(
 ) {
   const account = ownedAccount(s, ownerId, fields.accountId);
   if (account.currency !== fields.currency)
-    throw new HttpError(409, "Валюта операции должна совпадать с валютой счёта.");
+    throw new HttpError(409, "The transaction currency must match the account currency.");
   if (!Number.isSafeInteger(fields.amountMinor) || fields.amountMinor <= 0)
-    throw new HttpError(400, "Сумма должна быть больше нуля.");
+    throw new HttpError(400, "The amount must be greater than zero.");
   const user = s.users.find((u) => u.id === ownerId);
   if (!user || fields.date > calendarDay(user.timeZone))
-    throw new HttpError(400, "Нельзя записать будущую операцию.");
+    throw new HttpError(400, "Future transactions cannot be recorded.");
   const now = Date.now();
   s.drafts = s.drafts.filter((d) => d.entryId || d.expiresAt > now);
   const active = s.drafts.filter((d) => d.ownerId === ownerId && !d.entryId);
-  if (active.length >= 50)
-    throw new HttpError(429, "Слишком много черновиков. Подождите 15 минут.");
+  if (active.length >= 50) throw new HttpError(429, "Too many drafts. Please wait 15 minutes.");
   const draft: EntryDraft = {
     ...fields,
     id: randomUUID(),
@@ -136,22 +133,23 @@ export function prepareDraft(
 }
 export function confirmDraft(s: PrivateState, ownerId: string, id: string) {
   const draft = s.drafts.find((d) => d.id === id && d.ownerId === ownerId);
-  if (!draft) throw new HttpError(404, "Черновик не найден.");
+  if (!draft) throw new HttpError(404, "Draft not found.");
   if (draft.entryId) {
     const entry = s.entries.find((t) => t.id === draft.entryId && t.ownerId === ownerId);
-    if (!entry) throw new HttpError(409, "Операция недоступна.");
+    if (!entry) throw new HttpError(409, "Transaction unavailable.");
     const { ownerId: _owner, ...view } = entry;
     void _owner;
     return { entry: view, duplicate: true };
   }
   if (draft.expiresAt <= Date.now())
-    throw new HttpError(410, "Черновик устарел. Проверьте операцию заново.");
+    throw new HttpError(410, "This draft has expired. Please review the transaction again.");
   const account = ownedAccount(s, ownerId, draft.accountId);
-  if (account.currency !== draft.currency) throw new HttpError(409, "Валюта счёта изменилась.");
+  if (account.currency !== draft.currency)
+    throw new HttpError(409, "The account currency has changed.");
   const balance =
     accountBalance(s, account) + (draft.kind === "income" ? draft.amountMinor : -draft.amountMinor);
   if (!Number.isSafeInteger(balance))
-    throw new HttpError(409, "Сумма выходит за поддерживаемый диапазон.");
+    throw new HttpError(409, "The total exceeds the supported range.");
   const entry = {
     id: randomUUID(),
     ownerId,
@@ -225,6 +223,9 @@ export function overview(s: PrivateState, request: NextRequest): FinanceOverview
   ) as FinanceOverview["totals"];
   for (const row of Object.values(totals))
     if (Object.values(row).some((v) => !Number.isSafeInteger(v)))
-      throw new HttpError(409, "Сумма выходит за поддерживаемый диапазон.");
-  return { user: publicUser(user), accounts, entries, totals, month, today: day };
+      throw new HttpError(409, "The total exceeds the supported range.");
+  const adaptiveHome = Object.fromEntries(
+    currencies.map((c) => [c, personalAdaptiveHome(user, accounts, entries, c, day)]),
+  ) as FinanceOverview["adaptiveHome"];
+  return { user: publicUser(user), accounts, entries, totals, month, today: day, adaptiveHome };
 }

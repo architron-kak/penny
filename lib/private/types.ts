@@ -10,6 +10,9 @@ export type PrivateUser = {
   createdAt: string;
   demoProfile?: "student" | "family" | "freelancer";
   demoExpiresAt?: number;
+  demoVersion?: number;
+  homePlan?: Partial<Record<Currency, HomePlan>>;
+  adaptive?: Partial<Record<Currency, { week: string; habits: string[] }>>;
 };
 export type LoginSession = { hash: string; userId: string; createdAt: number; expiresAt: number };
 export type FinanceAccount = {
@@ -64,6 +67,26 @@ export type PublicUser = Pick<
 export type AccountView = Omit<FinanceAccount, "ownerId"> & { balanceMinor: number };
 export type EntryView = Omit<FinanceEntry, "ownerId">;
 export type DraftView = Omit<EntryDraft, "ownerId">;
+export type HomePlan = { debtMinor: number; goalName: string; goalTargetMinor: number };
+export type PersonalHomeCard = {
+  id: string;
+  kind: "habit" | "debts" | "subscriptions" | "savings" | "cashflow" | "insight" | "onboarding";
+  title: string;
+  value: string;
+  description: string;
+  action: "repeat" | "plan" | "subscriptions" | "accounts" | "entries" | "new-account";
+  actionLabel: string;
+  entry?: EntryView;
+  urgent?: boolean;
+  progress?: number;
+};
+export type PersonalHome = {
+  cards: PersonalHomeCard[];
+  reviewedWeek: string;
+  nextReview: string;
+  analysisDate: string;
+  plan: HomePlan;
+};
 export type FinanceOverview = {
   user: PublicUser;
   accounts: AccountView[];
@@ -71,4 +94,5 @@ export type FinanceOverview = {
   totals: Record<Currency, { balanceMinor: number; incomeMinor: number; expenseMinor: number }>;
   month: string;
   today: string;
+  adaptiveHome: Record<Currency, PersonalHome>;
 };

@@ -18,23 +18,25 @@ export default function FinanceGrid({
 }) {
   const columns = useMemo<ColDef<EntryView>[]>(
     () => [
-      { field: "date", headerName: "Дата", width: 130, sort: "desc" },
-      { field: "description", headerName: "Операция", flex: 1, minWidth: 180 },
+      { field: "date", headerName: "Date", width: 130, sort: "desc" },
+      { field: "description", headerName: "Transaction", flex: 1, minWidth: 180 },
       {
         field: "accountId",
-        headerName: "Счёт",
+        headerName: "Account",
         width: 160,
-        valueFormatter: (p) => accounts.find((a) => a.id === p.value)?.name || "Счёт",
+        valueFormatter: (p) => accounts.find((a) => a.id === p.value)?.name || "Account",
       },
       {
         field: "category",
-        headerName: "Категория",
+        getQuickFilterText: (p) =>
+          categoryLabels[p.value as keyof typeof categoryLabels] || p.value,
+        headerName: "Category",
         width: 180,
         valueFormatter: (p) => categoryLabels[p.value as keyof typeof categoryLabels] || p.value,
       },
       {
         field: "amountMinor",
-        headerName: "Сумма",
+        headerName: "Amount",
         width: 170,
         cellRenderer: ({ data }: ICellRendererParams<EntryView>) =>
           data ? (
@@ -49,9 +51,9 @@ export default function FinanceGrid({
           ) : null,
       },
       {
-        headerName: "Статус",
+        headerName: "Status",
         width: 140,
-        valueGetter: (p) => (p.data?.voidedAt ? "Отменена" : "Сохранена"),
+        valueGetter: (p) => (p.data?.voidedAt ? "Voided" : "Saved"),
       },
       {
         headerName: "",
@@ -61,7 +63,7 @@ export default function FinanceGrid({
         cellRenderer: ({ data }: ICellRendererParams<EntryView>) =>
           data && !data.voidedAt ? (
             <button className="ledger-text-button" onClick={() => onVoid(data)}>
-              Отменить запись
+              Void entry
             </button>
           ) : null,
       },

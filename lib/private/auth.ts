@@ -17,7 +17,7 @@ export const publicUser = (u: PrivateUser): PublicUser => ({
 });
 let activeHashes = 0;
 async function derive(password: string, salt: Buffer) {
-  if (activeHashes >= 2) throw new HttpError(429, "Слишком много попыток. Повторите чуть позже.");
+  if (activeHashes >= 2) throw new HttpError(429, "Too many attempts. Please try again shortly.");
   activeHashes++;
   try {
     return await new Promise<Buffer>((resolve, reject) =>
@@ -61,11 +61,11 @@ export async function checkLoginPassword(password: string, user?: PrivateUser) {
 export function authenticatedUser(s: PrivateState, request: NextRequest): PrivateUser {
   const token = request.cookies.get(authCookieName())?.value;
   if (!token || !/^[a-f0-9]{64}$/.test(token))
-    throw new HttpError(401, "Войдите в личный кабинет.");
+    throw new HttpError(401, "Sign in to your workspace.");
   const session = s.sessions.find((x) => x.hash === digest(token) && x.expiresAt > Date.now());
   const user = session && s.users.find((x) => x.id === session.userId);
   if (!user || (user.demoProfile && (!user.demoExpiresAt || user.demoExpiresAt <= Date.now())))
-    throw new HttpError(401, "Сессия завершена. Войдите снова.");
+    throw new HttpError(401, "Your session has ended. Please sign in again.");
   return user;
 }
 export function issueSession(s: PrivateState, userId: string, request: NextRequest) {
@@ -127,7 +127,7 @@ export async function authThrottle(
     const byEmail = consumeLimit(s, `${action}:email:${digest(email)}`, 10, 900000);
     return byIp && byEmail;
   });
-  if (!allowed) throw new HttpError(429, "Слишком много попыток. Повторите позже.");
+  if (!allowed) throw new HttpError(429, "Too many attempts. Please try again later.");
 }
 export function requestIpHash(request: NextRequest) {
   const forwarded =

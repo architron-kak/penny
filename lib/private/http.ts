@@ -3,7 +3,7 @@ import { z } from "zod";
 import { HttpError } from "../http";
 export async function privateBody<T>(request: NextRequest, schema: z.ZodType<T>): Promise<T> {
   const reader = request.body?.getReader();
-  if (!reader) throw new HttpError(400, "Заполните форму.");
+  if (!reader) throw new HttpError(400, "Please complete the form.");
   const chunks: Uint8Array[] = [];
   let length = 0;
   try {
@@ -13,7 +13,7 @@ export async function privateBody<T>(request: NextRequest, schema: z.ZodType<T>)
       length += part.value.byteLength;
       if (length > 16000) {
         await reader.cancel();
-        throw new HttpError(413, "Сообщение слишком длинное.");
+        throw new HttpError(413, "The message is too long.");
       }
       chunks.push(part.value);
     }
@@ -23,7 +23,7 @@ export async function privateBody<T>(request: NextRequest, schema: z.ZodType<T>)
   try {
     return schema.parse(JSON.parse(Buffer.concat(chunks).toString("utf8")));
   } catch {
-    throw new HttpError(400, "Проверьте поля формы.");
+    throw new HttpError(400, "Please check the form fields.");
   }
 }
 export async function privateApi(action: () => Promise<unknown>) {
@@ -37,7 +37,7 @@ export async function privateApi(action: () => Promise<unknown>) {
     else {
       console.error("Private request failed:", e instanceof Error ? e.name : "UnknownError");
       response = NextResponse.json(
-        { error: "Не удалось выполнить запрос. Повторите позже." },
+        { error: "Unable to complete the request. Please try again." },
         { status: 500 },
       );
     }

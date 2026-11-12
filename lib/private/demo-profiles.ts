@@ -3,23 +3,23 @@ export const demoProfiles = [
   {
     id: "student",
     name: "Student",
-    title: "Студент",
-    description: "Повседневные траты, кофе и накопления",
-    currencies: "KZT · USD · EUR",
+    title: "Student",
+    description: "Everyday spending, coffee and savings",
+    currencies: "USD · $",
   },
   {
     id: "family",
     name: "Family",
-    title: "Семья",
-    description: "Семейный бюджет, продукты и счета",
-    currencies: "KZT · USD · EUR",
+    title: "Family",
+    description: "Household budget, groceries and bills",
+    currencies: "USD · $",
   },
   {
     id: "freelancer",
     name: "Freelancer",
-    title: "Фрилансер",
-    description: "Доходы от проектов и расходы в разных валютах",
-    currencies: "USD · KZT · EUR",
+    title: "Freelancer",
+    description: "Project income and business expenses",
+    currencies: "USD · $",
   },
 ] as const;
 export type DemoProfile = (typeof demoProfiles)[number]["id"];

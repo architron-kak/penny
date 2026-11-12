@@ -1,13 +1,5 @@
 "use client";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type FormEvent,
-  type ReactNode,
-} from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import {
@@ -36,13 +28,16 @@ import type {
   DraftView,
   EntryView,
   FinanceOverview,
+  PersonalHomeCard,
 } from "@/lib/private/types";
 import type { Category } from "@/lib/types";
 import { amountInput, categoryLabels, formatMoney } from "./personal-money";
 import { demoProfiles, type DemoProfile } from "@/lib/private/demo-profiles";
+import PersonalAdaptiveHome from "./personal-adaptive-home";
+import VoiceInput from "./voice-input";
 const FinanceGrid = dynamic(() => import("./finance-grid"), {
   ssr: false,
-  loading: () => <p className="ledger-muted">Загружаем таблицу…</p>,
+  loading: () => <p className="ledger-muted">Loading table…</p>,
 });
 type Tab = "overview" | "entries" | "accounts" | "bot";
 type EditValues = {
@@ -74,8 +69,10 @@ async function call<T>(url: string, body?: unknown, signal?: AbortSignal): Promi
         }
       : {}),
   });
-  const data = await response.json().catch(() => ({ error: "Сервис временно недоступен." }));
-  if (!response.ok) throw new RequestError(data.error || "Повторите запрос.", response.status);
+  const data = await response
+    .json()
+    .catch(() => ({ error: "The service is temporarily unavailable." }));
+  if (!response.ok) throw new RequestError(data.error || "Please try again.", response.status);
   return data;
 }
 function Logo() {
@@ -120,7 +117,7 @@ function Modal({
         <button
           type="button"
           className="ledger-icon-button"
-          aria-label="Закрыть"
+          aria-label="Close"
           disabled={busy}
           onClick={onClose}
         >
@@ -132,9 +129,9 @@ function Modal({
   );
 }
 const tabs = [
-  { id: "overview", label: "Обзор", icon: LayoutDashboard },
-  { id: "entries", label: "Операции", icon: ArrowDownLeft },
-  { id: "accounts", label: "Счета", icon: Wallet },
+  { id: "overview", label: "Adaptive Home", icon: LayoutDashboard },
+  { id: "entries", label: "Transactions", icon: ArrowDownLeft },
+  { id: "accounts", label: "Accounts", icon: Wallet },
   { id: "bot", label: "pennybot", icon: Sparkles },
 ] as const;
 export default function FinanceCabinet() {
@@ -153,6 +150,13 @@ export default function FinanceCabinet() {
     [draft, setDraft] = useState<DraftView | null>(null),
     [voiding, setVoiding] = useState<EntryView | null>(null),
     [passwordModal, setPasswordModal] = useState(false);
+  const [homePlan, setHomePlan] = useState<{
+    currency: Currency;
+    debtAmount: string;
+    goalName: string;
+    goalTarget: string;
+    reviewed: boolean;
+  } | null>(null);
   const [botInput, setBotInput] = useState(""),
     [useAI, setUseAI] = useState(false),
     [botReply, setBotReply] = useState("");
@@ -271,50 +275,52 @@ export default function FinanceCabinet() {
     [data],
   );
   const requestVoid = useCallback((entry: EntryView) => setVoiding(entry), []);
-  const habits = useMemo(() => {
-    if (!data) return [];
-    const since = new Date(Date.parse(data.today + "T12:00:00Z") - 6 * 86400000)
-      .toISOString()
-      .slice(0, 10);
-    const groups = new Map<string, EntryView[]>();
-    for (const e of data.entries.filter(
-      (e) => !e.voidedAt && e.kind === "expense" && e.currency === currency && e.date >= since,
-    )) {
-      const key = e.description.toLocaleLowerCase();
-      const rows = groups.get(key) || [];
-      rows.push(e);
-      groups.set(key, rows);
-    }
-    return [...groups.values()]
-      .filter((rows) => new Set(rows.map((r) => r.date)).size >= 3)
-      .sort((a, b) => b.length - a.length)
-      .slice(0, 2)
-      .map((rows) => ({ entry: rows[0], days: new Set(rows.map((r) => r.date)).size }));
-  }, [data, currency]);
+  const homeAction = useCallback(
+    (card: PersonalHomeCard) => {
+      if (!data) return;
+      if (card.action === "repeat" && card.entry) repeat(card.entry);
+      else if (card.action === "new-account") setAccountModal(true);
+      else if (card.action === "plan") {
+        const p = data.adaptiveHome[currency].plan;
+        setHomePlan({
+          currency,
+          debtAmount: amountInput(p.debtMinor),
+          goalName: p.goalName,
+          goalTarget: amountInput(p.goalTargetMinor),
+          reviewed: false,
+        });
+      } else if (card.action === "accounts") setTab("accounts");
+      else {
+        setSearch(card.action === "subscriptions" ? "Subscriptions" : "");
+        setTab("entries");
+      }
+    },
+    [data, currency, repeat],
+  );
   if (loading)
     return (
       <div className="ledger-loading">
         <Logo />
         <LoaderCircle className="spin" />
-        <p>Открываем личный кабинет…</p>
+        <p>Opening your workspace…</p>
       </div>
     );
   if (!data)
     return (
-      <div className="ledger-auth" lang="ru">
+      <div className="ledger-auth" lang="en">
         <section className="ledger-auth-story">
           <Link href="/">
             <Logo />
           </Link>
-          <span className="ledger-eyebrow">ЛИЧНЫЕ ФИНАНСЫ</span>
+          <span className="ledger-eyebrow">PERSONAL FINANCE</span>
           <h1>
-            Ваши деньги.
+            Your money.
             <br />
-            Ваше пространство.
+            Your space.
           </h1>
           <p>
-            Счета, доходы и расходы — в одном месте. pennybot поможет превратить обычное сообщение в
-            понятную операцию.
+            Accounts, income and expenses in one place. Turn an everyday message into a reviewed
+            transaction with pennybot.
           </p>
           <div className="ledger-currency-tags">
             <span>₸ KZT</span>
@@ -324,19 +330,19 @@ export default function FinanceCabinet() {
           <div className="ledger-auth-points">
             <span>
               <ShieldCheck size={18} />
-              Отдельный доступ к вашим записям
+              Private access to your records
             </span>
             <span>
               <Wallet size={18} />
-              Несколько счетов без смешения валют
+              Multiple accounts, separate currencies
             </span>
             <span>
               <Check size={18} />
-              Сохранение после подтверждения
+              Save only after confirmation
             </span>
           </div>
-          <Link className="ledger-demo-link" href="/">
-            Посмотреть демоверсию <ArrowUpRight size={15} />
+          <Link className="ledger-demo-link" href="/demo">
+            Explore PayPal Sandbox <ArrowUpRight size={15} />
           </Link>
         </section>
         <section className="ledger-auth-form">
@@ -347,8 +353,8 @@ export default function FinanceCabinet() {
           )}
           <section className="ledger-judge-access" aria-labelledby="judge-access-title">
             <span className="ledger-eyebrow">QUICK DEMO</span>
-            <h2 id="judge-access-title">Проверить без регистрации</h2>
-            <p>Выберите готовый аккаунт — счета и операции уже заполнены.</p>
+            <h2 id="judge-access-title">Try Penny in one click</h2>
+            <p>Choose a ready-made profile with accounts and transactions included.</p>
             <div className="ledger-judge-profiles">
               {demoProfiles.map((profile) => (
                 <button
@@ -356,7 +362,7 @@ export default function FinanceCabinet() {
                   type="button"
                   disabled={busy}
                   onClick={() => openJudgeDemo(profile.id)}
-                  aria-label={`Открыть демо ${profile.name}`}
+                  aria-label={`Open demo ${profile.name}`}
                 >
                   <span>
                     <strong>
@@ -370,10 +376,10 @@ export default function FinanceCabinet() {
               ))}
             </div>
             <p className="ledger-judge-note">
-              Вход в один клик. Тестовые данные, отдельная копия для каждого посетителя.
+              No registration. Fictional data in your own independent workspace.
             </p>
           </section>
-          <div className="ledger-auth-divider">или войдите в свой аккаунт</div>
+          <div className="ledger-auth-divider">or use your personal account</div>
           <div className="ledger-auth-switch">
             <button
               type="button"
@@ -383,7 +389,7 @@ export default function FinanceCabinet() {
                 setError("");
               }}
             >
-              Войти
+              Sign in
             </button>
             <button
               type="button"
@@ -393,26 +399,26 @@ export default function FinanceCabinet() {
                 setError("");
               }}
             >
-              Создать аккаунт
+              Create account
             </button>
           </div>
-          <h2>{register ? "Начнём с вашего аккаунта" : "С возвращением"}</h2>
-          <p>Личный учёт без общих демоданных.</p>
+          <h2>{register ? "Create your own workspace" : "Welcome back"}</h2>
+          <p>Your personal records stay separate from demo data.</p>
           <form onSubmit={authenticate}>
             {register && (
               <label>
-                Ваше имя
+                Your name
                 <input
                   name="name"
                   required
                   maxLength={60}
                   autoComplete="name"
-                  placeholder="Как к вам обращаться"
+                  placeholder="What should we call you?"
                 />
               </label>
             )}
             <label>
-              Электронная почта
+              Email address
               <input
                 name="email"
                 type="email"
@@ -423,7 +429,7 @@ export default function FinanceCabinet() {
               />
             </label>
             <label>
-              Пароль
+              Password
               <input
                 name="password"
                 type="password"
@@ -431,21 +437,21 @@ export default function FinanceCabinet() {
                 minLength={register ? 12 : 1}
                 maxLength={128}
                 autoComplete={register ? "new-password" : "current-password"}
-                placeholder={register ? "Не менее 12 символов" : "Ваш пароль"}
+                placeholder={register ? "At least 12 characters" : "Your password"}
               />
             </label>
             <button className="ledger-primary" disabled={busy}>
               {busy ? <LoaderCircle size={17} className="spin" /> : <LockKeyhole size={17} />}{" "}
-              {register ? "Создать личный кабинет" : "Войти в кабинет"}
+              {register ? "Create personal account" : "Sign in to Penny"}
             </button>
           </form>
           <p className="ledger-auth-note">
             {register
-              ? "Сохраните пароль: восстановление по email пока не подключено."
-              : "Пароль хранится в виде стойкого хеша. Сессия защищена HttpOnly cookie."}
+              ? "Save your password: email recovery is not available yet."
+              : "Passwords are securely hashed. Sessions use HttpOnly cookies."}
           </p>
           <p className="ledger-muted">
-            Это учёт внесённых вами операций. Синхронизация с банками не подключена.
+            Track the transactions you enter. Bank synchronization is not connected.
           </p>
         </section>
       </div>
@@ -453,12 +459,15 @@ export default function FinanceCabinet() {
   const totals = data.totals[currency],
     selectedAccount = data.accounts.find((a) => a.id === accountId);
   const activeEntries = data.entries.filter((e) => !e.voidedAt && e.currency === currency),
-    monthName = new Intl.DateTimeFormat("ru-KZ", {
+    monthName = new Intl.DateTimeFormat("en-US", {
       month: "long",
       year: "numeric",
       timeZone: "UTC",
     }).format(new Date(data.today + "T12:00:00Z"));
   const currencyAccounts = data.accounts.filter((a) => a.currency === currency);
+  const displayCurrencies: Currency[] = data.user.demoProfile
+    ? [...new Set<Currency>(["USD", ...data.accounts.map((a) => a.currency)])]
+    : ["KZT", "USD", "EUR"];
   const botPanel = (
     <section className="ledger-bot ledger-panel">
       <div className="ledger-panel-title">
@@ -467,12 +476,12 @@ export default function FinanceCabinet() {
         </span>
         <div>
           <h2>pennybot</h2>
-          <p>Из сообщения — в запись</p>
+          <p>From a message to a record</p>
         </div>
       </div>
       <p className="ledger-bot-intro">
-        Напишите, на что потратили деньги или какой доход получили. Я предложу операцию для
-        проверки.
+        Ask about your Adaptive Home, savings or subscriptions. Or describe a transaction to review
+        and save.
       </p>
       <form
         onSubmit={(e) => {
@@ -489,21 +498,21 @@ export default function FinanceCabinet() {
             }>("/api/finance/pennybot", { accountId, message: botInput, useAI });
             if (result.draft) {
               setDraft(result.draft);
-              setBotReply("Проверьте сумму, счёт и категорию. Пока ничего не сохранено.");
+              setBotReply("Review the amount, account and category. Nothing has been saved yet.");
             } else setBotReply(result.answer || "");
           });
         }}
       >
         <label>
-          Счёт
+          Account
           <select
-            aria-label="Счёт для pennybot"
+            aria-label="Account for pennybot"
             required
             value={accountId}
             onChange={(e) => setAccountId(e.target.value)}
             disabled={!data.accounts.length}
           >
-            {!data.accounts.length && <option value="">Сначала создайте счёт</option>}
+            {!data.accounts.length && <option value="">Create an account first</option>}
             {data.accounts.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.name} · {a.currency}
@@ -512,29 +521,36 @@ export default function FinanceCabinet() {
           </select>
         </label>
         <label>
-          Ваше сообщение
+          Your message
           <textarea
+            aria-label="Your message"
             required
             maxLength={1000}
             value={botInput}
             onChange={(e) => setBotInput(e.target.value)}
-            placeholder="Купил продукты на 4500 ₸"
+            placeholder={
+              selectedAccount?.currency === "USD"
+                ? "Bought groceries for 24.50 USD"
+                : selectedAccount?.currency === "EUR"
+                  ? "Bought groceries for 25 EUR"
+                  : "Bought groceries for 4500 KZT"
+            }
             rows={4}
           />
         </label>
+        <VoiceInput disabled={busy || !data.accounts.length} onTranscript={setBotInput} />
         <label className="ledger-consent">
           <input type="checkbox" checked={useAI} onChange={(e) => setUseAI(e.target.checked)} />
           <span>
-            Gemini для категории
+            Use Gemini for categorization
             <small>
-              Если включить, текст сообщения будет отправлен Google. Счета, остатки и история не
-              отправляются.
+              If enabled, your message is sent to Google. Account lists, balances and transaction
+              history are excluded.
             </small>
           </span>
         </label>
         <button className="ledger-primary" disabled={busy || !data.accounts.length}>
-          {busy ? <LoaderCircle className="spin" size={17} /> : <Sparkles size={17} />}Предложить
-          операцию
+          {busy ? <LoaderCircle className="spin" size={17} /> : <Sparkles size={17} />}Ask pennybot
         </button>
       </form>
       {botReply && (
@@ -548,32 +564,30 @@ export default function FinanceCabinet() {
           onClick={() =>
             setBotInput(
               selectedAccount?.currency === "USD"
-                ? "Купил кофе за 5 USD"
+                ? "Bought coffee for 5 USD"
                 : selectedAccount?.currency === "EUR"
-                  ? "Купил продукты на 25 EUR"
-                  : "Купил продукты на 4500 ₸",
+                  ? "Bought groceries for 25 EUR"
+                  : "Bought groceries for 4500 KZT",
             )
           }
         >
-          Пример расхода <ChevronRight size={14} />
+          Try an expense <ChevronRight size={14} />
         </button>
-        <button disabled={busy} onClick={() => setBotInput("Мой баланс")}>
-          Показать баланс <ChevronRight size={14} />
+        <button disabled={busy} onClick={() => setBotInput("My balance")}>
+          Show balance <ChevronRight size={14} />
         </button>
       </div>
-      <small className="ledger-muted">
-        Распознавание создаёт только черновик. Деньги не переводятся.
-      </small>
+      <small className="ledger-muted">A message creates a draft. It does not transfer money.</small>
     </section>
   );
   return (
-    <div className="cabinet" lang="ru">
+    <div className="cabinet" lang="en">
       <aside className="ledger-sidebar">
         <Link href="/cabinet">
           <Logo />
         </Link>
-        <span className="ledger-sidebar-label">ЛИЧНЫЙ КАБИНЕТ</span>
-        <nav aria-label="Навигация личного кабинета">
+        <span className="ledger-sidebar-label">YOUR WORKSPACE</span>
+        <nav aria-label="Workspace navigation">
           {tabs.map((t) => (
             <button
               key={t.id}
@@ -590,11 +604,11 @@ export default function FinanceCabinet() {
           <span className="ledger-user-avatar">{data.user.name.slice(0, 1).toUpperCase()}</span>
           <div>
             <strong>{data.user.name}</strong>
-            <small>{data.user.demoProfile ? "Демо для судей" : "Личный учёт"}</small>
+            <small>{data.user.demoProfile ? "Demo workspace" : "Personal account"}</small>
           </div>
           <button
             className="ledger-icon-button"
-            aria-label="Выйти"
+            aria-label="Sign out"
             disabled={busy}
             onClick={signOut}
           >
@@ -606,16 +620,16 @@ export default function FinanceCabinet() {
         <header className="ledger-topbar">
           <span>
             <LockKeyhole size={14} />{" "}
-            {data.user.demoProfile ? "Демонстрационный аккаунт" : "Только ваши данные"}
+            {data.user.demoProfile ? "Demo account" : "Your private workspace"}
           </span>
           <div>
-            <Link href="/">
-              Демо Penny <ArrowUpRight size={13} />
+            <Link href="/demo">
+              PayPal Sandbox <ArrowUpRight size={13} />
             </Link>
             {!data.user.demoProfile && (
               <button
                 className="ledger-icon-button"
-                aria-label="Сменить пароль"
+                aria-label="Change password"
                 onClick={() => setPasswordModal(true)}
               >
                 <Settings2 size={18} />
@@ -623,7 +637,7 @@ export default function FinanceCabinet() {
             )}
             <button
               className="ledger-icon-button ledger-compact-logout"
-              aria-label="Выйти"
+              aria-label="Sign out"
               disabled={busy}
               onClick={signOut}
             >
@@ -633,20 +647,20 @@ export default function FinanceCabinet() {
         </header>
         <main className="ledger-content">
           {data.user.demoProfile && (
-            <section className="ledger-judge-banner" aria-label="Демонстрационные данные">
+            <section className="ledger-judge-banner" aria-label="Demo data">
               <Sparkles size={20} />
               <div>
                 <strong>
-                  Демоаккаунт · {demoProfiles.find((p) => p.id === data.user.demoProfile)?.name}
+                  Demo account · {demoProfiles.find((p) => p.id === data.user.demoProfile)?.name}
                 </strong>
                 <p>
-                  Это пример с вымышленными данными. Проверяйте pennybot, добавляйте расходы и счета
-                  — изменения видны только в вашем браузере. Демо действует 24 часа; не вносите
-                  личные данные.
+                  This workspace uses fictional data. Try pennybot, add expenses and accounts. Your
+                  changes are separate from other visitors. The demo lasts 24 hours; use sample
+                  data.
                 </p>
               </div>
               <button disabled={busy} onClick={signOut}>
-                Сменить профиль <ArrowUpRight size={14} />
+                Switch profile <ArrowUpRight size={14} />
               </button>
             </section>
           )}
@@ -655,32 +669,32 @@ export default function FinanceCabinet() {
               <span className="ledger-eyebrow">{monthName.toUpperCase()}</span>
               <h1>
                 {tab === "overview"
-                  ? `Ваш обзор, ${data.user.name}`
+                  ? `Your Adaptive Home, ${data.user.name}`
                   : tab === "entries"
-                    ? "Доходы и расходы"
+                    ? "Income and expenses"
                     : tab === "accounts"
-                      ? "Ваши счета"
-                      : "Ваш помощник"}
+                      ? "Your accounts"
+                      : "Your assistant"}
               </h1>
               <p>
                 {tab === "overview"
-                  ? "Всё, что вы записали. Без смешения валют."
+                  ? "Your financial picture, shaped around your habits."
                   : tab === "entries"
-                    ? "Подтверждённые операции и история исправлений."
+                    ? "Confirmed transactions and a history of corrections."
                     : tab === "accounts"
-                      ? "Банк, наличные или накопления — с отдельными остатками."
-                      : "Запишите расход обычными словами."}
+                      ? "Bank, cash and savings accounts with separate balances."
+                      : "Record expenses in your own words."}
               </p>
             </div>
             <button className="ledger-primary" onClick={newEntry} disabled={busy}>
               <Plus size={17} />
-              Новая операция
+              New transaction
             </button>
           </div>
           {error && (
             <div className="ledger-error" role="alert">
               {error}
-              <button aria-label="Скрыть ошибку" onClick={() => setError("")}>
+              <button aria-label="Dismiss error" onClick={() => setError("")}>
                 <X size={15} />
               </button>
             </div>
@@ -691,70 +705,83 @@ export default function FinanceCabinet() {
               {notice}
             </div>
           )}
-          {!data.accounts.length && (
+          {!data.accounts.length && tab !== "overview" && (
             <section className="ledger-onboarding ledger-panel">
               <span className="ledger-round-icon">
                 <Wallet size={26} />
               </span>
               <div>
-                <h2>Начните с первого счёта</h2>
-                <p>Выберите валюту и укажите текущий остаток. В кабинете пока нет операций.</p>
+                <h2>Start with your first account</h2>
+                <p>
+                  Choose a currency and enter your current balance. Your workspace starts empty.
+                </p>
               </div>
               <button className="ledger-primary" onClick={() => setAccountModal(true)}>
                 <Plus size={16} />
-                Создать счёт
+                Create account
               </button>
             </section>
           )}
           {tab === "overview" && (
             <>
               <div className="ledger-section-line">
-                <h2>Финансовая сводка</h2>
+                <h2>Adaptive Home</h2>
                 <label className="ledger-currency-picker">
-                  <span>Валюта</span>
+                  <span>Currency</span>
                   <select
                     value={currency}
                     onChange={(e) => setCurrency(e.target.value as Currency)}
                   >
-                    {["KZT", "USD", "EUR"].map((c) => (
+                    {displayCurrencies.map((c) => (
                       <option key={c}>{c}</option>
                     ))}
                   </select>
                 </label>
               </div>
+              <PersonalAdaptiveHome
+                home={data.adaptiveHome[currency]}
+                busy={busy}
+                onAction={homeAction}
+              />
+              <div className="ledger-section-line">
+                <h2>Financial overview</h2>
+              </div>
               <div className="ledger-summary">
                 <section className="ledger-balance">
-                  <span>Общий остаток · {currency}</span>
+                  <span>Total balance · {currency}</span>
                   <strong>{formatMoney(totals.balanceMinor, currency)}</strong>
-                  <small>{currencyAccounts.length} счетов в этой валюте</small>
+                  <small>
+                    {currencyAccounts.length}{" "}
+                    {currencyAccounts.length === 1 ? "account" : "accounts"} in this currency
+                  </small>
                 </section>
                 <section className="ledger-panel">
                   <span>
                     <ArrowDownLeft size={16} />
-                    Доходы за месяц
+                    Income this month
                   </span>
                   <strong className="ledger-positive">
                     {formatMoney(totals.incomeMinor, currency)}
                   </strong>
-                  <small>По подтверждённым записям</small>
+                  <small>From confirmed records</small>
                 </section>
                 <section className="ledger-panel">
                   <span>
                     <ArrowUpRight size={16} />
-                    Расходы за месяц
+                    Expenses this month
                   </span>
                   <strong>{formatMoney(totals.expenseMinor, currency)}</strong>
-                  <small>Начальный остаток не считается доходом</small>
+                  <small>Opening balances are excluded from income</small>
                 </section>
               </div>
               <div className="ledger-columns">
                 <div>
                   <section className="ledger-panel">
                     <div className="ledger-section-line">
-                      <h2>Счета</h2>
+                      <h2>Accounts</h2>
                       <button className="ledger-text-button" onClick={() => setAccountModal(true)}>
                         <Plus size={14} />
-                        Добавить
+                        Add
                       </button>
                     </div>
                     {data.accounts.map((a) => (
@@ -766,10 +793,10 @@ export default function FinanceCabinet() {
                           <strong>{a.name}</strong>
                           <small>
                             {a.kind === "bank"
-                              ? "Банковский счёт"
+                              ? "Bank account"
                               : a.kind === "cash"
-                                ? "Наличные"
-                                : "Накопления"}{" "}
+                                ? "Cash"
+                                : "Savings"}{" "}
                             · {a.currency}
                           </small>
                         </div>
@@ -777,36 +804,14 @@ export default function FinanceCabinet() {
                       </div>
                     ))}
                     {!data.accounts.length && (
-                      <p className="ledger-muted">Создайте счёт, чтобы начать.</p>
+                      <p className="ledger-muted">Create an account to get started.</p>
                     )}
                   </section>
-                  {habits.length > 0 && (
-                    <section className="ledger-panel ledger-habits">
-                      <h2>Привычные расходы</h2>
-                      {habits.map(({ entry, days }) => (
-                        <div key={entry.id}>
-                          <div>
-                            <strong>{entry.description}</strong>
-                            <p>
-                              {days} разных дней за неделю ·{" "}
-                              {formatMoney(entry.amountMinor, entry.currency)}
-                            </p>
-                          </div>
-                          <button className="ledger-text-button" onClick={() => repeat(entry)}>
-                            Повторить запись
-                          </button>
-                        </div>
-                      ))}
-                      <small className="ledger-muted">
-                        Каждая повторная запись также требует подтверждения.
-                      </small>
-                    </section>
-                  )}
                   <section className="ledger-panel">
                     <div className="ledger-section-line">
-                      <h2>Последние операции</h2>
+                      <h2>Recent transactions</h2>
                       <button className="ledger-text-button" onClick={() => setTab("entries")}>
-                        Все <ArrowUpRight size={14} />
+                        View all <ArrowUpRight size={14} />
                       </button>
                     </div>
                     {activeEntries.slice(0, 6).map((e) => (
@@ -833,9 +838,9 @@ export default function FinanceCabinet() {
                     {!activeEntries.length && (
                       <div className="ledger-empty">
                         <CirclePlus size={25} />
-                        <p>Запишите первый доход или расход в {currency}.</p>
+                        <p>Record your first income or expense in {currency}.</p>
                         <button className="ledger-text-button" onClick={newEntry}>
-                          Добавить операцию
+                          Add transaction
                         </button>
                       </div>
                     )}
@@ -849,15 +854,15 @@ export default function FinanceCabinet() {
             <section className="ledger-panel ledger-entries-panel">
               <div className="ledger-section-line">
                 <h2>
-                  Журнал операций <span className="ledger-count">{data.entries.length}</span>
+                  Transaction journal <span className="ledger-count">{data.entries.length}</span>
                 </h2>
                 <label className="ledger-search">
                   <Search size={16} />
                   <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Поиск по операциям"
-                    aria-label="Поиск по операциям"
+                    placeholder="Search transactions"
+                    aria-label="Search transactions"
                   />
                 </label>
               </div>
@@ -868,26 +873,26 @@ export default function FinanceCabinet() {
                 onVoid={requestVoid}
               />
               <p className="ledger-muted">
-                Отмена записи исключает её из учёта, но сохраняет историю. Она не возвращает деньги
-                и не отменяет банковский платёж.
+                Voiding excludes the record from balances and preserves its history. It does not
+                refund money or reverse a bank payment.
               </p>
             </section>
           )}
           {tab === "accounts" && (
             <>
               <div className="ledger-section-line">
-                <h2>Остатки по валютам</h2>
+                <h2>Balances by currency</h2>
                 <button className="ledger-secondary" onClick={() => setAccountModal(true)}>
                   <Plus size={16} />
-                  Новый счёт
+                  New account
                 </button>
               </div>
               <div className="ledger-summary">
-                {(["KZT", "USD", "EUR"] as const).map((c) => (
+                {displayCurrencies.map((c) => (
                   <section className="ledger-panel" key={c}>
                     <span>{c}</span>
                     <strong>{formatMoney(data.totals[c].balanceMinor, c)}</strong>
-                    <small>Без пересчёта в другие валюты</small>
+                    <small>No currency conversion</small>
                   </section>
                 ))}
               </div>
@@ -905,7 +910,7 @@ export default function FinanceCabinet() {
                       {formatMoney(a.balanceMinor, a.currency)}
                     </strong>
                     <p className="ledger-muted">
-                      Начальный остаток: {formatMoney(a.openingMinor, a.currency)}
+                      Opening balance: {formatMoney(a.openingMinor, a.currency)}
                     </p>
                     <button
                       className="ledger-secondary"
@@ -922,7 +927,7 @@ export default function FinanceCabinet() {
                       }}
                     >
                       <Plus size={15} />
-                      Записать операцию
+                      Record a transaction
                     </button>
                   </section>
                 ))}
@@ -933,16 +938,20 @@ export default function FinanceCabinet() {
             <div className="ledger-bot-page">
               {botPanel}
               <section className="ledger-panel">
-                <h2>Как это работает</h2>
+                <h2>How it works</h2>
                 <ol>
-                  <li>Выберите счёт и напишите сообщение с одной суммой.</li>
-                  <li>Проверьте предложенные сумму, дату, категорию и счёт.</li>
-                  <li>Подтвердите сохранение. Только тогда изменится учётный остаток.</li>
+                  <li>Select an account and enter one amount in your message.</li>
+                  <li>Review the proposed amount, date, category and account.</li>
+                  <li>Confirm to save. Only then does your recorded balance change.</li>
                 </ol>
-                <p>Например: «Купил продукты на 4500 ₸» или «Получил зарплату 300000 KZT».</p>
+                <p>
+                  {data.user.demoProfile
+                    ? "For example: “Bought groceries for 24.50 USD” or “Received payment of 800 USD”."
+                    : "For example: “Bought groceries for 4500 KZT” or “Received salary of 300000 KZT”."}
+                </p>
                 <p className="ledger-muted">
-                  Валюту можно не писать — будет использована валюта выбранного счёта. Сообщения с
-                  несколькими суммами нужно разделить.
+                  You can omit the currency to use the selected account’s currency. Enter separate
+                  messages for multiple amounts.
                 </p>
               </section>
             </div>
@@ -950,14 +959,121 @@ export default function FinanceCabinet() {
           <footer className="ledger-footer">
             <span>
               <ShieldCheck size={14} />
-              Личные записи отделены от демоданных
+              Personal records stay separate from demo data
             </span>
-            <span>KZT · USD · EUR</span>
+            <span>{displayCurrencies.join(" · ")}</span>
           </footer>
         </main>
       </div>
+      {homePlan && (
+        <Modal
+          title={homePlan.reviewed ? "Confirm your settings" : "Savings goal and obligations"}
+          busy={busy}
+          onClose={() => setHomePlan(null)}
+        >
+          {homePlan.reviewed ? (
+            <>
+              <p>
+                Currency: <strong>{homePlan.currency}</strong>
+              </p>
+              <p>
+                Outstanding debt:{" "}
+                <strong>
+                  {homePlan.debtAmount} {homePlan.currency}
+                </strong>
+              </p>
+              <p>
+                Goal: <strong>{homePlan.goalName || "Not set"}</strong> · {homePlan.goalTarget}{" "}
+                {homePlan.currency}
+              </p>
+              <p className="ledger-muted">
+                These settings shape your cards. They do not change account balances or transfer
+                money. Your savings jar uses savings-account balances.
+              </p>
+              {error && (
+                <p className="ledger-error" role="alert">
+                  {error}
+                </p>
+              )}
+              <div className="ledger-modal-actions">
+                <button
+                  className="ledger-secondary"
+                  disabled={busy}
+                  onClick={() => setHomePlan({ ...homePlan, reviewed: false })}
+                >
+                  Edit
+                </button>
+                <button
+                  className="ledger-primary"
+                  disabled={busy}
+                  onClick={() =>
+                    void work(async () => {
+                      const { reviewed: _reviewed, ...fields } = homePlan;
+                      void _reviewed;
+                      await call("/api/finance/home-plan", { ...fields, confirmed: true });
+                      await refresh();
+                      setHomePlan(null);
+                      setNotice("Savings goal and obligations updated.");
+                    })
+                  }
+                >
+                  Confirm settings
+                </button>
+              </div>
+            </>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setError("");
+                setHomePlan({ ...homePlan, reviewed: true });
+              }}
+            >
+              <p className="ledger-muted">
+                Settings for {homePlan.currency}. Other currencies are calculated separately.
+              </p>
+              <label>
+                Outstanding debt
+                <input
+                  inputMode="decimal"
+                  required
+                  maxLength={32}
+                  value={homePlan.debtAmount}
+                  onChange={(e) => setHomePlan({ ...homePlan, debtAmount: e.target.value })}
+                />
+              </label>
+              <label>
+                What are you saving for?
+                <input
+                  maxLength={80}
+                  value={homePlan.goalName}
+                  onChange={(e) => setHomePlan({ ...homePlan, goalName: e.target.value })}
+                  placeholder="For example, a holiday"
+                />
+              </label>
+              <label>
+                Goal amount
+                <input
+                  inputMode="decimal"
+                  required
+                  maxLength={32}
+                  value={homePlan.goalTarget}
+                  onChange={(e) => setHomePlan({ ...homePlan, goalTarget: e.target.value })}
+                />
+              </label>
+              <p className="ledger-muted">
+                Enter 0 if you have no debt or goal. Savings are calculated from accounts of type
+                “Savings”.
+              </p>
+              <button className="ledger-primary" disabled={busy}>
+                Review settings
+              </button>
+            </form>
+          )}
+        </Modal>
+      )}
       {accountModal && (
-        <Modal title="Новый счёт" busy={busy} onClose={() => setAccountModal(false)}>
+        <Modal title="New account" busy={busy} onClose={() => setAccountModal(false)}>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -972,32 +1088,32 @@ export default function FinanceCabinet() {
                 await refresh();
                 setAccountId(result.account.id);
                 setAccountModal(false);
-                setNotice("Счёт создан.");
+                setNotice("Account created.");
               });
             }}
           >
             <label>
-              Название
+              Name
               <input
                 name="name"
                 required
                 maxLength={60}
-                placeholder="Например, основная карта"
+                placeholder="For example, main account"
                 autoFocus
               />
             </label>
             <div className="ledger-form-row">
               <label>
-                Тип
-                <select name="kind" aria-label="Тип счёта">
-                  <option value="bank">Банковский счёт</option>
-                  <option value="cash">Наличные</option>
-                  <option value="savings">Накопления</option>
+                Type
+                <select name="kind" aria-label="Account type">
+                  <option value="bank">Bank account</option>
+                  <option value="cash">Cash</option>
+                  <option value="savings">Savings</option>
                 </select>
               </label>
               <label>
-                Валюта
-                <select name="currency" aria-label="Валюта" defaultValue={currency}>
+                Currency
+                <select name="currency" aria-label="Currency" defaultValue={currency}>
                   <option>KZT</option>
                   <option>USD</option>
                   <option>EUR</option>
@@ -1005,7 +1121,7 @@ export default function FinanceCabinet() {
               </label>
             </div>
             <label>
-              Начальный остаток
+              Opening balance
               <input
                 name="openingBalance"
                 required
@@ -1015,7 +1131,7 @@ export default function FinanceCabinet() {
               />
             </label>
             <p className="ledger-muted">
-              Укажите уже доступные деньги. Начальный остаток не будет записан как доход.
+              Enter money already available. The opening balance is excluded from income.
             </p>
             {error && (
               <p role="alert" className="ledger-error">
@@ -1023,13 +1139,14 @@ export default function FinanceCabinet() {
               </p>
             )}
             <button className="ledger-primary" disabled={busy}>
-              {busy ? <LoaderCircle className="spin" size={17} /> : <Plus size={17} />}Создать счёт
+              {busy ? <LoaderCircle className="spin" size={17} /> : <Plus size={17} />}Create
+              account
             </button>
           </form>
         </Modal>
       )}
       {edit && (
-        <Modal title="Новая операция" busy={busy} onClose={() => setEdit(null)}>
+        <Modal title="New transaction" busy={busy} onClose={() => setEdit(null)}>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -1042,20 +1159,20 @@ export default function FinanceCabinet() {
           >
             <div className="ledger-form-row">
               <label>
-                Тип
+                Type
                 <select
-                  aria-label="Тип"
+                  aria-label="Type"
                   value={edit.kind}
                   onChange={(e) => setEdit({ ...edit, kind: e.target.value as EditValues["kind"] })}
                 >
-                  <option value="expense">Расход</option>
-                  <option value="income">Доход</option>
+                  <option value="expense">Expense</option>
+                  <option value="income">Income</option>
                 </select>
               </label>
               <label>
-                Счёт
+                Account
                 <select
-                  aria-label="Счёт"
+                  aria-label="Account"
                   value={edit.accountId}
                   onChange={(e) => setEdit({ ...edit, accountId: e.target.value })}
                 >
@@ -1068,7 +1185,7 @@ export default function FinanceCabinet() {
               </label>
             </div>
             <label>
-              Сумма · {data.accounts.find((a) => a.id === edit.accountId)?.currency}
+              Amount · {data.accounts.find((a) => a.id === edit.accountId)?.currency}
               <input
                 required
                 inputMode="decimal"
@@ -1080,20 +1197,20 @@ export default function FinanceCabinet() {
               />
             </label>
             <label>
-              Описание
+              Description
               <input
                 required
                 maxLength={240}
                 value={edit.description}
                 onChange={(e) => setEdit({ ...edit, description: e.target.value })}
-                placeholder="Продукты"
+                placeholder="Groceries"
               />
             </label>
             <div className="ledger-form-row">
               <label>
-                Категория
+                Category
                 <select
-                  aria-label="Категория"
+                  aria-label="Category"
                   value={edit.category}
                   onChange={(e) => setEdit({ ...edit, category: e.target.value as Category })}
                 >
@@ -1105,7 +1222,7 @@ export default function FinanceCabinet() {
                 </select>
               </label>
               <label>
-                Дата
+                Date
                 <input
                   required
                   type="date"
@@ -1122,20 +1239,20 @@ export default function FinanceCabinet() {
               </p>
             )}
             <button className="ledger-primary" disabled={busy}>
-              {busy ? <LoaderCircle className="spin" size={17} /> : <Search size={17} />}Проверить
-              операцию
+              {busy ? <LoaderCircle className="spin" size={17} /> : <Search size={17} />}Review
+              transaction
             </button>
           </form>
         </Modal>
       )}
       {draft && (
-        <Modal title="Проверьте перед сохранением" busy={busy} onClose={() => setDraft(null)}>
+        <Modal title="Review before saving" busy={busy} onClose={() => setDraft(null)}>
           <div className="ledger-review">
             <span>
-              {draft.kind === "income" ? "Доход" : "Расход"} ·{" "}
+              {draft.kind === "income" ? "Income" : "Expense"} ·{" "}
               {draft.source === "pennybot"
-                ? `pennybot · ${draft.mode === "llm" ? "Gemini" : "распознавание"}`
-                : "Ручная запись"}
+                ? `pennybot · ${draft.mode === "llm" ? "Gemini" : "categorization"}`
+                : "Manual entry"}
             </span>
             <strong>
               {draft.kind === "income" ? "+" : "−"}
@@ -1144,21 +1261,21 @@ export default function FinanceCabinet() {
             <h3>{draft.description}</h3>
             <dl>
               <div>
-                <dt>Счёт</dt>
+                <dt>Account</dt>
                 <dd>{data.accounts.find((a) => a.id === draft.accountId)?.name}</dd>
               </div>
               <div>
-                <dt>Категория</dt>
+                <dt>Category</dt>
                 <dd>{categoryLabels[draft.category]}</dd>
               </div>
               <div>
-                <dt>Дата</dt>
+                <dt>Date</dt>
                 <dd>{draft.date}</dd>
               </div>
             </dl>
           </div>
           <p className="ledger-muted">
-            Пока ничего не сохранено. Это запись в учёте, а не перевод денег.
+            Nothing has been saved yet. This is a ledger entry, not a money transfer.
           </p>
           {error && (
             <p className="ledger-error" role="alert">
@@ -1167,7 +1284,7 @@ export default function FinanceCabinet() {
           )}
           <div className="ledger-modal-actions">
             <button className="ledger-secondary" disabled={busy} onClick={editDraft}>
-              Изменить
+              Edit
             </button>
             <button
               className="ledger-primary"
@@ -1181,28 +1298,28 @@ export default function FinanceCabinet() {
                   await refresh();
                   setDraft(null);
                   setBotInput("");
-                  setBotReply("Операция сохранена. Остаток обновлён.");
+                  setBotReply("Transaction saved. Balance updated.");
                   setNotice(
                     result.duplicate
-                      ? "Эта операция уже была сохранена. Повторной записи нет."
-                      : "Операция сохранена после подтверждения.",
+                      ? "This transaction was already saved. No duplicate was created."
+                      : "Transaction saved after confirmation.",
                   );
                 })
               }
             >
-              {busy ? <LoaderCircle className="spin" size={17} /> : <Check size={17} />}Подтвердить
-              и сохранить
+              {busy ? <LoaderCircle className="spin" size={17} /> : <Check size={17} />}Confirm and
+              save
             </button>
           </div>
         </Modal>
       )}
       {voiding && (
-        <Modal title="Отменить запись?" busy={busy} onClose={() => setVoiding(null)}>
+        <Modal title="Void this entry?" busy={busy} onClose={() => setVoiding(null)}>
           <p>
-            «{voiding.description}», {formatMoney(voiding.amountMinor, voiding.currency)}. Запись
-            останется в истории, но перестанет влиять на остаток.
+            «{voiding.description}», {formatMoney(voiding.amountMinor, voiding.currency)}. The
+            record stays in history but no longer affects the balance.
           </p>
-          <p className="ledger-muted">Это не возврат денег и не отмена банковского платежа.</p>
+          <p className="ledger-muted">This does not refund money or reverse a bank payment.</p>
           {error && (
             <p className="ledger-error" role="alert">
               {error}
@@ -1216,16 +1333,16 @@ export default function FinanceCabinet() {
                 await call(`/api/finance/entries/${voiding.id}/void`, { confirmed: true });
                 await refresh();
                 setVoiding(null);
-                setNotice("Запись отменена. История сохранена.");
+                setNotice("Entry voided. History preserved.");
               })
             }
           >
-            Подтвердить отмену записи
+            Confirm void
           </button>
         </Modal>
       )}
       {passwordModal && (
-        <Modal title="Сменить пароль" busy={busy} onClose={() => setPasswordModal(false)}>
+        <Modal title="Change password" busy={busy} onClose={() => setPasswordModal(false)}>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -1236,12 +1353,12 @@ export default function FinanceCabinet() {
                   newPassword: f.get("newPassword"),
                 });
                 setPasswordModal(false);
-                setNotice("Пароль изменён. Другие сессии завершены.");
+                setNotice("Password changed. Other sessions have ended.");
               });
             }}
           >
             <label>
-              Текущий пароль
+              Current password
               <input
                 name="currentPassword"
                 type="password"
@@ -1251,7 +1368,7 @@ export default function FinanceCabinet() {
               />
             </label>
             <label>
-              Новый пароль
+              New password
               <input
                 name="newPassword"
                 type="password"
@@ -1259,19 +1376,17 @@ export default function FinanceCabinet() {
                 minLength={12}
                 maxLength={128}
                 autoComplete="new-password"
-                placeholder="Не менее 12 символов"
+                placeholder="At least 12 characters"
               />
             </label>
-            <p className="ledger-muted">
-              После смены пароля остальные устройства будут отключены от аккаунта.
-            </p>
+            <p className="ledger-muted">Changing your password signs out your other devices.</p>
             {error && (
               <p className="ledger-error" role="alert">
                 {error}
               </p>
             )}
             <button className="ledger-primary" disabled={busy}>
-              Сохранить новый пароль
+              Save new password
             </button>
           </form>
         </Modal>

@@ -544,13 +544,9 @@ function DashboardContent() {
             <strong>{navItems.find((n) => n.id === tab)?.label}</strong>
           </div>
           <div className="topbar-actions">
-            <Link
-              className="personal-workspace-link"
-              href="/cabinet"
-              aria-label="Personal workspace"
-            >
+            <Link className="personal-workspace-link" href="/cabinet" aria-label="Adaptive Home">
               <LockKeyhole size={16} />
-              <span>Personal workspace</span>
+              <span>Adaptive Home</span>
             </Link>
             <button
               className="icon-button motion-toggle"

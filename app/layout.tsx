@@ -4,7 +4,7 @@ import "./modern.css";
 export const metadata: Metadata = {
   title: "Penny — A little clarity for your money",
   description:
-    "Penny is your adaptive money workspace, with pennybot as your AI assistant. Synthetic insights and human-approved PayPal Sandbox payments.",
+    "Your adaptive money workspace: private accounts, reviewed transactions, savings insights and pennybot. Explore PayPal Sandbox with fictional demo data.",
   robots: { index: false, follow: false },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { storageMode, dataDirectory } from "../db";
 import type { PrivateState } from "./types";
+import { upgradeDollarDemos } from "./demo-migration";
 export const emptyPrivateState = (): PrivateState => ({
   version: 1,
   users: [],
@@ -14,8 +15,12 @@ export const emptyPrivateState = (): PrivateState => ({
 });
 // Private records never enter the public demo document or its API responses.
 export async function withPrivateState<T>(fn: (state: PrivateState) => T | Promise<T>): Promise<T> {
+  const apply = (state: PrivateState) => {
+    upgradeDollarDemos(state);
+    return fn(state);
+  };
   if (storageMode() === "postgres")
-    return (await import("./store-postgres")).withPrivatePostgres(fn);
+    return (await import("./store-postgres")).withPrivatePostgres(apply);
   await mkdir(dataDirectory(), { recursive: true });
   const file = path.join(dataDirectory(), "private-ledger.json"),
     lock = file + ".lock";
@@ -39,7 +44,7 @@ export async function withPrivateState<T>(fn: (state: PrivateState) => T | Promi
       if ((e as NodeJS.ErrnoException).code !== "ENOENT") throw e;
       state = emptyPrivateState();
     }
-    const result = await fn(state);
+    const result = await apply(state);
     const temp = file + "." + randomUUID() + ".tmp";
     await writeFile(temp, JSON.stringify(state), { mode: 0o600 });
     await rename(temp, file);

@@ -16,6 +16,7 @@ export function seedJudgeWorkspace(s: PrivateState, profile: DemoProfile): Priva
     timeZone: "Asia/Almaty",
     createdAt,
     demoProfile: profile,
+    demoVersion: 3,
     demoExpiresAt: now + 24 * 60 * 60 * 1000,
   };
   s.users.push(user);
@@ -39,13 +40,15 @@ export function seedJudgeWorkspace(s: PrivateState, profile: DemoProfile): Priva
   };
   const primary =
     profile === "freelancer"
-      ? account("Проектный счёт", "USD", 240000)
-      : account("Основная карта", "KZT", profile === "family" ? 62000000 : 12000000);
-  const secondary =
-    primary.currency === "USD"
-      ? account("Карта в тенге", "KZT", 36000000)
-      : account("Долларовые накопления", "USD", profile === "family" ? 180000 : 22000, "savings");
-  const euro = account("Кошелёк для поездок", "EUR", profile === "family" ? 58000 : 14000, "cash");
+      ? account("Project account", "USD", 240000)
+      : account("Main account", "USD", profile === "family" ? 620000 : 120000);
+  const secondary = account(
+    "Savings",
+    "USD",
+    profile === "family" ? 180000 : profile === "freelancer" ? 85000 : 22000,
+    "savings",
+  );
+  const euro = account("Cash", "USD", profile === "family" ? 58000 : 14000, "cash");
   const day = calendarDay(user.timeZone);
   const date = (offset: number) =>
     new Date(Date.parse(day + "T12:00:00Z") - offset * 86400000).toISOString().slice(0, 10);
@@ -77,8 +80,8 @@ export function seedJudgeWorkspace(s: PrivateState, profile: DemoProfile): Priva
   add(
     primary,
     "income",
-    freelance ? 185000 : family ? 90000000 : 18000000,
-    freelance ? "Оплата дизайн-проекта" : family ? "Зарплата" : "Стипендия и подработка",
+    freelance ? 185000 : family ? 480000 : 80000,
+    freelance ? "Design project payment" : family ? "Salary" : "Scholarship and part-time work",
     "other",
     6,
   );
@@ -86,16 +89,16 @@ export function seedJudgeWorkspace(s: PrivateState, profile: DemoProfile): Priva
     add(
       primary,
       "expense",
-      freelance ? 450 : family ? 250000 : 120000,
-      "Кофе",
+      freelance ? 450 : family ? 650 : 350,
+      "Coffee",
       "food & coffee",
       offset,
     );
     add(
       primary,
       "expense",
-      freelance ? 4850 : family ? 2850000 : 450000,
-      "Продукты",
+      freelance ? 4850 : family ? 8500 : 2450,
+      "Groceries",
       "groceries",
       offset + 1,
     );
@@ -103,20 +106,20 @@ export function seedJudgeWorkspace(s: PrivateState, profile: DemoProfile): Priva
   add(
     primary,
     "expense",
-    freelance ? 30000 : family ? 18000000 : 3500000,
-    freelance ? "Коворкинг" : "Аренда",
+    freelance ? 30000 : family ? 180000 : 35000,
+    freelance ? "Coworking" : "Rent",
     "utilities",
     3,
   );
-  add(primary, "expense", freelance ? 1200 : 399000, "Музыкальная подписка", "subscriptions", 2);
-  add(
-    secondary,
-    "expense",
-    secondary.currency === "USD" ? 950 : 450000,
-    "Покупка продуктов",
-    "groceries",
-    1,
-  );
-  add(euro, "expense", 1250, "Обед в поездке", "food & coffee", 2);
+  add(primary, "expense", freelance ? 1200 : 999, "Music subscription", "subscriptions", 2);
+  add(secondary, "expense", 950, "Grocery purchase", "groceries", 1);
+  add(euro, "expense", 1250, "Lunch on a trip", "food & coffee", 2);
+  user.homePlan = {
+    USD: {
+      debtMinor: family ? 24000 : freelance ? 12000 : 6500,
+      goalName: family ? "Family holiday" : freelance ? "New laptop" : "Summer trip",
+      goalTargetMinor: family ? 300000 : freelance ? 180000 : 80000,
+    },
+  };
   return user;
 }
