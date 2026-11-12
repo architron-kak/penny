@@ -5,7 +5,7 @@ import { createOrder, getOrder, captureOrder, type PayPalOrder } from "../paypal
 import { privateApi, privateBody } from "./http";
 import { withPrivateState } from "./store";
 import { authenticatedUser, consumeLimit } from "./auth";
-import { overview, parseMinor } from "./ledger";
+import { overview, parseMinor, calendarDay } from "./ledger";
 import { recordActivity } from "./activity";
 import type { WorkspacePayment } from "./types";
 const schema = z
@@ -56,6 +56,15 @@ export function createWorkspacePayment(request: NextRequest) {
           card.title !== input.description
         )
           throw new HttpError(409, "Your shortcut changed. Open its review again.");
+        const day = calendarDay(user.timeZone);
+        const daily = s.payments.find(
+          (p) => p.ownerId === user.id && p.cardId === input.cardId && p.day === day,
+        );
+        if (daily) {
+          if (daily.amountMinor !== amountMinor || daily.description !== input.description)
+            throw new HttpError(409, "Today's shortcut already has a different reviewed amount.");
+          return { order: { ...daily }, allowed: true };
+        }
       }
       const now = new Date().toISOString();
       const order: WorkspacePayment = {
@@ -67,6 +76,7 @@ export function createWorkspacePayment(request: NextRequest) {
         status: "CREATING",
         createdAt: now,
         updatedAt: now,
+        ...(input.cardId ? { cardId: input.cardId, day: calendarDay(user.timeZone) } : {}),
       };
       s.payments.push(order);
       return { order: { ...order }, allowed: true };
@@ -86,7 +96,7 @@ export function createWorkspacePayment(request: NextRequest) {
       );
       return await withPrivateState((s) => {
         const user = authenticatedUser(s, request),
-          order = s.payments?.find((p) => p.id === input.requestId && p.ownerId === user.id);
+          order = s.payments?.find((p) => p.id === prepared.order!.id && p.ownerId === user.id);
         if (!order) throw new HttpError(404, "Payment not found.");
         if (order.paypalOrderId && order.paypalOrderId !== remote.id)
           throw new HttpError(409, "The provider returned a conflicting payment.");
@@ -107,7 +117,7 @@ export function createWorkspacePayment(request: NextRequest) {
     } catch (error) {
       await withPrivateState((s) => {
         const order = s.payments?.find(
-          (p) => p.id === input.requestId && p.ownerId === prepared.order!.ownerId,
+          (p) => p.id === prepared.order!.id && p.ownerId === prepared.order!.ownerId,
         );
         if (order && !order.paypalOrderId) {
           order.status = "FAILED";

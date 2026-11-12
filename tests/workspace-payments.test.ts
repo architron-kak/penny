@@ -82,6 +82,37 @@ afterEach(async () => {
   await rm(directory, { recursive: true, force: true });
 });
 describe("private workspace Sandbox payments", () => {
+  it("reuses a habitual payment throughout the day even after a fresh UI review", async () => {
+    const v = await overview(),
+      card = v.adaptiveHome.USD.cards.find((c: { kind: string }) => c.kind === "habit");
+    const body = {
+      ...input(),
+      cardId: card.id,
+      description: card.title,
+      amount: (card.entry.amountMinor / 100).toFixed(2),
+    };
+    expect((await createWorkspacePayment(req(body, cookie))).status).toBe(200);
+    const reused = await createWorkspacePayment(req({ ...body, requestId: randomUUID() }, cookie));
+    expect((await reused.json()).payment.id).toBe(body.requestId);
+    expect(createOrder).toHaveBeenCalledTimes(1);
+    vi.mocked(getOrder).mockResolvedValue(remote(body.requestId, "COMPLETED", body.amount));
+    expect(
+      (
+        await captureWorkspacePayment(req({ confirmed: true }, cookie), {
+          params: Promise.resolve({ id: body.requestId }),
+        })
+      ).status,
+    ).toBe(200);
+    const done = await overview();
+    expect(
+      done.adaptiveHome.USD.cards.find((c: { id: string }) => c.id === card.id).paidToday,
+    ).toBe(true);
+    expect(
+      (await createWorkspacePayment(req({ ...body, requestId: randomUUID() }, cookie))).status,
+    ).toBe(200);
+    expect(createOrder).toHaveBeenCalledTimes(1);
+    expect((await overview()).payments).toHaveLength(1);
+  });
   it("provides charts and subscriptions from the same owned ledger", async () => {
     const v = await overview();
     expect(v.analytics.USD.monthly).toHaveLength(6);

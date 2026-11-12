@@ -88,6 +88,8 @@ export type WorkspacePayment = {
   captureId?: string;
   createdAt: string;
   updatedAt: string;
+  cardId?: string;
+  day?: string;
 };
 export type PaymentView = Omit<WorkspacePayment, "ownerId">;
 export type WorkspaceActivity = {
@@ -121,6 +123,7 @@ export type PersonalHomeCard = {
   entry?: EntryView;
   urgent?: boolean;
   progress?: number;
+  paidToday?: boolean;
 };
 export type PersonalHome = {
   cards: PersonalHomeCard[];

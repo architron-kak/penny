@@ -80,8 +80,12 @@ export default memo(function PersonalAdaptiveHome({
               </button>
               {card.kind === "habit" && card.entry?.currency === "USD" && onPay && (
                 <div className="habit-payment">
-                  <button className="dark-button wide" disabled={busy} onClick={() => onPay(card)}>
-                    Pay {card.value}
+                  <button
+                    className="dark-button wide"
+                    disabled={busy || card.paidToday}
+                    onClick={() => onPay(card)}
+                  >
+                    {card.paidToday ? "Paid today" : `Pay ${card.value}`}
                   </button>
                   <small>Review first · PayPal Sandbox</small>
                 </div>

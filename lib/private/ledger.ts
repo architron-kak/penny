@@ -234,6 +234,15 @@ export function overview(s: PrivateState, request: NextRequest): FinanceOverview
   const adaptiveHome = Object.fromEntries(
     currencies.map((c) => [c, personalAdaptiveHome(user, accounts, entries, c, day)]),
   ) as FinanceOverview["adaptiveHome"];
+  for (const card of adaptiveHome.USD.cards)
+    if (card.kind === "habit")
+      card.paidToday = !!s.payments?.some(
+        (p) =>
+          p.ownerId === user.id &&
+          p.cardId === card.id &&
+          p.day === day &&
+          p.status === "COMPLETED",
+      );
   return {
     user: publicUser(user),
     accounts,
