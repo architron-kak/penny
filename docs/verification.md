@@ -69,3 +69,9 @@ Adaptive Home now caps output at seven cards: two evidence-based frequent-purcha
 Introduced a scoped `app/modern.css` visual layer with a dark navigation rail, neutral white cards, one mint accent, system sans-serif typography and a three-card financial summary. Adaptive Home retains its seven-card limit and confirmed payment workflow. Mobile uses a bottom navigation with all five sections visible and safe-area spacing. AG Grid, chat, payment review and planning forms share the new colors and typography. No font downloads, images or new runtime dependencies were added; existing reduced-motion preferences remain supported.
 
 Validation: TypeScript, ESLint and the production build passed. Chromium exercised production pages at widths 320, 390, 760, 800, 1024 and 1440 px without horizontal overflow or JavaScript errors. Checked all five sections, payment review and pennybot chat. Both secondary summary cards and all five navigation buttons remain visible on mobile. No payment was initiated. Screenshots are in `/tmp/penny-design-browser/` for this session.
+
+## Short-window sidebar fix — 12 November 2026
+
+Reproduced a clipped pennybot card at 1440×560: the flex item collapsed to 61 px and its button extended below the card. The desktop rail now scrolls instead of shrinking its children. At desktop heights up to 800 px, the assistant becomes a compact icon and working button. Mobile and collapsed-tablet navigation retain their layout.
+
+Production build passed. Chromium verified card/button bounds and opened/closed chat at 1440×900, 1440×801, 1440×800, 1440×560, 1440×420 and 1280×540; also checked 1024×420 and 390×844 for horizontal overflow. No button clipping remained. Fix screenshots: `/tmp/penny-design-browser/sidebar-fixed.png`.

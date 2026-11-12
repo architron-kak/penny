@@ -746,6 +746,57 @@ body {
   color: #fff;
   border-radius: 10px;
 }
+/* Fixed-height navigation must scroll rather than collapse its contents. */
+@media (min-width: 761px) {
+  .modern-shell .sidebar {
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #496455 transparent;
+  }
+  .modern-shell .sidebar > * {
+    flex-shrink: 0;
+  }
+}
+@media (min-width: 1191px) and (max-height: 800px) {
+  .modern-shell .sidebar {
+    padding-top: 24px;
+    padding-bottom: 16px;
+  }
+  .modern-shell .workspace-label {
+    margin-top: 24px;
+    margin-bottom: 14px;
+  }
+  .modern-shell .sidebar nav {
+    gap: 3px;
+  }
+  .modern-shell .nav-item {
+    height: 40px;
+  }
+  .modern-shell .sidebar-assistant {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .modern-shell .sidebar-assistant h3,
+  .modern-shell .sidebar-assistant p {
+    display: none;
+  }
+  .modern-shell .sidebar-assistant .assistant-orbit {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+  }
+  .modern-shell .sidebar-assistant button {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 0;
+    border: 0;
+  }
+}
 @media (max-width: 1190px) and (min-width: 761px) {
   .modern-shell {
     --sidebar-width: 80px;
