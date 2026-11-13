@@ -150,6 +150,7 @@ export default function FinanceCabinet() {
     reviewed: boolean;
   } | null>(null);
   const [captureReview, setCaptureReview] = useState<PaymentView | null>(null);
+  const [checkoutCallback, setCheckoutCallback] = useState(false);
   const [botInput, setBotInput] = useState(""),
     [useAI, setUseAI] = useState(false),
     [botReply, setBotReply] = useState("");
@@ -174,6 +175,7 @@ export default function FinanceCabinet() {
         setAccountId(fresh.accounts[0]?.id || "");
         setCurrency(fresh.accounts[0]?.currency || "KZT");
         const query = new URLSearchParams(window.location.search);
+        setCheckoutCallback(query.has("checkout"));
         if (query.get("checkout") === "return") {
           const payment = fresh.payments.find((p) => p.paypalOrderId === query.get("token"));
           if (payment) {
@@ -618,6 +620,19 @@ export default function FinanceCabinet() {
         tab={tab}
         onTab={setTab}
         busy={busy}
+        suspendAutoListening={
+          !!(
+            checkoutCallback ||
+            accountModal ||
+            edit ||
+            draft ||
+            voiding ||
+            passwordModal ||
+            homePlan ||
+            paymentReview ||
+            captureReview
+          )
+        }
         error={error}
         notice={notice}
         clearError={() => setError("")}

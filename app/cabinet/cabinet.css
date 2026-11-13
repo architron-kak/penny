@@ -1785,6 +1785,9 @@
   flex-wrap: wrap;
 }
 .workspace-checkout-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   width: min(620px, calc(100vw - 24px));
   max-height: calc(100dvh - 24px);
   padding: 0;
@@ -1919,6 +1922,16 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 110px;
   gap: 12px;
+  margin-top: 18px;
+}
+.checkout-listening-details {
+  margin-bottom: 20px;
+  color: #526c5b;
+  font-size: 12px;
+}
+.checkout-listening-details summary {
+  cursor: pointer;
+  min-height: 30px;
 }
 .checkout-confirm {
   display: flex;
@@ -2009,4 +2022,48 @@
   line-height: 1.7;
   color: #526c5b;
   margin-top: 5px;
+}
+.cashier-microphone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 9px 13px;
+  margin: -6px 0 22px;
+  border: 1px solid #dce7df;
+  border-radius: 12px;
+  color: #526c5b;
+  background: #f4f8f5;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.cashier-microphone > span,
+.cashier-microphone button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.cashier-microphone[data-state="listening"] {
+  color: #873d25;
+  border-color: #e2c7b4;
+  background: #fff8ef;
+}
+.cashier-microphone button {
+  border: 0;
+  background: transparent;
+  color: #234e35;
+  font: inherit;
+  font-weight: 600;
+  min-height: 30px;
+  cursor: pointer;
+}
+.cashier-microphone button:focus-visible {
+  outline: 3px solid #30805b;
+  outline-offset: 3px;
+}
+.cashier-microphone button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }

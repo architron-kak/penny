@@ -21,12 +21,14 @@ import {
   Ear,
   LayoutDashboard,
   LogOut,
+  Mic,
   Plus,
   Search,
   Settings2,
   ShieldCheck,
   SlidersHorizontal,
   Sparkles,
+  Square,
   Wallet,
   Wind,
   X,
@@ -49,6 +51,8 @@ import {
   WorkspaceBars,
 } from "./workspace-shell";
 import PersonalAdaptiveHome from "./personal-adaptive-home";
+import { useCashierListener } from "./use-cashier-listener";
+import type { CashierDetection, CashierStatus } from "@/lib/cashier-listener";
 import { categoryLabels, formatMoney } from "./personal-money";
 import { Reveal } from "./reveal";
 import {
@@ -73,6 +77,7 @@ type Props = {
   tab: WorkspaceTab;
   onTab: (tab: WorkspaceTab) => void;
   busy: boolean;
+  suspendAutoListening: boolean;
   error: string;
   notice: string;
   clearError: () => void;
@@ -101,6 +106,18 @@ const nav = [
   { id: "payments", label: "Payments", icon: Wallet },
   { id: "activity", label: "Agent activity", icon: Activity },
 ] as const;
+const microphoneLabels: Record<CashierStatus, string> = {
+  off: "Auto listening off",
+  paused: "Auto listening paused · microphone off",
+  listening: "Listening for a total · up to 1 min",
+  reconnecting: "Reconnecting microphone · up to 1 min",
+  detected: "Amount detected · microphone off",
+  timeout: "No clear amount in 1 min · microphone off",
+  stopped: "Listening stopped · microphone off",
+  blocked: "Microphone blocked · tap Try again",
+  unavailable: "Speech recognition unavailable · type an amount",
+  error: "Speech recognition stopped · tap Try again",
+};
 export default function AccountWorkspace(props: Props) {
   return (
     <AnimationProvider>
@@ -115,34 +132,39 @@ function WorkspaceContent(p: Props) {
     dialog = useRef<HTMLDialogElement>(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false),
     checkoutDialog = useRef<HTMLDialogElement>(null);
-  const visitPaused = useRef(false);
+  const [detected, setDetected] = useState<CashierDetection | null>(null),
+    [settingsOpen, setSettingsOpen] = useState(false),
+    [settingsError, setSettingsError] = useState("");
+  const settingsDialog = useRef<HTMLDialogElement>(null);
   const autoListening = useSyncExternalStore(
     subscribeAutoListening,
     useCallback(() => readAutoListening(data.user.id), [data.user.id]),
     () => false,
   );
-  useEffect(() => {
-    if (!autoListening) return;
-    const open = () => {
-      if (
-        !document.hidden &&
-        !visitPaused.current &&
-        !new URLSearchParams(window.location.search).has("checkout") &&
-        !document.querySelector("dialog[open]:not(.workspace-checkout-dialog)")
-      )
-        setCheckoutOpen(true);
-    };
-    const id = setTimeout(open, 0);
-    document.addEventListener("visibilitychange", open);
-    return () => {
-      clearTimeout(id);
-      document.removeEventListener("visibilitychange", open);
-    };
-  }, [autoListening]);
+  const onAmount = useCallback((amount: CashierDetection) => {
+    setDetected(amount);
+    setCheckoutOpen(true);
+  }, []);
+  const microphone = useCashierListener({
+    userId: data.user.id,
+    enabled: autoListening,
+    suspended: checkoutOpen || chatOpen || settingsOpen || busy || p.suspendAutoListening,
+    currency,
+    onAmount,
+  });
   const closeCheckout = () => {
-    visitPaused.current = true;
     setCheckoutOpen(false);
+    setDetected(null);
   };
+  const openCheckout = () => {
+    microphone.stop();
+    setDetected(null);
+    setCheckoutOpen(true);
+  };
+  useEffect(() => {
+    if (settingsOpen) settingsDialog.current?.showModal();
+    else settingsDialog.current?.close();
+  }, [settingsOpen]);
   useEffect(() => {
     if (checkoutOpen) checkoutDialog.current?.showModal();
     else checkoutDialog.current?.close();
@@ -248,11 +270,13 @@ function WorkspaceContent(p: Props) {
               <span className="avatar">{data.user.name.slice(0, 2).toUpperCase()}</span>
               <strong>{data.user.name}</strong>
             </div>
-            {!data.user.demoProfile && (
-              <button className="icon-button" aria-label="Change password" onClick={p.openPassword}>
-                <Settings2 size={18} />
-              </button>
-            )}
+            <button
+              className="icon-button"
+              aria-label="User settings"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <Settings2 size={18} />
+            </button>
             <button
               className="icon-button notification"
               aria-label="View agent activity"
@@ -342,13 +366,7 @@ function WorkspaceContent(p: Props) {
               </select>
             </label>
             <div className="workspace-control-actions">
-              <button
-                className="outline-button"
-                onClick={() => {
-                  visitPaused.current = false;
-                  setCheckoutOpen(true);
-                }}
-              >
+              <button className="outline-button" onClick={openCheckout}>
                 <Ear size={17} />
                 Checkout assist
               </button>
@@ -371,6 +389,36 @@ function WorkspaceContent(p: Props) {
               </button>
             </div>
           </div>
+          {autoListening && (
+            <div
+              className="cashier-microphone"
+              data-state={microphone.status}
+              aria-label="Automatic checkout listening"
+            >
+              <span role="status">
+                <Mic size={15} />
+                {microphoneLabels[microphone.status]}
+              </span>
+              {(["listening", "reconnecting", "paused"] as CashierStatus[]).includes(
+                microphone.status,
+              ) ? (
+                <button type="button" onClick={microphone.stop}>
+                  <Square size={12} />
+                  Stop listening
+                </button>
+              ) : (
+                microphone.status !== "unavailable" && (
+                  <button
+                    type="button"
+                    onClick={microphone.restart}
+                    disabled={busy || checkoutOpen}
+                  >
+                    Try again
+                  </button>
+                )
+              )}
+            </div>
+          )}
           {tab === "overview" && (
             <>
               <Reveal className="summary-reveal">
@@ -802,6 +850,89 @@ function WorkspaceContent(p: Props) {
         <span>Ask pennybot</span>
       </button>
       <dialog
+        ref={settingsDialog}
+        className="workspace-checkout-dialog workspace-settings-dialog"
+        aria-label="User settings"
+        onCancel={() => setSettingsOpen(false)}
+      >
+        <header>
+          <strong>User settings</strong>
+          <button
+            className="icon-button"
+            aria-label="Close user settings"
+            onClick={() => setSettingsOpen(false)}
+          >
+            <X size={20} />
+          </button>
+        </header>
+        <section className="checkout-assist">
+          <span className="checkout-assist-badge">
+            <Ear size={17} />
+            CHECKOUT ASSIST
+          </span>
+          <h2>Catch the total, automatically.</h2>
+          <label className="checkout-auto-setting">
+            <input
+              type="checkbox"
+              aria-label="Auto listening when I open Penny"
+              checked={autoListening}
+              disabled={busy}
+              onChange={(e) => {
+                const enabled = e.target.checked;
+                if (!enabled) microphone.stop();
+                setSettingsError(
+                  writeAutoListening(data.user.id, enabled)
+                    ? ""
+                    : "Your browser could not save this setting. Listening is stopped for this visit; allow site storage to remember changes.",
+                );
+              }}
+            />
+            <span>
+              <strong>Auto listening when I open Penny</strong>
+              <small>
+                Remember for this account on this device. Listen in the background of the open Penny
+                page for up to one minute. A clear spoken total opens an editable confirmation;
+                otherwise the microphone turns off.
+              </small>
+            </span>
+          </label>
+          <p>
+            The dashboard stays open while listening. You can stop the microphone at any time. It
+            turns off when Penny is hidden or another dialog is open.
+          </p>
+          <p>
+            Only you confirm an expense or Sandbox payment. Recognition cannot identify the speaker
+            or the merchant.
+          </p>
+          {settingsError && (
+            <p className="checkout-amount-error" role="alert">
+              {settingsError}
+            </p>
+          )}
+          <small className="checkout-privacy">
+            English speech. Microphone permission is required; your browser may ask for a tap to
+            start. Its speech service may process audio. Penny does not record or store microphone
+            audio or captions.
+          </small>
+          <div className="checkout-listening-controls">
+            <button className="dark-button" onClick={() => setSettingsOpen(false)}>
+              Done
+            </button>
+            {!data.user.demoProfile && (
+              <button
+                className="outline-button"
+                onClick={() => {
+                  setSettingsOpen(false);
+                  p.openPassword();
+                }}
+              >
+                Change password
+              </button>
+            )}
+          </div>
+        </section>
+      </dialog>
+      <dialog
         ref={checkoutDialog}
         className="workspace-checkout-dialog"
         aria-label="Checkout assist"
@@ -819,8 +950,7 @@ function WorkspaceContent(p: Props) {
         </header>
         {checkoutOpen && (
           <CheckoutAssist
-            autoListening={autoListening}
-            onAutoListening={(enabled) => writeAutoListening(data.user.id, enabled)}
+            detected={detected}
             currency={currency}
             accountCurrencies={data.accounts.map((a) => a.currency)}
             busy={busy}

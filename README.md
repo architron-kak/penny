@@ -22,11 +22,11 @@ In your workspace, **Repeat expense** opens a reviewed ledger entry that saves o
 
 The **“I checked the amount and currency”** checkbox is required and resets after any edit. **Review expense** opens the existing matching-currency account form; it still needs the normal confirmation to save. **Review Sandbox payment** supports USD up to $5,000 and opens the existing PayPal review; it does not create an order. PayPal approval and explicit completion remain required. The tool cannot identify or pay a real cashier or merchant.
 
-Microphone access is manual by default. Enable **Auto listening when I open Penny** once to remember the preference for this account on this device. On a later opening of the signed-in workspace, Penny opens Checkout assist and attempts to start continuous recognition while the page is visible. Nearby speech continues after individual phrases. Recognition cannot identify which speaker is the cashier; competing totals must be corrected rather than guessed.
+Microphone access is manual by default. In **User settings** (the sliders icon), enable **Auto listening when I open Penny** once for this account on this device. On opening the signed-in workspace, Penny then attempts to listen in the background of the visible dashboard, without opening a dialog first. A small microphone indicator provides **Stop listening**. A clear final phrase with money/total context stops recognition and opens an editable amount confirmation. Unrelated numbers, interim speech, conflicting totals and overlong captions do not open a prompt. Recognition cannot identify which speaker is the cashier or identify their merchant account.
 
-Use **Pause to review amount** before checking a captured total. **Stop listening** pauses the current visit; closing the panel also prevents it reopening during that visit. The saved setting can be disabled for future openings. Hidden tabs and closed panels release the microphone. An unpaused automatic session resumes on return to the visible page. Payment-return confirmation dialogs take precedence over auto-opening. Permission failures stop retries and leave a manual Start button; repeated rapid browser disconnects also stop instead of looping.
+If no clear amount is found, the microphone turns off after **one minute**. Reconnects, nearby conversation and temporary pauses never extend that deadline. **Try again** starts a new minute; **Stop listening** and dismissing a detected amount stay stopped for the visit. The saved setting applies again on a new opening. Hidden pages and other dialogs release the microphone. Returning to the dashboard resumes only an unfinished attempt within its original deadline. Existing payment-return confirmation takes precedence; no automatic listening starts on a checkout callback.
 
-Manual recognition keeps its 30-second limit. Automatic recognition reconnects after normal browser session endings with a short delay and bounded rapid retries. Captions keep at most six result segments; overly long captions are rejected instead of extracting a clipped amount. No recording or transcript is persisted by Penny or sent to Gemini; the device preference stores only a per-account boolean. Your browser may use an external speech service and may require microphone permission or another tap before automatic startup. Speech recognition has [limited browser availability](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition); typed-caption/manual-amount input remains available. The first version recognizes English speech; check the displayed amount against the bill or cashier's display before continuing.
+Manual recognition keeps its 30-second limit. Automatic recognition reconnects after normal browser session endings with a short delay and stops after repeated rapid failures; permission failures require an explicit retry. No recording or transcript is persisted by Penny or sent to Gemini; the device preference stores only a per-account boolean. Your browser may use an external speech service and may require microphone permission or another tap before automatic startup. Speech recognition has [limited browser availability](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition); typed-caption/manual-amount input remains available. The first version recognizes English speech; check the displayed amount against the bill or cashier's display before continuing.
 
 ## Personal finance workspace
 
@@ -196,23 +196,6 @@ Voice support uses the browser's experimental [SpeechRecognition API](https://de
 | `PORT`                    | `3000`                                                | Next.js serving port; Render sets this automatically.                                               |
 
 ### API
-
-| Method | Route                            | Behavior                                                                                                   |
-| ------ | -------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| GET    | `/api/home?user=student`         | Persona, ranked cards, aggregates, records, capability status; sets demo session cookie.                   |
-| GET    | `/api/transactions?user=student` | Classified transaction rows.                                                                               |
-| POST   | `/api/suggestions/:id/approve`   | `{ user, approved: true }`; creates Sandbox order and returns approval URL.                                |
-| POST   | `/api/suggestions/:id/dismiss`   | `{ user }`; records dismissal of an unapproved suggestion.                                                 |
-| POST   | `/api/paypal/capture`            | `{ orderId, userApproved: true }`; validates and captures an approved order owned by this browser session. |
-| POST   | `/api/paypal/webhook`            | Signature-verified capture completion; never initiates capture.                                            |
-| POST   | `/api/subscriptions/:id`         | `{ user, action: "suggest-cancel" \| "undo" }`; local suggestion only.                                     |
-| POST   | `/api/chat`                      | `{ user, message }`; answer based on server-computed facts.                                                |
-| GET    | `/api/planning?user=student`     | Current profile, purchase limit, debts/refunds, and forecasts.                                             |
-| POST   | `/api/planning/preview`          | `{ user, command }`; compute a draft on a clone without saving.                                            |
-| POST   | `/api/planning`                  | `{ user, command, confirmed: true, requestId }`; validate and persist a local planning action once.        |
-| GET    | `/api/health`                    | Basic health check without creating or modifying payment records.                                          |
-
-Mutation requests require an `Origin` header matching the configured application origin. Demo personas are public sample workspaces; the personal cabinet uses separate authenticated APIs:
 
 | Method | Route | Behavior |
 | ------ | ----- | -------- |
