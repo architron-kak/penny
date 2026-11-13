@@ -10,6 +10,7 @@ import {
   Check,
   ChevronRight,
   CreditCard,
+  Ear,
   LayoutDashboard,
   LogOut,
   Plus,
@@ -46,6 +47,10 @@ const FinanceGrid = dynamic(() => import("./finance-grid"), {
   ssr: false,
   loading: () => <p>Loading transactions…</p>,
 });
+const CheckoutAssist = dynamic(() => import("./checkout-assist"), {
+  ssr: false,
+  loading: () => <p>Opening checkout assist…</p>,
+});
 export type WorkspaceTab =
   "overview" | "entries" | "subscriptions" | "payments" | "activity" | "accounts" | "bot";
 type Props = {
@@ -64,6 +69,8 @@ type Props = {
   newAccount: () => void;
   onCard: (c: PersonalHomeCard) => void;
   onPay: (c?: PersonalHomeCard) => void;
+  onCheckoutRecord: (a: { amountMinor: number; currency: Currency }) => void;
+  onCheckoutPayment: (a: { amountMinor: number; currency: Currency }) => void;
   onResume: (p: PaymentView) => void;
   onComplete: (p: PaymentView) => void;
   onSubscription: (s: SubscriptionView) => void;
@@ -93,6 +100,12 @@ function WorkspaceContent(p: Props) {
     { reduced, systemReduced, toggle } = useAnimationPreference();
   const [chatOpen, setChatOpen] = useState(false),
     dialog = useRef<HTMLDialogElement>(null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false),
+    checkoutDialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    if (checkoutOpen) checkoutDialog.current?.showModal();
+    else checkoutDialog.current?.close();
+  }, [checkoutOpen]);
   useEffect(() => {
     if (chatOpen) dialog.current?.showModal();
     else dialog.current?.close();
@@ -287,23 +300,29 @@ function WorkspaceContent(p: Props) {
                 ))}
               </select>
             </label>
-            <button
-              className="outline-button"
-              onClick={
-                tab === "payments"
-                  ? () => p.onPay()
+            <div className="workspace-control-actions">
+              <button className="outline-button" onClick={() => setCheckoutOpen(true)}>
+                <Ear size={17} />
+                Checkout assist
+              </button>
+              <button
+                className="outline-button"
+                onClick={
+                  tab === "payments"
+                    ? () => p.onPay()
+                    : tab === "subscriptions"
+                      ? p.addSubscription
+                      : p.newEntry
+                }
+              >
+                <Plus size={15} />
+                {tab === "payments"
+                  ? "New Sandbox payment"
                   : tab === "subscriptions"
-                    ? p.addSubscription
-                    : p.newEntry
-              }
-            >
-              <Plus size={15} />
-              {tab === "payments"
-                ? "New Sandbox payment"
-                : tab === "subscriptions"
-                  ? "Add subscription record"
-                  : "New transaction"}
-            </button>
+                    ? "Add subscription record"
+                    : "New transaction"}
+              </button>
+            </div>
           </div>
           {tab === "overview" && (
             <>
@@ -735,6 +754,38 @@ function WorkspaceContent(p: Props) {
         <Sparkles size={20} />
         <span>Ask pennybot</span>
       </button>
+      <dialog
+        ref={checkoutDialog}
+        className="workspace-checkout-dialog"
+        aria-label="Checkout assist"
+        onCancel={() => setCheckoutOpen(false)}
+      >
+        <header>
+          <strong>Checkout assist</strong>
+          <button
+            className="icon-button"
+            aria-label="Close checkout assist"
+            onClick={() => setCheckoutOpen(false)}
+          >
+            <X size={20} />
+          </button>
+        </header>
+        {checkoutOpen && (
+          <CheckoutAssist
+            currency={currency}
+            accountCurrencies={data.accounts.map((a) => a.currency)}
+            busy={busy}
+            onRecord={(a) => {
+              setCheckoutOpen(false);
+              p.onCheckoutRecord(a);
+            }}
+            onPayment={(a) => {
+              setCheckoutOpen(false);
+              p.onCheckoutPayment(a);
+            }}
+          />
+        )}
+      </dialog>
       <dialog
         ref={dialog}
         className="workspace-assistant-dialog"

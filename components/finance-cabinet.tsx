@@ -627,6 +627,35 @@ export default function FinanceCabinet() {
         newAccount={() => setAccountModal(true)}
         onCard={homeAction}
         onPay={reviewPayment}
+        onCheckoutRecord={(amount) => {
+          const selected =
+            data.accounts.find((a) => a.id === accountId && a.currency === amount.currency) ||
+            data.accounts.find((a) => a.currency === amount.currency);
+          if (!selected) {
+            setError(`Add an account in ${amount.currency} first.`);
+            return;
+          }
+          setEdit({
+            accountId: selected.id,
+            kind: "expense",
+            amount: amountInput(amount.amountMinor),
+            description: "In-store purchase",
+            category: "shopping",
+            date: data.today,
+          });
+        }}
+        onCheckoutPayment={(amount) => {
+          if (amount.currency !== "USD" || amount.amountMinor > 500000) {
+            setError("Sandbox checkout supports USD amounts up to $5,000.");
+            return;
+          }
+          setPaymentReview({
+            requestId: crypto.randomUUID(),
+            amount: amountInput(amount.amountMinor),
+            description: "Checkout purchase",
+            reviewed: true,
+          });
+        }}
         onResume={resumePayment}
         onComplete={setCaptureReview}
         onSubscription={reviewSubscription}
