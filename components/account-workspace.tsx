@@ -1,5 +1,13 @@
 "use client";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import dynamic from "next/dynamic";
 import {
   Activity,
@@ -43,6 +51,11 @@ import {
 import PersonalAdaptiveHome from "./personal-adaptive-home";
 import { categoryLabels, formatMoney } from "./personal-money";
 import { Reveal } from "./reveal";
+import {
+  readAutoListening,
+  writeAutoListening,
+  subscribeAutoListening,
+} from "@/lib/auto-listening";
 const FinanceGrid = dynamic(() => import("./finance-grid"), {
   ssr: false,
   loading: () => <p>Loading transactions…</p>,
@@ -102,6 +115,34 @@ function WorkspaceContent(p: Props) {
     dialog = useRef<HTMLDialogElement>(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false),
     checkoutDialog = useRef<HTMLDialogElement>(null);
+  const visitPaused = useRef(false);
+  const autoListening = useSyncExternalStore(
+    subscribeAutoListening,
+    useCallback(() => readAutoListening(data.user.id), [data.user.id]),
+    () => false,
+  );
+  useEffect(() => {
+    if (!autoListening) return;
+    const open = () => {
+      if (
+        !document.hidden &&
+        !visitPaused.current &&
+        !new URLSearchParams(window.location.search).has("checkout") &&
+        !document.querySelector("dialog[open]:not(.workspace-checkout-dialog)")
+      )
+        setCheckoutOpen(true);
+    };
+    const id = setTimeout(open, 0);
+    document.addEventListener("visibilitychange", open);
+    return () => {
+      clearTimeout(id);
+      document.removeEventListener("visibilitychange", open);
+    };
+  }, [autoListening]);
+  const closeCheckout = () => {
+    visitPaused.current = true;
+    setCheckoutOpen(false);
+  };
   useEffect(() => {
     if (checkoutOpen) checkoutDialog.current?.showModal();
     else checkoutDialog.current?.close();
@@ -301,7 +342,13 @@ function WorkspaceContent(p: Props) {
               </select>
             </label>
             <div className="workspace-control-actions">
-              <button className="outline-button" onClick={() => setCheckoutOpen(true)}>
+              <button
+                className="outline-button"
+                onClick={() => {
+                  visitPaused.current = false;
+                  setCheckoutOpen(true);
+                }}
+              >
                 <Ear size={17} />
                 Checkout assist
               </button>
@@ -758,29 +805,31 @@ function WorkspaceContent(p: Props) {
         ref={checkoutDialog}
         className="workspace-checkout-dialog"
         aria-label="Checkout assist"
-        onCancel={() => setCheckoutOpen(false)}
+        onCancel={closeCheckout}
       >
         <header>
           <strong>Checkout assist</strong>
           <button
             className="icon-button"
             aria-label="Close checkout assist"
-            onClick={() => setCheckoutOpen(false)}
+            onClick={closeCheckout}
           >
             <X size={20} />
           </button>
         </header>
         {checkoutOpen && (
           <CheckoutAssist
+            autoListening={autoListening}
+            onAutoListening={(enabled) => writeAutoListening(data.user.id, enabled)}
             currency={currency}
             accountCurrencies={data.accounts.map((a) => a.currency)}
             busy={busy}
             onRecord={(a) => {
-              setCheckoutOpen(false);
+              closeCheckout();
               p.onCheckoutRecord(a);
             }}
             onPayment={(a) => {
-              setCheckoutOpen(false);
+              closeCheckout();
               p.onCheckoutPayment(a);
             }}
           />

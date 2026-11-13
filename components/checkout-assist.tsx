@@ -28,12 +28,16 @@ const supported = () =>
   );
 export default function CheckoutAssist({
   currency: initialCurrency,
+  autoListening,
+  onAutoListening,
   accountCurrencies,
   busy,
   onRecord,
   onPayment,
 }: {
   currency: Currency;
+  autoListening: boolean;
+  onAutoListening: (enabled: boolean) => boolean;
   accountCurrencies: Currency[];
   busy: boolean;
   onRecord: (amount: Amount) => void;
@@ -48,7 +52,14 @@ export default function CheckoutAssist({
     [manual, setManual] = useState<string | null>(null),
     [checked, setChecked] = useState(false);
   const instance = useRef<Recognition | null>(null),
-    timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+    timeout = useRef<ReturnType<typeof setTimeout> | null>(null),
+    paused = useRef(false),
+    retries = useRef(0),
+    currencyRef = useRef(currency),
+    startRef = useRef<((continuous: boolean, fresh?: boolean) => void) | null>(null);
+  useEffect(() => {
+    currencyRef.current = currency;
+  }, [currency]);
   const release = useCallback(() => {
     if (timeout.current) clearTimeout(timeout.current);
     timeout.current = null;
@@ -61,101 +72,189 @@ export default function CheckoutAssist({
       current.abort();
     }
   }, []);
-  useEffect(() => {
-    function onHidden() {
-      if (document.hidden && instance.current) {
-        release();
-        setListening(false);
-        setNotice(
-          "Listening stopped because the page was hidden. Start it again when you are ready.",
-        );
-      }
-    }
-    document.addEventListener("visibilitychange", onHidden);
-    return () => {
-      document.removeEventListener("visibilitychange", onHidden);
-      release();
-    };
-  }, [release]);
-  function parse(text: string) {
-    const result = readSpokenAmount(text, currency);
+  const parse = useCallback((text: string, continuous = false) => {
+    const result = readSpokenAmount(text, currencyRef.current);
     setHeard(result);
     setManual(null);
     setChecked(false);
     if (result.ok) setCurrency(result.currency);
     setNotice(
       result.ok
-        ? "Amount found. Check it against the bill or cashier’s display before continuing."
-        : "Please check the transcript or enter the amount manually.",
+        ? continuous
+          ? "Amount found. Pause listening to check it against the bill or display."
+          : "Amount found. Check it against the bill or cashier’s display before continuing."
+        : continuous
+          ? "Listening to nearby speech. No single clear total yet."
+          : "Please check the transcript or enter the amount manually.",
     );
-  }
-  function start() {
-    release();
-    setHeard(null);
-    setManual(null);
-    setChecked(false);
-    setCaption("");
-    const Ctor =
-      (window as SpeechWindow).SpeechRecognition ||
-      (window as SpeechWindow).webkitSpeechRecognition;
-    if (!Ctor) return;
-    const current = new Ctor();
-    instance.current = current;
-    current.lang = "en-US";
-    current.interimResults = true;
-    current.continuous = false;
-    current.onresult = (event) => {
-      if (instance.current !== current) return;
-      const results = Array.from(event.results),
-        text = results
-          .map((r) => r[0]?.transcript || "")
-          .join(" ")
-          .slice(0, 1000);
-      setCaption(text);
-      if (results.length && results.every((r) => r.isFinal)) {
+  }, []);
+  const start = useCallback(
+    (continuous: boolean, fresh = true) => {
+      release();
+      if (fresh) {
+        setHeard(null);
+        setManual(null);
+        setChecked(false);
+        setCaption("");
+        retries.current = 0;
+      }
+      const Ctor =
+        (window as SpeechWindow).SpeechRecognition ||
+        (window as SpeechWindow).webkitSpeechRecognition;
+      if (!Ctor || document.hidden || paused.current) return;
+      const current = new Ctor();
+      instance.current = current;
+      const began = Date.now();
+      current.lang = "en-US";
+      current.interimResults = true;
+      current.continuous = continuous;
+      function restart() {
         release();
         setListening(false);
-        parse(text);
-      } else {
+        if (!continuous || paused.current || document.hidden) return;
+        retries.current = Date.now() - began > 5000 ? 0 : retries.current + 1;
+        if (retries.current >= 3) {
+          paused.current = true;
+          setNotice(
+            "Your browser keeps stopping speech recognition. Tap Start listening to retry, or type the amount.",
+          );
+          return;
+        }
+        setNotice("Auto listening is reconnecting…");
+        timeout.current = setTimeout(() => {
+          timeout.current = null;
+          if (!paused.current && !document.hidden) startRef.current?.(true, false);
+        }, 500);
+      }
+      current.onresult = (event) => {
+        if (instance.current !== current) return;
+        const rows = [];
+        // Bound visible captions and parsing work even in a long listening session.
+        for (let i = Math.max(0, event.results.length - 6); i < event.results.length; i++)
+          rows.push(event.results[i]);
+        const text = rows.map((r) => r[0]?.transcript || "").join(" ");
+        if (text.length > 1000) {
+          setCaption("");
+          setHeard({
+            ok: false,
+            error: "The caption is too long. Pause and type the final amount.",
+          });
+          setManual(null);
+          setChecked(false);
+          setNotice("Listening continues. Pause to enter a clear total.");
+          return;
+        }
+        setCaption(text);
+        retries.current = 0;
+        if (rows.length && rows.every((r) => r.isFinal)) {
+          if (!continuous) {
+            release();
+            setListening(false);
+          }
+          parse(text, continuous);
+        } else {
+          setHeard(null);
+          setManual(null);
+          setChecked(false);
+          setNotice("Listening… this caption is provisional. Wait for the final amount.");
+        }
+      };
+      current.onerror = (event) => {
+        if (instance.current !== current) return;
+        if (continuous && event.error === "no-speech") {
+          restart();
+          return;
+        }
+        release();
+        paused.current = true;
+        setListening(false);
         setHeard(null);
         setChecked(false);
-        setNotice("Listening… this caption is provisional. Wait for the final amount.");
-      }
-    };
-    current.onerror = (event) => {
-      if (instance.current !== current) return;
-      release();
-      setListening(false);
-      setHeard(null);
-      setChecked(false);
-      setNotice(
-        event.error === "not-allowed" || event.error === "service-not-allowed"
-          ? "Microphone access was denied. Type the cashier’s words or amount instead."
-          : "Speech recognition could not finish. Type the amount instead.",
-      );
-    };
-    current.onend = () => {
-      if (instance.current === current) {
-        release();
-        setListening(false);
-        setNotice("Listening ended. Read the typed caption or enter an amount below.");
-      }
-    };
-    setListening(true);
-    setNotice("Listening now. You will see the words here; no payment is sent.");
-    try {
-      current.start();
-      if (instance.current === current)
-        timeout.current = setTimeout(() => {
+        setNotice(
+          event.error === "not-allowed" || event.error === "service-not-allowed"
+            ? "Microphone access was denied or automatic start was blocked. Tap Start listening to grant access, or type the amount."
+            : "Speech recognition could not finish. Tap Start listening to retry, or type the amount.",
+        );
+      };
+      current.onend = () => {
+        if (instance.current !== current) return;
+        if (continuous) restart();
+        else {
           release();
           setListening(false);
-          setNotice("Listening stopped after 30 seconds. You can read the caption or try again.");
-        }, 30000);
-    } catch {
+          setNotice("Listening ended. Read the typed caption or enter an amount below.");
+        }
+      };
+      setListening(true);
+      setNotice(
+        continuous
+          ? "Auto listening is on. Nearby speech appears here. Pause to review an amount."
+          : "Listening now. You will see the words here; no payment is sent.",
+      );
+      try {
+        current.start();
+        if (!continuous && instance.current === current)
+          timeout.current = setTimeout(() => {
+            release();
+            setListening(false);
+            setNotice("Listening stopped after 30 seconds. You can read the caption or try again.");
+          }, 30000);
+      } catch {
+        release();
+        paused.current = true;
+        setListening(false);
+        setNotice(
+          "Your browser could not start the microphone automatically. Tap Start listening, or type the amount.",
+        );
+      }
+    },
+    [parse, release],
+  );
+  useEffect(() => {
+    startRef.current = start;
+  }, [start]);
+  useEffect(() => {
+    function onHidden() {
+      if (document.hidden && (instance.current || timeout.current)) {
+        release();
+        setListening(false);
+        setNotice(
+          "Microphone off while Penny is hidden. Auto listening resumes when you return, unless paused.",
+        );
+      }
+    }
+    document.addEventListener("visibilitychange", onHidden);
+    window.addEventListener("pagehide", release);
+    return () => {
+      document.removeEventListener("visibilitychange", onHidden);
+      window.removeEventListener("pagehide", release);
+      release();
+    };
+  }, [release]);
+  useEffect(() => {
+    if (!autoListening || !hasSpeech) return;
+    const resume = () => {
+      if (!document.hidden && !paused.current && !instance.current && !timeout.current) start(true);
+    };
+    const id = setTimeout(resume, 0);
+    document.addEventListener("visibilitychange", resume);
+    return () => {
+      clearTimeout(id);
+      document.removeEventListener("visibilitychange", resume);
       release();
       setListening(false);
-      setNotice("The microphone could not start. You can type the amount instead.");
-    }
+    };
+  }, [autoListening, hasSpeech, release, start]);
+  function pause() {
+    paused.current = true;
+    release();
+    setListening(false);
+    setChecked(false);
+    setNotice(
+      autoListening
+        ? "Microphone paused. Check the amount and currency before continuing. Auto listening remains enabled for the next time you open Penny."
+        : "Microphone stopped. Read the caption or enter the amount below.",
+    );
   }
   const result = manual !== null ? readSpokenAmount(manual, currency) : heard;
   const amount = result?.ok ? result : null,
@@ -175,6 +274,48 @@ export default function CheckoutAssist({
         Capture one spoken total as text. Speech recognition can make mistakes — check the bill or
         cashier’s display.
       </p>
+      <label className="checkout-auto-setting">
+        <input
+          type="checkbox"
+          aria-label="Auto listening when I open Penny"
+          checked={autoListening}
+          disabled={busy || (!hasSpeech && !autoListening)}
+          onChange={(e) => {
+            const enabled = e.target.checked;
+            if (!enabled) {
+              paused.current = true;
+              release();
+              setListening(false);
+            }
+            if (!onAutoListening(enabled)) {
+              setNotice(
+                enabled
+                  ? "Your browser could not save Auto listening. You can still use Start listening for this visit."
+                  : "Microphone stopped for this visit. Your browser could not save the Auto listening change.",
+              );
+              return;
+            }
+            if (enabled) {
+              paused.current = false;
+              start(true);
+            } else {
+              paused.current = true;
+              release();
+              setListening(false);
+              setNotice(
+                "Auto listening is off. The microphone will not start when you open Penny.",
+              );
+            }
+          }}
+        />
+        <span>
+          <strong>Auto listening when I open Penny</strong>
+          <small>
+            Remember for this account on this device. Opens Checkout assist and listens to nearby
+            speech while Penny is visible.
+          </small>
+        </span>
+      </label>
       <div className="checkout-listening-controls">
         <button
           type="button"
@@ -183,10 +324,11 @@ export default function CheckoutAssist({
           aria-pressed={listening}
           onClick={() => {
             if (listening) {
-              release();
-              setListening(false);
-              setNotice("Microphone stopped. Read the caption or enter the amount below.");
-            } else start();
+              pause();
+            } else {
+              paused.current = false;
+              start(autoListening);
+            }
           }}
         >
           {listening ? <Square size={17} /> : <Mic size={17} />}
@@ -196,6 +338,11 @@ export default function CheckoutAssist({
           {listening ? "● MICROPHONE ON" : "MICROPHONE OFF"}
         </span>
       </div>
+      {listening && amount && (
+        <button type="button" className="outline-button" onClick={pause}>
+          Pause to review amount
+        </button>
+      )}
       {!hasSpeech && (
         <p className="checkout-fallback">
           Microphone recognition is unavailable in this browser. Typed text and manual amounts work
@@ -322,9 +469,10 @@ export default function CheckoutAssist({
         </p>
       )}
       <small className="checkout-privacy">
-        English speech. Your browser may send audio to its speech service. Penny does not record or
-        store microphone audio. Opening this panel, listening and recognizing an amount never create
-        a payment or a ledger entry. Sandbox payments use test funds for Penny’s test merchant.
+        English speech. Auto listening runs only while Penny is visible and can be stopped at any
+        time. Your browser may send audio to its speech service. Penny does not record or store
+        microphone audio. Opening this panel, listening and recognizing an amount never create a
+        payment or a ledger entry. Sandbox payments use test funds for Penny’s test merchant.
       </small>
     </section>
   );

@@ -1982,3 +1982,31 @@
     padding: 20px;
   }
 }
+.checkout-auto-setting {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 15px;
+  border: 1px solid #c9dfd1;
+  background: #eff7f2;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+.checkout-auto-setting > input {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  accent-color: #286441;
+}
+.checkout-auto-setting strong {
+  display: block;
+  font-size: 14px;
+}
+.checkout-auto-setting small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.7;
+  color: #526c5b;
+  margin-top: 5px;
+}
